@@ -1,0 +1,9 @@
+#AWE-4000R Project
+
+noinst_LIBRARIES = libaweapp.a
+
+libaweapp_a_SOURCES = LoginWin.cpp SysMainMenu.cpp CMainFrame.cpp CGlobalArg.cpp PowerOffData.cpp 
+
+SUBDIRS = INVMANAGE MAINTAIN PROGRAM REPORT SALE YWXML API FISCAL COMMON NETMODULE  SERIAL
+
+INCLUDES = -I../TPL -I../GUI -I../DB -I../LIB -I../SYS -I../DRV -I./SALE  -I./INVMANAGE -I./PROGRAM -I./MAINTAIN -I./REPORT -I./FISCAL -I./COMMON -I./YWXML -I./API -I./SERIAL -I./NETMODULE -I./NETMODULE/proc -I./NETMODULE/gui_net -I./

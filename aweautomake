@@ -1,0 +1,5 @@
+aclocal
+autoheader
+automake --add-missing
+autoconf
+CC="arm-elf-gcc -elf2flt -D_GNU_SOURCE" CXX="arm-elf-g++ -elf2flt -D_GNU_SOURCE" ./configure --host=arm

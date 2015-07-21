@@ -1,0 +1,9 @@
+#!/bin/sh
+cp $1/AUTHORS .
+cp $1/ChangeLog .
+cp $1/configure.ac .
+cp $1/NEWS .
+cp $1/README .
+cp $1/aweautomake .
+cp $1/AWE4000R.dsw .
+cp $1/AWE4000R.dsp .
