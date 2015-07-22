@@ -1428,7 +1428,7 @@ UINT8 GetPrnLineData(TPrnTempRow *tempLine2, TPrnLineInfo *conWriteBuffer, TPrnT
 			else if (memcmp(tempLine2->Items[i].dataPtr,"SKM",
 				tempLine2->Items[i].DataLen) == 0)
 			{
-				/*
+				
 				if (pSaveTemplateInfo->workMode == WORK_MODE)
 				{
 					memcpy(&(prnLineInfo->chContent[location-1]),
@@ -1456,9 +1456,9 @@ UINT8 GetPrnLineData(TPrnTempRow *tempLine2, TPrnLineInfo *conWriteBuffer, TPrnT
 					stubFlag = 2;
 					stubPlace = (UINT8)location;
 				}
-				*/
-				sprintf(&(prnLineInfo->chContent[location-1]),
-					"%s", pInv->chTaxCtrCode);	
+				
+// 				sprintf(&(prnLineInfo->chContent[location-1]),
+// 					"%s", pInv->chTaxCtrCode);	
 			}
 			else if (memcmp(tempLine2->Items[i].dataPtr,"JZLSH",
 				tempLine2->Items[i].DataLen) == 0)

@@ -5,7 +5,7 @@
 
 
 #include "LOGCTRL.h"
-//#define NO_POS_DEBUG
+#define NO_POS_DEBUG
 #include "pos_debug.h"
 
 CBusinessSerialProc::CBusinessSerialProc()
@@ -33,7 +33,7 @@ UINT8 CBusinessSerialProc::onLine_Serial(string &strErr)
 		 
 		 return FAILURE;
 	}
-
+	
 	 ret = m_serialProtocol->revData(strErr);
 	 DBG_PRINT(("ret = %u", ret));
 	 if (ret != SERCMD_SUCCESS)
@@ -46,7 +46,7 @@ UINT8 CBusinessSerialProc::onLine_Serial(string &strErr)
 	if(ret == SERCMD_SUCCESS)
 	{
 		DBG_PRINT(("m_serialProtocol->m_rspCmd->head : %c%c", m_serialProtocol->m_rspCmd->head[0], m_serialProtocol->m_rspCmd->head[1]));
-		if('E'==m_serialProtocol->m_rspCmd->head[0] && 'R'==m_serialProtocol->m_rspCmd->head[1])
+ 		if('E'==m_serialProtocol->m_rspCmd->head[0] && 'R'==m_serialProtocol->m_rspCmd->head[1])
 		{
 			FindErrInfo((INT8 *)m_serialProtocol->m_rspCmd->rspData, strErr);
 			m_serialProtocol->resetAll();
@@ -1463,11 +1463,11 @@ UINT8 CBusinessSerialProc::bspfpcx_Serial(CYWXML_GY &ywxml_gy,  UINT32 &InvCount
 				DBG_PRINT(("bspfpcx[%d]: m_date = %u", itemp, pInvVol[itemp].m_date));
 				offset += DATE_LEN;
 
-				memset(StrTempBuf, 0, sizeof(StrTempBuf));
-				memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, RYMC_LEN);
-				string strLgry = "";
-				strLgry.assign(StrTempBuf);	//领购人员
-                offset += RYMC_LEN;
+			memset(StrTempBuf, 0, sizeof(StrTempBuf));
+			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, RYMC_LEN);
+			string strLgry = "";
+			strLgry.assign(StrTempBuf);	//领购人员
+                        offset += RYMC_LEN;
 			}
 
 			m_serialProtocol->resetAll();
@@ -2564,43 +2564,43 @@ UINT8 CBusinessSerialProc::hqlxsj_Serial(string &wscfpzs, string &wscfpsj, strin
 
 UINT8 CBusinessSerialProc::FindErrInfo(INT8 *ErrBuf, string &strErr)
 {
-	
+
 	DBG_PRINT(("ErrBuf =  %s", ErrBuf));
 	DBG_PRINT(("ErrBuf =  0x%x", *ErrBuf));
 	DBG_PRINT(("ErrBuf =  %d", *ErrBuf));
-	
+
 	UINT32 ErrLen = strlen(ErrBuf);
 	DBG_PRINT(("ErrLen =  %d", ErrLen));
-	
-	
-	//-1:代表转换器返回的错误
+
+
+		//-1:代表转换器返回的错误
 	if (ErrLen==1)
 	{
 		switch(*ErrBuf)
 		{
-		case SERCMD_HEAD_ERR:
-			strErr = "-1:包头数据格式错误!";
-			break;
+			case SERCMD_HEAD_ERR:
+				strErr = "-1:包头数据格式错误!";
+				break;
 			
-		case SERCMD_HEAD_PARA_ERR:
-			strErr = "-1:包头数据参数错误!";
-			break;
-			
-		case SERCMD_CRC_ERR:
-			strErr = "-1:命令CRC错!";
-			break;
-			
-		case SERCMD_CMDNO_ERR:
-			strErr = "-1:命令号无法识别!";
-			break;
-			
-		case SERCMD_OVERTIME_ERR:
-			strErr = "-1:命令接受超时!";
-			break;
-			
-		default:
-			strErr = "无法解析转换器返回的错误";
-			break;
+			case SERCMD_HEAD_PARA_ERR:
+				strErr = "-1:包头数据参数错误!";
+				break;
+		
+			case SERCMD_CRC_ERR:
+				strErr = "-1:命令CRC错!";
+				break;
+
+			case SERCMD_CMDNO_ERR:
+				strErr = "-1:命令号无法识别!";
+				break;
+
+			case SERCMD_OVERTIME_ERR:
+				strErr = "-1:命令接受超时!";
+				break;
+
+			default:
+				strErr = "无法解析转换器返回的错误";
+				break;
 		}
 	}
 	else
