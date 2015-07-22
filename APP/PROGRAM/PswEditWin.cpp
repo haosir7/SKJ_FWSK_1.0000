@@ -194,7 +194,7 @@ void CPswEditWin::BacktoUpperWin()
 {
 	if (g_globalArg->m_operator->m_opid != SYSTEM_OPERATOR_ID)
 	{
-		ChangeWin(INV_MANAGE_MENU);
+		ChangeWin(PROGRAM_CTRL_MAIN_MENU);
 	}
 	else
 	{

@@ -409,6 +409,8 @@ UINT8 FillPrnInvTail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 	//一维条码 20ASC
 	memset(pPrnInvInfo->chYWTM, 0, sizeof(pPrnInvInfo->chYWTM));
 	memcpy((void *)pPrnInvInfo->chYWTM, (void *)smallInvInfo->m_fwm.c_str(), smallInvInfo->m_fwm.length());
+//	string TempYWTM = smallInvInfo->m_fwm.substr(12, 8);
+//	memcpy((void *)pPrnInvInfo->chYWTM, (void *)TempYWTM.c_str(), smallInvInfo->m_fwm.length());
 	DBG_PRINT(("一维条码  : %s ", pPrnInvInfo->chYWTM));
 	
 	

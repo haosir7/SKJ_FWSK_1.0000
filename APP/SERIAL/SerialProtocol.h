@@ -20,6 +20,8 @@ private:
 	UINT8 headLen;
 	UINT8 packageLen;
 
+	UINT8 m_AskClearCount;
+		
 	UINT8 m_sendBuf[SERIAL_BUFFER_MAX_LEN];
 	UINT8 m_revBuf[SERIAL_BUFFER_MAX_LEN];
 
@@ -68,7 +70,7 @@ public:
 	UINT8 sendData(UINT8 type, UINT8 cmd, string &strErr);
 	UINT8 revData(string &strErr);
 	void resetAll();
-	void clearSerial();
+	void clearSerial(UINT8 ClearCount);
 
 	void Rsp_OK();
 // 	void Rsp_ERR(UINT8 err);
