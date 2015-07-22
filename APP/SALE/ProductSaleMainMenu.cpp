@@ -545,7 +545,8 @@ UINT8 CProductSaleMainMenu::DeptSaleShow()
 	
 	if ((DETAIL_GOODS_DISCOUNT == pSaleData->m_invDet->m_property) && (0 == m_strSuffix.length()))//спуш©ш 
 	{
-		m_strSuffix = "<уш>";
+		//m_strSuffix = "<уш>";
+		m_strSuffix = "";
 	}
 	
 	strTemp = "илф╥: ";

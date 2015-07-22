@@ -815,7 +815,8 @@ UINT8 CProductSaleWin::DeptSaleShow()
 	//有折扣
 	if( (DETAIL_GOODS_DISCOUNT == pSaleData->m_invDet->m_property) && (0 == m_strSuffix.length()) ) 
 	{
-		m_strSuffix = "<折>";
+		//m_strSuffix = "<折>";
+		m_strSuffix = "";
 	}
 	strTemp = "商品: ";
     strTemp.append(pSaleData->m_invDet->m_spmc);
@@ -925,7 +926,7 @@ UINT8 CProductSaleWin::DeptSaleProc(UINT32 deptNo)
 	DBG_PRINT(("deptNo == %u", deptNo));
 	ret = pSaleData->DeptSale(deptNo, "");
 	
-	if (m_IfCancel&&(ret == NO_SUCH_GOODS))//按商品取消键后,未在发票明细中找到该商品
+	if ((m_IfCancel)&&(ret == NO_SUCH_GOODS))//按商品取消键后,未在发票明细中找到该商品
 	{
 		ErrMsgBox(ret);
 		pSaleData->NoCancelGoods();

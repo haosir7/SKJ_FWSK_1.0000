@@ -308,7 +308,24 @@ UINT8 SaleData::Sale( CDept *deptInfo )
     //如果有折扣。
     if( m_property==DETAIL_GOODS_DISCOUNT )  
 	{
-		moneySum = double2int(deptInfo->m_spdj * m_tmpRate/100*1000.0*m_tmpAmount*SUM_EXTENSION);//原始总金额
+		m_tmpAmount = m_tmpAmount * m_tmpRate/100.0;
+		m_saveAmount = m_tmpAmount;
+		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
+		m_dotNum = AmountRound(&m_saveAmount); //商品数量四舍五入
+		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
+		DBG_PRINT(("m_dotNum : %d ", m_dotNum)); 
+		if (m_dotNum == -1)
+		{
+			m_dotNum = 0;
+			m_tmpAmount = 1.0;
+			m_saveAmount = 1.0;
+			m_tmpSum = 0;
+			DBG_PRINT(("The goods amount exceeds the limit!"));
+			InitSaleData(0);  //销售信息初始化
+			DBG_RETURN(EXCEED_AMOUNT);
+		}
+
+		moneySum = double2int(deptInfo->m_spdj *1000.0*m_tmpAmount*SUM_EXTENSION);//原始总金额
 		moneySum = double2int(moneySum / 1000.0);
 		DBG_PRINT(("moneySum = %lld", moneySum));
 	}
@@ -442,8 +459,41 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 
 	m_invDet->m_dj= (double)(tmpDJ*1.0)/SUM_EXTENSION; //商品单价(不含税)
 	
-	
 	m_invDet->m_je= m_invDet->m_spje-m_invDet->m_spse; //商品金额(不含税)
+	
+	//若有折扣
+	//INT64 nRebateSum;
+	//CInvDet *rebateDet;
+    if(m_property==DETAIL_GOODS_DISCOUNT)
+	{
+		// rebateDet = rebateDet->GetNewInvDet();//从静态数组获取一个可用的CInvDet对象
+		// DBG_ASSERT_EXIT((rebateDet != NULL), (" rebateDet == NULL!"));		
+		//nRebateSum = moneySum - orgMoneySum;//折掉的金额
+		//rebateDet->m_kplx = m_invtype;		
+		//rebateDet->m_spbm = deptInfo->m_spbm;
+		//rebateDet->m_spmc = "折扣";
+		//rebateDet->m_spsl= m_tmpAmount;//保存原始值
+		//m_invDet->m_dotNum = m_dotNum;
+		//rebateDet->m_spdj = m_tmpRate;
+		//rebateDet->m_spdw = deptInfo->m_spdw;	//商品单位
+		//rebateDet->m_spje = nRebateSum;
+		//rebateDet->m_spse =CountTax(((double)rebateDet->m_spje)/SUM_EXTENSION,deptInfo->m_spsl);
+		//rebateDet->m_property = DETAIL_DISCOUNT;
+		//m_singleInvInfo->InsertNode(rebateDet);	//插入节点
+		//rebateDet = NULL;
+		//m_singleInvInfo->m_sphsl++;		//当前发票总商品行加1
+		//m_tmpGoodsNum++;				////当前总商品行加1
+		
+		INT8 tmpbuf[128];
+		memset(tmpbuf, 0x00, sizeof(tmpbuf));
+		sprintf(tmpbuf,"(折%d%%)",100-double2int(m_tmpRate));
+		string tmpstr = tmpbuf;
+		m_invDet->m_spmc.append(tmpstr);
+		//m_invDet->m_spsl = m_tmpAmount;			//商品数量
+		m_invDet->m_spje = moneySum;			//商品金额(含税)
+		m_invDet->m_spse = CountTax(((double)m_invDet->m_spje)/SUM_EXTENSION, m_invDet->m_sl); //商品税额
+	m_invDet->m_je= m_invDet->m_spje-m_invDet->m_spse; //商品金额(不含税)
+	}
 	
 	m_singleInvInfo->InsertNode(m_invDet);	//插入节点
 	m_singleInvInfo->m_sphsl++;				//当前发票总商品行加1
@@ -451,7 +501,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 	
 	moneyTaxSum =m_invDet->m_spse;
 	
-	
+	DBG_PRINT(("m_invDet->m_spmc==%s ", m_invDet->m_spmc.c_str()));
 	DBG_PRINT(("m_invDet->m_dotNum==%d ", m_invDet->m_dotNum));
 	DBG_PRINT(("m_tmpGoodsNum==%u", m_tmpGoodsNum));
 
@@ -465,44 +515,12 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 	DBG_PRINT(("m_property==%d", m_property));
     DBG_PRINT(("*******m_invDet->m_spdw = %s m_spdw : %s ", m_invDet->m_spdw.c_str(), m_deptInfo->m_spdw.c_str()));
 	
-	//若有折扣
-	INT64 nRebateSum;
-	CInvDet *rebateDet;
-    if(m_property==DETAIL_GOODS_DISCOUNT)
-	{
-		rebateDet = rebateDet->GetNewInvDet();//从静态数组获取一个可用的CInvDet对象
-		DBG_ASSERT_EXIT((rebateDet != NULL), (" rebateDet == NULL!"));
-		
-		nRebateSum = moneySum - orgMoneySum;//折掉的金额
-		rebateDet->m_kplx = m_invtype;
-		
-		rebateDet->m_spbm = deptInfo->m_spbm;
-		rebateDet->m_spmc = "折扣";
-		rebateDet->m_spsl= m_tmpAmount;//保存原始值
-		m_invDet->m_dotNum = m_dotNum;
-		rebateDet->m_spdj = m_tmpRate;
-		rebateDet->m_spdw = deptInfo->m_spdw;	//商品单位
-		
-		rebateDet->m_spje = nRebateSum;
-		rebateDet->m_spse =CountTax(rebateDet->m_spje,(UINT32)(deptInfo->m_spsl*SUM_EXTENSION));
-		rebateDet->m_property = DETAIL_DISCOUNT;
-		
-		m_singleInvInfo->InsertNode(rebateDet);	//插入节点
-		rebateDet = NULL;
-		m_singleInvInfo->m_sphsl++;		//当前发票总商品行加1
-		m_tmpGoodsNum++;				////当前总商品行加1
-	}
-	
 	
     //判断剩余发票份数是否够用 
 	
-	//发票剩余份额不足(若有折扣，则删除两个节点)
-	UINT32 nInvCount = CalculateInvNum();   //商品行所需发票数
-	DBG_PRINT(("nInvCount==%d", nInvCount));
-
-	m_nInvCount= nInvCount;
-	DBG_PRINT(("m_nInvCount==%d", m_nInvCount));
-
+	//发票剩余份额不足,则删除一个节点
+	UINT32 nInvCount = CalculateInvNum();   //商品行所需发票数码
+	DBG_PRINT(("此时所需发票张数nInvCount==%d", nInvCount));
 
 	UINT32 nIfReturn = 0; //是否取消该商品行，停止开票
 	DBG_PRINT((" g_globalArg->m_curInvVol->m_remain = %u !", g_globalArg->m_curInvVol->m_remain));
@@ -523,12 +541,12 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		m_singleInvInfo->m_sphsl--;			//当前发票总商品行减1
 		m_tmpGoodsNum--; ////当前总商品行减1
 		m_singleInvInfo->DelLastNode();		//删除刚加入的节点
-		if (m_property==DETAIL_GOODS_DISCOUNT) 
-		{
-			m_singleInvInfo->m_sphsl--;		//当前发票总商品行减1
-			m_tmpGoodsNum--; ////当前总商品行减1
-			m_singleInvInfo->DelLastNode();	//删除刚加入的节点
-		}
+// 		if (m_property==DETAIL_GOODS_DISCOUNT) 
+// 		{
+// 			m_singleInvInfo->m_sphsl--;		//当前发票总商品行减1
+// 			m_tmpGoodsNum--; ////当前总商品行减1
+// 			m_singleInvInfo->DelLastNode();	//删除刚加入的节点
+// 		}
 		m_tmpMoneySum -= moneySum;			//本张累计金额减去本商品行金额
 		InitSaleData(0);					//销售信息初始化
 		DBG_RETURN(ret);
@@ -797,29 +815,7 @@ UINT8 SaleData::MakeInvoiceHandle(UINT8 nIfPrn, UINT8 nId)
 			if (g_globalArg->m_operator->m_role!=DEMO_ROLE) //不是学习角色
 			{
 				POWOFF_DISABLE(); //屏蔽掉电中断
-				// 				SetPowerOffFlag();
-				// 				SetPowerOffProcID_M(FPTK_NORMAL_PROC);//设主过程ID
-				// 				SetPowerOffProcID_C(WRITE_INV); //设子过程ID
 				DBG_PRINT(("进入掉电保护"));
-				//				DBG_PRINT((" m_smallInvInfo->pHead = %x!", m_smallInvInfo->pHead));
-				//				m_issuedInvoiceData = &issuedInvoiceData;
-				//				if(m_issuedInvoiceData==NULL)
-				//				{
-				//					DBG_PRINT((" malloc(sizeof(IssuedInvoice) error !"));
-				//					//					CleanPowerOffFlag();
-				//					POWOFF_ENABLE();
-				//					DBG_RETURN(MALLOC_MEM_ERROR);		
-				//				}
-				
-				
-				// 				DBG_PRINT((" m_smallInvInfo->pHead = %x!", m_smallInvInfo->pHead));
-				//				if (ComposeIssuedInvData(m_smallInvInfo, m_issuedInvoiceData) == FAILURE)
-				//				{
-				//					m_workState = WORK_COMPLETE;
-				//					//					CleanPowerOffFlag();
-				//					POWOFF_ENABLE();
-				//					DBG_RETURN(GET_FISCAL_CODE_ERROR);
-				//				}				
 				DBG_PRINT((" m_smallInvInfo->pHead = %x!", m_smallInvInfo->pHead));	
 				
 				//不是学习角色
@@ -827,7 +823,7 @@ UINT8 SaleData::MakeInvoiceHandle(UINT8 nIfPrn, UINT8 nId)
 				{
 					//若允许离线，判断是否满足3个条件 
 
-					ret = IsOffLineOk(m_smallInvInfo->m_kphjje, strErr);
+					ret = IsOffLineOk(m_smallInvInfo->m_kphjje, strErr);//这个函数被整个注掉了
 					if (SUCCESS != ret) 
 					{
 						return ret;
@@ -896,37 +892,12 @@ UINT8 SaleData::MakeInvoiceHandle(UINT8 nIfPrn, UINT8 nId)
 			//不是学习角色
 			if (g_globalArg->m_operator->m_role != DEMO_ROLE) 
 			{
-				
-				// #ifndef WIN32
-				// #if POWEROF_SPEED_TEST
-				// 				ftime(&tp);
-				// 				fTime = tp.time * 1000 + tp.millitm;
-				// #endif
-				// #endif				
-				// 
-				// 				//写数据库，更新INV_VOL表
-				// 			//	DBG_PRINT(("g_globalArg->m_curInvVol->m_remain == %d", g_globalArg->m_curInvVol->m_remain));
-				// 				if( UpdateVolRemain(g_globalArg->m_curInvVol->m_remain)== FAILURE)
-				// 				{
-				// 					DBG_PRINT((" UpdateVolRemain() error!"));
-				// 				//	CleanPowerOffFlag();
-				// 					POWOFF_ENABLE();
-				// 					DBG_RETURN(UPDATE_INV_VOL_ERROR);			
-				// 				}
-				// 
-				// #ifndef WIN32
-				// #if POWEROF_SPEED_TEST
-				// 				ftime(&tp);
-				// 				fTime2 = tp.time * 1000 + tp.millitm;
-				// 				DBG_PRINT((" ******INV_VOL, Time = %llu ", (fTime2 - fTime)));
-				// #endif
-				// #endif
-				
-				//	DBG_PRINT((" m_smallInvInfo->pHead = %x!", m_smallInvInfo->pHead));
+				DBG_PRINT(("m_smallInvInfo->m_code= %s",m_smallInvInfo->m_fpdm.c_str()));
+				DBG_PRINT(("m_smallInvInfo->m_fphm= %u",m_smallInvInfo->m_fphm));
 				
 				//更新INV_HEAD表、INV_DET表
 				errorcode = m_smallInvInfo->Save();
-//				errorcode=SUCCESS;
+
 				if (errorcode != SUCCESS)
 				{
 					DBG_PRINT(("m_smallInvInfo->Save() wrong"));
@@ -1107,7 +1078,6 @@ UINT8 SaleData::ScanGoodsLine(UINT8 flagMakeInv)
 		
 		//本张打印发票无空行了
 		if (tempdetailCount >= g_globalArg->pSaveTemplateInfo->MaxGoodsCount)	//xsr 暂时注掉
-			//if (tempdetailCount >= 6)
 		{			
 			m_detailCount -= GoodLineNum;			//修改商品行数			
 			m_pHead = p;							//头指针指向下次打印的起始节点
@@ -1125,10 +1095,8 @@ UINT8 SaleData::ScanGoodsLine(UINT8 flagMakeInv)
 		else if (tempdetailCount == g_globalArg->pSaveTemplateInfo->MaxGoodsCount - 1)
 		{
 			//DBG_PRINT(("该张发票还剩一个空行"));
-			//如果此时需要两行：商品行存在折扣，
-			//                  商品行不存在折扣，商品行超长
-			if ((p->m_property==DETAIL_GOODS_DISCOUNT)||(p->m_property==DETAIL_GOODS_REDUCT)
-				|| ((p->m_property!=DETAIL_GOODS_DISCOUNT) && (namelength > g_globalArg->pSaveTemplateInfo->MaxSPMCCharacter))
+			//如果此时需要两行：即商品行超长                
+			if ((p->m_property==DETAIL_GOODS_REDUCT)
 				|| ((p->m_property!=DETAIL_GOODS_REDUCT) && (namelength > g_globalArg->pSaveTemplateInfo->MaxSPMCCharacter)))
 			{
 				//修改商品行数
@@ -1149,10 +1117,9 @@ UINT8 SaleData::ScanGoodsLine(UINT8 flagMakeInv)
 		//本张打印发票还剩两个空行
 		else if (tempdetailCount == g_globalArg->pSaveTemplateInfo->MaxGoodsCount - 2)
 		{
-			//商品行超长并存在折扣
+			//商品行超长并存在折让
 			//DBG_PRINT(("该张发票还剩两个空行"));
-			if (((p->m_property==DETAIL_GOODS_DISCOUNT) && (namelength > g_globalArg->pSaveTemplateInfo->MaxSPMCCharacter))
-				||((p->m_property==DETAIL_GOODS_REDUCT) && (namelength > g_globalArg->pSaveTemplateInfo->MaxSPMCCharacter)))
+			if ((p->m_property==DETAIL_GOODS_REDUCT) && (namelength > g_globalArg->pSaveTemplateInfo->MaxSPMCCharacter))
 			{
 				
 				//修改商品行数
@@ -1176,23 +1143,23 @@ UINT8 SaleData::ScanGoodsLine(UINT8 flagMakeInv)
 		INT64 realTaxSum=0;
 		CInvDet *s = NULL;
 		
-		//如果既不是折扣行也不是折让行
-		if ((p->m_property != DETAIL_DISCOUNT)&&(p->m_property != DETAIL_REDUCTION_TEMPLATE))
+		//如果不是折让行
+		if (p->m_property != DETAIL_REDUCTION_TEMPLATE)
 		{
 			realSum = p->m_spje ;
 			realTaxSum =p->m_spse;
 			
-			if(p->m_property == DETAIL_GOODS_DISCOUNT) //有折扣
-			{
-				s = p->pNext;
-				DBG_PRINT(("折扣率为%u",s->m_spdj));
-				realSum = p->m_spje + s->m_spje; //折扣金额
-				DBG_PRINT(("折后金额为%d",realSum));
-				
-				realTaxSum = p->m_spse + s->m_spse; //折扣后税额
-				DBG_PRINT(("折让后税额为%d",realTaxSum));
-			}
-			else if(p->m_property == DETAIL_GOODS_REDUCT) //有折让
+// 			if(p->m_property == DETAIL_GOODS_DISCOUNT) //有折扣
+// 			{
+// 				s = p->pNext;
+// 				DBG_PRINT(("折扣率为%u",s->m_spdj));
+// 				realSum = p->m_spje + s->m_spje; //折扣金额
+// 				DBG_PRINT(("折后金额为%d",realSum));
+// 				
+// 				realTaxSum = p->m_spse + s->m_spse; //折扣后税额
+// 				DBG_PRINT(("折让后税额为%d",realTaxSum));
+// 			}
+			if(p->m_property == DETAIL_GOODS_REDUCT) //有折让
 			{
 				s = p->pNext;
 				realSum = p->m_spje + s->m_spje; //折让后金额
@@ -1280,7 +1247,6 @@ UINT8 SaleData::ComposePrnInv()
 	memset((void*)value, 0, sizeof(value));
 	
 	m_smallInvInfo->m_fpdm = g_globalArg->m_curInvVol->m_code;												//发票代码
-	//m_smallInvInfo->m_fphm = g_globalArg->m_curInvVol->m_ieno + 1 - g_globalArg->m_curInvVol->m_remain;		//发票号码 
 	m_smallInvInfo->m_fphm =g_globalArg->m_curInvVol->m_curInvNo;
 	m_smallInvInfo->m_kprq = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);	//开票日期
 	m_smallInvInfo->m_kpsj = TDateTime::CurrentDateTime().FormatInt(HHMMSS);	//开票时间
@@ -1292,8 +1258,6 @@ UINT8 SaleData::ComposePrnInv()
 	m_smallInvInfo->m_fkdw = m_singleInvInfo->m_fkdw;		//付款单位
 	m_smallInvInfo->m_fkdwsh = m_singleInvInfo->m_fkdwsh;   //购方税号
 	m_smallInvInfo->m_sky = m_singleInvInfo->m_sky;			//收款员
-	//	m_smallInvInfo->m_skyid = m_singleInvInfo->m_skyid;		//收款员ID
-	//	m_smallInvInfo->m_ptype = m_singleInvInfo->m_ptype;		//付款方式
 	m_smallInvInfo->m_scbz = m_singleInvInfo->m_scbz;
 	
 	
@@ -1325,7 +1289,6 @@ UINT8 SaleData::ComposePrnInv()
 	for( INT32 i=0; i<m_smallInvInfo->m_sphsl; i++, p = p->pNext )
 	{
 		p->m_fpdm = g_globalArg->m_curInvVol->m_code; 
-        //p->m_fphm = g_globalArg->m_curInvVol->m_ieno + 1 - g_globalArg->m_curInvVol->m_remain;
         p->m_fphm =g_globalArg->m_curInvVol->m_curInvNo;
 		p->m_kplx = m_smallInvInfo->m_kplx;
 		p->m_sky =g_globalArg->m_operator->m_name;
@@ -1487,7 +1450,7 @@ UINT8 SaleData::Discount(double fRate)
 	}
 	
 	m_property = DETAIL_GOODS_DISCOUNT;
-	m_tmpRate = fRate;
+	m_tmpRate = (INT32)fRate;
 	DBG_PRINT(("m_tmpRate =  %f", m_tmpRate));
 	
 	DBG_RETURN(SUCCESS);
@@ -1776,16 +1739,16 @@ UINT8 SaleData::CancelGoodsByPLU(string &strCode, double nCancelNum, double &dPr
         m_singleInvInfo->m_kpse -= invDet->m_spse;	    //开票税额减少
 		m_tmpMoneySum -= invDet->m_spje;				//临时单张金额减少
 		
-		if (invDet->m_property == DETAIL_GOODS_DISCOUNT)		//有折扣
-		{
-			m_singleInvInfo->m_sphsl--;							//发票中商品行减1
-			m_tmpGoodsNum--;									//显示的当前商品行减1
-			m_singleInvInfo->m_kphjje -= nextInvDet->m_spje;	//开票总金额减少
-			m_singleInvInfo->m_kpse -= nextInvDet->m_spse;	//开票税额减少
-			m_tmpMoneySum -= nextInvDet->m_spje;				//临时单张金额减少
-			m_singleInvInfo->DelNode(strCode);				
-		}
-		else if (invDet->m_property == DETAIL_GOODS_REDUCT)		//有折让
+// 		if (invDet->m_property == DETAIL_GOODS_DISCOUNT)		//有折扣
+// 		{
+// 			m_singleInvInfo->m_sphsl--;							//发票中商品行减1
+// 			m_tmpGoodsNum--;									//显示的当前商品行减1
+// 			m_singleInvInfo->m_kphjje -= nextInvDet->m_spje;	//开票总金额减少
+// 			m_singleInvInfo->m_kpse -= nextInvDet->m_spse;	//开票税额减少
+// 			m_tmpMoneySum -= nextInvDet->m_spje;				//临时单张金额减少
+// 			m_singleInvInfo->DelNode(strCode);				
+// 		}
+		if (invDet->m_property == DETAIL_GOODS_REDUCT)		//有折让
 		{
 			m_singleInvInfo->m_sphsl--;					//发票中商品行减1
 			m_tmpGoodsNum--;									//显示的当前商品行减1
@@ -1802,6 +1765,7 @@ UINT8 SaleData::CancelGoodsByPLU(string &strCode, double nCancelNum, double &dPr
 	DBG_RETURN(SUCCESS);	
 }
 
+//nCancelNum不起作用
 UINT8 SaleData::CancelGoodsByDept(string dpNo, double nCancelNum, double &dPrice)
 {
 	DBG_ENTER("SaleData::CancelGoods");
@@ -1812,9 +1776,9 @@ UINT8 SaleData::CancelGoodsByDept(string dpNo, double nCancelNum, double &dPrice
 	UINT32 nEnterTime = 0;	//进入while循环的次数
 	
 	DBG_PRINT(("dpNo == %s", dpNo.c_str()));
-    DBG_PRINT(("nCancelNum == %d", nCancelNum));
+    DBG_PRINT(("nCancelNum == %f", nCancelNum));
 	
-	//用户设置了取消商品的数量，则严格按数量取消该商品
+	//一旦某商品行则整行取消
 	while (1)
 	{
 		nEnterTime++;
@@ -1842,16 +1806,16 @@ UINT8 SaleData::CancelGoodsByDept(string dpNo, double nCancelNum, double &dPrice
 		m_singleInvInfo->m_kpse -= invDet->m_spse;	//开票税额减少
 		m_tmpMoneySum -= invDet->m_spje;				//临时单张总金额减少
 		
-		if (invDet->m_property == DETAIL_GOODS_DISCOUNT)		//有折扣
-		{
-			m_tmpGoodsNum--;								//显示的当前商品行减1
-			m_singleInvInfo->m_sphsl--;							//发票中商品行减1
-			m_singleInvInfo->m_kphjje -= nextInvDet->m_spje;	//开票总金额减少
-			m_singleInvInfo->m_kpse -= nextInvDet->m_spse;	//开票税额减少
-			m_tmpMoneySum -= nextInvDet->m_spje;				//临时单张总金额减少
-			m_singleInvInfo->DelNode(dpNo);			
-		}
-		else if (invDet->m_property == DETAIL_GOODS_REDUCT)		//有折让
+// 		if (invDet->m_property == DETAIL_GOODS_DISCOUNT)		//有折扣
+// 		{
+// 			m_tmpGoodsNum--;								//显示的当前商品行减1
+// 			m_singleInvInfo->m_sphsl--;							//发票中商品行减1
+// 			m_singleInvInfo->m_kphjje -= nextInvDet->m_spje;	//开票总金额减少
+// 			m_singleInvInfo->m_kpse -= nextInvDet->m_spse;	//开票税额减少
+// 			m_tmpMoneySum -= nextInvDet->m_spje;				//临时单张总金额减少
+// 			m_singleInvInfo->DelNode(dpNo);			
+// 		}
+		if (invDet->m_property == DETAIL_GOODS_REDUCT)		//有折让
 		{
 			m_tmpGoodsNum--;								//显示的当前商品行减1
 			m_singleInvInfo->m_sphsl--;							//发票中商品行减1
@@ -1933,8 +1897,8 @@ UINT8 SaleData::DeptSale(UINT32 nDeptNo, string strCode)
 {
 	DBG_ENTER("SaleData::DeptSale");
 	DBG_PRINT(("进入DeptSale函数"));
-	DBG_PRINT(("nDeptNo==%s", strCode.c_str()));
-	DBG_PRINT(("nDeptNo==%u", strCode.c_str()));
+	DBG_PRINT(("nDeptCode==%s", strCode.c_str()));
+	DBG_PRINT(("nDeptNo==%u", nDeptNo));
 	
 	char value[128];
 	memset((void*)value, 0, sizeof(value));

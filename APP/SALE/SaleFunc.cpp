@@ -318,7 +318,7 @@ UINT8 FillPrnInvDetail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
     //若为非空链表
 	for( i=0; i<detailCount; i++, p = p->pNext )
 	{
-		//将带有折扣率的商品行分成两行来打
+		//将带有折让的商品行分成两行来打
 		pPrnInvInfo->GoodsLines[j].Type = p->m_property;							//商品行属性
 	
 		DBG_PRINT(("m_spsl= %f",p->m_spsl));
@@ -329,7 +329,7 @@ UINT8 FillPrnInvDetail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 		DBG_PRINT(("商品数量          : %u ", pPrnInvInfo->GoodsLines[j].Amount));
 
 		pPrnInvInfo->GoodsLines[j].Price = double2int(p->m_spdj*PRICE_EXTENSION);	//商品单价
-		if( (p->m_property==DETAIL_DISCOUNT) || (p->m_property==DETAIL_REDUCTION_TEMPLATE) ) 
+		if (p->m_property==DETAIL_REDUCTION_TEMPLATE)
 		{
 			pPrnInvInfo->GoodsLines[j].Sum = 0 - p->m_spje;  //本商品行总金额
 		}
@@ -361,7 +361,6 @@ UINT8 FillPrnInvDetail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 		
         //商品名称超长
 		if ((nLen-1) > g_globalArg->pSaveTemplateInfo->MaxSPMCCharacter)//xsr暂时注掉，因为没有模板。
-			//	if ((nLen-1) > 10)
 		{
 			k++;
 			DBG_PRINT(("商品名称超长"));
