@@ -704,6 +704,21 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO)
 		return FAILURE;
 	}
 
+	//从盘上获取的明细编码为空，则置为 "0000000000000",便于报表统计
+    CInvDet *p = Invhead.pHead;
+	while (p)
+	{
+		DBG_PRINT(("p->m_spbm = %u", p->m_spbm));
+		if ("" == p->m_spbm)
+		{
+			p->m_spbm = "0000000000000";
+		}	
+		p = p->pNext;
+		DBG_PRINT(("INV_DET AddNew()"));
+	}	
+
+
+
 	//查看本地是否有该发票信息
 	CInvHead invheadtmp;
 	INT8 sqlbuf[128];

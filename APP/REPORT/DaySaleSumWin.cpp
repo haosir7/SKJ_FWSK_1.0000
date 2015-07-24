@@ -263,7 +263,7 @@ void CDaySaleSumWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 
 void CDaySaleSumWin::OnButton2(int iEvent, unsigned char * pEventData, int iDataLen)
 {
-	ChangeWin(COMMERCE_REPORT_MENU);	 //返回商业统计界面		
+	ChangeWin(FISCAL_REPORT_MENU);	 //返回税控统计界面		
 }
 
 
