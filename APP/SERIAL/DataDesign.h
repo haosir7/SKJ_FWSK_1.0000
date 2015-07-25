@@ -174,5 +174,6 @@
 #define SERIAL_ZSKLBG_CMD			0x1C		//证书口令变更命令
 #define SERIAL_FPBL_CMD				0x1D		//发票补录命令
 #define SERIAL_HQLXSJ_CMD			0x30		//获取离线数据命令
+#define SERIAL_ZHQQK_CMD			0x99		//获取离线数据命令
 
 #endif

@@ -13,7 +13,7 @@
 #include "CGlobalArg.h"
 #include "CInvServ.h"
 
-CMaintenanceMenu::CMaintenanceMenu():CMultiBtnCommonWin(9, 2)
+CMaintenanceMenu::CMaintenanceMenu():CMultiBtnCommonWin(10, 2)
 {
 }
 
@@ -37,7 +37,7 @@ int CMaintenanceMenu::Create(int iX,int iY,int iW,int iH)
 	SetTitle(7,"G.Ö÷¹ÜÃÜÂë");
 	SetTitle(8,"H.ÍøÂç¹ÜÀí");
 	SetTitle(9,"I.É¾³ý»º´æ");
-	//SetTitle(9,"I.APDU¼ì²â");
+	SetTitle(0,"J.Éè±¸Çå¿â");
 	
 	return 1;
 }
@@ -354,6 +354,17 @@ void CMaintenanceMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDa
 		DBG_PRINT(("m_InvServNum = %u", g_globalArg->m_InvServNum ));
 	}
 }
+
+void CMaintenanceMenu::OnButton10(int iEvent, unsigned char * pEventData, int iDataLen)
+{
+	string strErr("");
+
+	LibClearDepotFunc(strErr);
+
+	CaMsgBox::ShowMsg(strErr);
+	return;
+}
+
 
 int CMaintenanceMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 {

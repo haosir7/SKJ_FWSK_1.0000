@@ -2562,6 +2562,47 @@ UINT8 CBusinessSerialProc::hqlxsj_Serial(string &wscfpzs, string &wscfpsj, strin
 	return SUCCESS;
 }
 
+UINT8 CBusinessSerialProc::zhqClear_Serial(string &strErr)
+{
+	DBG_PRINT(("----------×ª»»Æ÷Çå¿â----------"));
+	
+	UINT8 cmdNo = SERIAL_ZHQQK_CMD;	//ÃüÁîºÅ¸³Öµ
+	enum ProtocolType cmdType = ZC_PROTOCOL;
+	UINT8 ret = m_serialProtocol->sendData(cmdType, cmdNo, strErr);
+	DBG_PRINT(("ret= %u",ret));
+	if (ret != SUCCESS)
+	{
+		m_serialProtocol->resetAll();
+		
+		return FAILURE;
+	}
+	
+	ret = m_serialProtocol->revData(strErr);
+	DBG_PRINT(("ret = %u", ret));
+	if (ret != SERCMD_SUCCESS)
+	{
+		m_serialProtocol->resetAll();
+		
+		DBG_PRINT(("revData() ret = %u", ret));
+		return FAILURE;
+	}
+	if(ret == SERCMD_SUCCESS)
+	{
+		DBG_PRINT(("m_serialProtocol->m_rspCmd->head : %c%c", m_serialProtocol->m_rspCmd->head[0], m_serialProtocol->m_rspCmd->head[1]));
+		if('E'==m_serialProtocol->m_rspCmd->head[0] && 'R'==m_serialProtocol->m_rspCmd->head[1])
+		{
+			FindErrInfo((INT8 *)m_serialProtocol->m_rspCmd->rspData, strErr);
+			m_serialProtocol->resetAll();
+			
+			return FAILURE;
+		}
+		
+		m_serialProtocol->resetAll();
+	}
+	
+	return SUCCESS;
+}
+
 UINT8 CBusinessSerialProc::FindErrInfo(INT8 *ErrBuf, string &strErr)
 {
 
