@@ -60,6 +60,7 @@ enum retType
 	 NVM_SUM_EXCEED,			/**< 单卷正票累计金额超限*/
 	 RVM_SUM_EXCEED,			/**< 单卷红票累计金额超限*/
 	 MONEY_NOT_ENOUGH,			/**< 现金金额不足*/
+	 MONEY_RANDOM,			   /**< 现金金额异常*/
      MONEY_EXCEED,				/**< 现金金额超限*/
 	 MONEY_ZERO,				/**< 现金金额为零*/
 	 DISCOUNT_MONEY_ZERO,        /**< 折扣金额为零*/

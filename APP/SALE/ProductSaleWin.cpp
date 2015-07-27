@@ -585,6 +585,9 @@ int CProductSaleWin::ErrMsgBox(UINT8 ret)
 	   case MONEY_NOT_ENOUGH:
 		    pText = "现金金额不足";
 			break;
+	  case MONEY_RANDOM:
+		   pText="现金金额异常";
+		   break;
 	   case MONEY_EXCEED:
 		    pText = "现金金额超限";
 			break;
@@ -749,7 +752,7 @@ UINT8 CProductSaleWin::CashShow(double cash)
 	{
 		if (cash<moneySum)
 		{
-			ret = MONEY_NOT_ENOUGH;	
+			ret = MONEY_RANDOM;	
 			return ret;
 		}
 		if(cash > MAX_MONEY)

@@ -353,7 +353,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 	{
 		DBG_PRINT(("moneySum==%d，not enough!", moneySum));
 		InitSaleData(0);  //销售信息初始化
-		DBG_RETURN(MONEY_NOT_ENOUGH);
+		DBG_RETURN(MONEY_RANDOM);
 	}
 	//折扣掉的金额为0
 	if( (m_property==DETAIL_GOODS_DISCOUNT) && (moneySum - orgMoneySum >= 0) )
@@ -1570,7 +1570,7 @@ UINT8 SaleData::SumInput(double dSum)
 	}
 	if (nSum<=0)
 	{
-		DBG_RETURN(MONEY_NOT_ENOUGH);
+		DBG_RETURN(MONEY_RANDOM);
 	}
     m_tmpSum = nSum;
 	DBG_PRINT(("m_tmpSum = %d", m_tmpSum));
