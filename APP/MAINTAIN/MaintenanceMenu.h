@@ -120,7 +120,7 @@ private:
 	*/
 	void OnButton9(int iEvent, unsigned char * pEventData, int iDataLen);
 
-//	void OnButton10(int iEvent, unsigned char * pEventData, int iDataLen);
+	void OnButton10(int iEvent, unsigned char * pEventData, int iDataLen);
 
 };
 

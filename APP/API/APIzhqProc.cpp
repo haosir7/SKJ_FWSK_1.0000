@@ -441,5 +441,14 @@ INT32 CAPIzhqProc::Hqlxsj_API(string &wscfpzs, string &wscfpsj, string &wscfpljj
 	return ret;
 }
 
+INT32 CAPIzhqProc::LibClearDepot(string &strErr)
+{
+	UINT8 ret = SUCCESS;
+	
+	ret = m_SerialProc.zhqClear_Serial(strErr);
+	
+	return ret;
+}
+
 #endif
 

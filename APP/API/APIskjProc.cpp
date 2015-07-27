@@ -443,13 +443,13 @@ INT32  CAPIskjProc::InvoiceUpload_API(CYWXML_GY &ywxml_gy, string &strErr)
 {
 	INT32 ret = SUCCESS;
 
-#if TYPE_MODE ==  ZHQ_MODE
-	CSaleBusinessFunc  saleBusFun;
-	do 
-	{
-	ret= saleBusFun.InvoiceUpload(ywxml_gy, strErr);
-	} while(ret == SUCCESS);
-#else
+#if TYPE_MODE ==  SKJ_MODE
+//	CSaleBusinessFunc  saleBusFun;
+//	do 
+//	{
+//	ret= saleBusFun.InvoiceUpload(ywxml_gy, strErr);
+//	} while(ret == SUCCESS);
+
 // 	ret= saleBusFun.InvoiceUpload(ywxml_gy, strErr);
 // 	
 // 	if (ret !=SUCCESS)
@@ -567,6 +567,11 @@ INT32 CAPIskjProc::Fpbl_API(CYWXML_GY &ywxml_gy, UINT32 bsqsrq, UINT32 bszzrq, s
 }
 
 INT32 CAPIskjProc::Hqlxsj_API(string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr)
+{
+	return SUCCESS;
+}
+
+INT32 CAPIskjProc::LibClearDepot(string &strErr)
 {
 	return SUCCESS;
 }

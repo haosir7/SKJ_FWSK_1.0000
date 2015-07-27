@@ -11,6 +11,7 @@
 #include "CaProgressBar.h"
 #include "TDateTime.h"
 #include "TemplatePrintInv.h"
+#include "APIBase.h"
 
 #include "CMachine.h"
 #include "SysMacDef.h"
@@ -1170,4 +1171,16 @@ UINT8 CheckKey(UINT8 &nKeyTime)
 	return FAILURE;
 }
 
+UINT8 LibClearDepotFunc(string &strErr)
+{
+	UINT8 ret = SUCCESS;
+	
+	ret = g_pAPIBase->LibClearDepot(strErr);
+	if (ret == SUCCESS)
+	{
+		strErr = "设备清库成功";
+	}
+
+	return ret;
+}
 

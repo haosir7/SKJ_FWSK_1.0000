@@ -277,6 +277,14 @@ public:
 	@param[out] strErr		错误信息
 	*/
 	INT32 Hqlxsj_API(string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr);
+
+	/*!
+	@brief 转换器清库
+	@param[in] 
+	@param[out] strErr   错误信息
+	@return  1 SUCCESS； 0  FAILURE
+	*/
+	INT32 LibClearDepot(string &strErr);
 };
 
 #endif

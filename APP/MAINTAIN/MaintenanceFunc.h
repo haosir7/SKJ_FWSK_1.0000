@@ -150,4 +150,10 @@ UINT8 DownloadMAC(INT8* pMacAddr, INT32 nMacLen);
 */
 UINT8 CheckKey(UINT8 &nKeyTime);
 
+/*!
+@brief Éè±¸Çå¿â	
+@return  1: SUCCESS; 0: FAILURE
+*/
+UINT8 LibClearDepotFunc(string &strErr);
+
 #endif

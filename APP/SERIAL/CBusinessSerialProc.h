@@ -313,6 +313,13 @@ UINT8 fpbl_Serial(CYWXML_GY &ywxml_gy, UINT32 bsqsrq, UINT32 bszzrq, string &str
 */
 UINT8 hqlxsj_Serial(string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr);
 
+/*!
+@brief  转换器清库函数
+@param[in] 
+@param[out] strErr	错误信息
+*/
+UINT8 zhqClear_Serial(string &strErr);
+
 
 /*!
 @brief 根据转换器返回的错误号填充错误信息
