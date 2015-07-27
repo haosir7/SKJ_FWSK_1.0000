@@ -522,6 +522,9 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 	UINT32 nInvCount = CalculateInvNum();   //商品行所需发票数码
 	DBG_PRINT(("此时所需发票张数nInvCount==%d", nInvCount));
 
+	m_nInvCount= nInvCount;
+	DBG_PRINT(("m_nInvCount==%d", m_nInvCount));
+
 	UINT32 nIfReturn = 0; //是否取消该商品行，停止开票
 	DBG_PRINT((" g_globalArg->m_curInvVol->m_remain = %u !", g_globalArg->m_curInvVol->m_remain));
 	

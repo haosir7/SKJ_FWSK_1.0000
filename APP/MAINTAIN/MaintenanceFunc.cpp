@@ -947,7 +947,7 @@ UINT8 DownloadFCRCode(void)
 	machine->m_pDate = tmpDateTime.FormatString(YYYYMMDD, "%u%02u%02u");
 	DBG_PRINT(("machine->m_pDate = %s!", machine->m_pDate.c_str()));
 
-	machine->m_sVer = MACHINE_S_VER;
+	machine->m_sVer = SOFTWARE_VERSION;
 	
 	proBar.SetText("保存机器信息中...");
 	proBar.ReFresh();
