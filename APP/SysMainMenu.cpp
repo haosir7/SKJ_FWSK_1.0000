@@ -40,7 +40,7 @@ void CSysMainMenu::OnButton1(int iEvent, unsigned char * pEventData, int iDataLe
  	if (g_globalArg->m_operator->m_role!=DEMO_ROLE) 
  	{
  		//判断系统参数，是否进入下一级界面
- 		if (g_globalArg->m_initFlag == 0)//&&(g_globalArg->m_operator->m_role!=DEMO_ROLE))
+ 		if ((g_globalArg->m_initFlag == 0)&&(g_globalArg->m_operator->m_role!=DEMO_ROLE))
  		{
  			DBG_PRINT(("机器未初始化"));
  			CaMsgBox::ShowMsg("机器未初始化");
