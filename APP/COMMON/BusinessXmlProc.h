@@ -124,6 +124,9 @@ public:
 	//发票补录
 	INT32 FPBL_Business(CYWXML_GY &ywxml_gy, UINT32 SDate, UINT32 EDate, string &strErr);
 	
+public:
+	//更新未上传发票信息
+	INT32 UpdateUploadInv(CYWXML_GY &ywxml_gy);
 };
 
 #endif

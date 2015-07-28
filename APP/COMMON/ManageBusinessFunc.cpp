@@ -141,3 +141,15 @@ INT32 CManageBusinessFunc::GetOffLineInvInfo(UINT32 &wscfpzs, string &wscfpsj, I
 }
 
 #endif
+
+
+INT32 CManageBusinessFunc::UpdateUploadInvInfo(CYWXML_GY &ywxml_gy)
+{
+	INT32 ret = SUCCESS;
+	
+	g_pBusBase->UpdateUploadInv(ywxml_gy);
+	
+	return ret;
+}
+
+

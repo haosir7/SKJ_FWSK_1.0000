@@ -572,5 +572,16 @@ INT32 CBusinessJSKProc::OffInvInfo_Business(UINT32 &wscfpzs, string &wscfpsj, IN
 	
 	return ret;
 }
+
+INT32 CBusinessJSKProc::UpdateUploadInv(CYWXML_GY &ywxml_gy)
+{
+	INT32 ret = JSK_SUCCESS;
+
+	CJSKManageProc::set_JSKPara(ywxml_gy.m_jqbh, ywxml_gy.m_sksbkl, "");
+	ret = CJSKDeclareProc::DelUploadInv();
+	
+	return ret;
+}
+
 #endif
 

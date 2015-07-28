@@ -112,6 +112,12 @@ public:
 	INT32 GetOffLineInvInfo(UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr);
 #endif
 
+	/*!
+	@brief 更新未上传发票信息
+	@param[in] 
+	@return  1 SUCCESS； 0  FAILURE
+	*/
+	INT32 UpdateUploadInvInfo(CYWXML_GY &ywxml_gy);
 };
 
 

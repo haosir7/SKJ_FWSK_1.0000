@@ -2,6 +2,7 @@
 #include "SaleBusinessFunc.h"
 #include "BusinessBase.h"
 #include "commonFunc.h"
+#include "CGlobalArg.h"
 
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
@@ -77,6 +78,7 @@ INT32 CSaleBusinessFunc::InvoiceUpload(CYWXML_GY &ywxml_gy, string &strErr)
 	string strMxjgmw("");
 	UINT8 nCount = 0;
 	UINT32 nTime = 1000;
+	UINT32 nTimeCount = 5;
 	UINT8 xxlx = SKSBQTYXXCX_XXLX_FPSCJGHQ;
 	string strSksbxx("");
 	string slxlh("");
@@ -84,6 +86,10 @@ INT32 CSaleBusinessFunc::InvoiceUpload(CYWXML_GY &ywxml_gy, string &strErr)
 	//从金税盘获取上传发票信息
 	ret = g_pBusBase->FPSC_Business(ywxml_gy, czlx, fpzx, strInvInfo, strErr);
 	DBG_PRINT(("ret = %d", ret));
+	if(ret == -101)
+	{
+		g_globalArg->m_pthreadFlag = 0;
+	}
 	ret = g_pBusBase->ErrParse(ret, strErr);
 	if(ret != SUCCESS)
 	{
@@ -106,7 +112,7 @@ INT32 CSaleBusinessFunc::InvoiceUpload(CYWXML_GY &ywxml_gy, string &strErr)
 			if(ret != SUCCESS)
 			{
 				nCount++;
-				CommonSleep(nTime);
+				CommonSleep(nCount*nTime);
 				continue;
 			}
 			CommonSleep(3*nTime);
@@ -127,7 +133,7 @@ INT32 CSaleBusinessFunc::InvoiceUpload(CYWXML_GY &ywxml_gy, string &strErr)
 			if( ret != SUCCESS )
 			{
 				nCount++;
-				CommonSleep(3*nTime);
+				CommonSleep(nCount*nTimeCount*nTime);
 				continue;
 			}
 
