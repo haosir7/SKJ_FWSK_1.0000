@@ -223,6 +223,8 @@ void CHostToInvWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataL
 
 	CaMsgBox::ShowMsg("发票分发成功");
 
+		ChangeWin(INV_SEG_MENU);
+		return;
 	/*
 	
 //  	nRet = CJSKInfoFunc::HostAllotInv(&tmpInvVol, strErr);

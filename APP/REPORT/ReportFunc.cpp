@@ -1163,9 +1163,9 @@ INT8 print_taxiteminfo(UINT8 bFindBlackMark )
 	DBG_PRINT(("errorcode = %u", errorcode));
 	while (errorcode == SQLITE_ROW)
 	{	
-		DBG_PRINT(("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&i == %d", i));	
+		DBG_PRINT(("i == %d", i));	
 
-		sprintf(pGeneralPrnBuff, "%-2u            %.2f%%", pTax->m_no, (double)(pTax->m_sl)/100);
+		sprintf(pGeneralPrnBuff, "%-2u            %u%%", pTax->m_no, pTax->m_sl);
 		PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));	
 	
 		errorcode = pTax->MoveNext();
