@@ -464,6 +464,9 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 	//若有折扣
 	//INT64 nRebateSum;
 	//CInvDet *rebateDet;
+	string tmpNamestr("");
+	INT32  nDifLen = 0;
+	INT8 tmpbuf[128];
     if(m_property==DETAIL_GOODS_DISCOUNT)
 	{
 		// rebateDet = rebateDet->GetNewInvDet();//从静态数组获取一个可用的CInvDet对象
@@ -484,11 +487,17 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		//m_singleInvInfo->m_sphsl++;		//当前发票总商品行加1
 		//m_tmpGoodsNum++;				////当前总商品行加1
 		
-		INT8 tmpbuf[128];
 		memset(tmpbuf, 0x00, sizeof(tmpbuf));
 		sprintf(tmpbuf,"(折%d%%)",100-double2int(m_tmpRate));
-		string tmpstr = tmpbuf;
-		m_invDet->m_spmc.append(tmpstr);
+		nDifLen = GOODS_NAME_LEN - strlen(tmpbuf); //商品名称可占用的最大长度
+		DBG_PRINT(("nDifLen==%d ", nDifLen));
+		if (m_invDet->m_spmc.length() > nDifLen)
+		{
+			tmpNamestr.assign(m_invDet->m_spmc, 0, nDifLen);
+			DBG_PRINT(("商品名称截取后为tmpNamestr==%s ", tmpNamestr.c_str()));
+		}
+		m_invDet->m_spmc = tmpNamestr;
+		m_invDet->m_spmc.append(tmpbuf);
 		//m_invDet->m_spsl = m_tmpAmount;			//商品数量
 		m_invDet->m_spje = moneySum;			//商品金额(含税)
 		m_invDet->m_spse = CountTax(((double)m_invDet->m_spje)/SUM_EXTENSION, m_invDet->m_sl); //商品税额
