@@ -492,6 +492,9 @@ UINT8 CProductSaleMainMenu::ErrMsgBox(UINT8 ret)
 	   case MONEY_NOT_ENOUGH:
 		   pText = "现金金额不足";
 		   break;
+	   case MONEY_RANDOM:
+		   pText="现金金额异常";
+		   break;
 	   case REBATE_ERROR:
 		   pText = "折扣率超限";
 		   break;
