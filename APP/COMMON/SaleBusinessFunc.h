@@ -12,7 +12,7 @@
 #include "CInvVol.h"
 #include "CInvHead.h"
 
-#define	MAX_ERR_NUM		1//10
+#define	MAX_ERR_NUM		5
 
 
 class CSaleBusinessFunc

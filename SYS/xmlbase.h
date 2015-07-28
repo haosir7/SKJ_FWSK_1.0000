@@ -116,6 +116,8 @@ public:
 
 	void XMLConstructBeginSimple(string rootName, int charType);
 
+	int XMLConstructBeginUpdate(const char *file, int charType = GBK_CHAR_TYPE);
+
 	/*!
 	@brief 结束当前XML的组装并保存为文件。
 	@param[in] XmlPath 生成的XML文件名与路径
@@ -152,6 +154,37 @@ public:
 	int InsertNode(TiXmlElement *pParent, TiXmlElement *pNode);
 	int InsertAllChildNode(TiXmlElement *pParent, TiXmlElement *pNode);
 
+
+	/*!
+	@brief 依据名称和序号定位一个子节点，即定位符合给定名称的第N个节点。
+	@param[in] ParentElement 父节点指针
+	@param[in] strName 子结点名称
+	@param[in] ChildNo 子节点序号，以0为起始（0表示第一个子节点，1表示第二个）
+	@return  1 - 找到了指定的子节点  0 - 未找到 
+	*/
+	int LocateNodeByName( TiXmlElement *ParentElement, char* strName, int ChildNo=0);
+
+	/*!
+	@brief 取当前定位节点的值
+	@return  节点值 
+	*/
+	string GetText();
+
+	/*!
+	@brief 取当前定位节点的某个属性
+	@param[in] AttrName 属性名称
+	@return  属性值 
+	*/
+	string GetAttr( string AttrName );
+
+	/*!
+	@brief 向新AddNode出的节点添加值
+	@param[in] TextValue 节点值
+	@param[in] type 节点值类型：XML_SET_TEXT_NORMAL或XML_SET_TEXT_CDATA
+	@return  0 - 成功 
+	*/
+	int UpdateText( string TextValue, int type=XML_SET_TEXT_NORMAL );
+
 public:
     TiXmlDocument *m_myDocument;			/**< XML文档句柄	*/
 	TiXmlDeclaration *m_xmlDeclaration;		/**< XML文档属性	*/
@@ -159,6 +192,7 @@ public:
 	TiXmlElement *m_parentElement[11];		/**< 各层的指针，树的每一层对应一个指针。比如第1层的指针是m_parentElement[1]，该指针可以在该层的所有节点中移动。	*/
 	TiXmlElement *m_NewElement;				/**< 新加节点的指针	*/
 	TiXmlText *m_Content;					/**< 节点值内容	*/
+	TiXmlElement *m_Child;					/**< 儿子节点的指针	*/
 
 
 

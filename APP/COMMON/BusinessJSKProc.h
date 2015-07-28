@@ -130,6 +130,10 @@ public:
 
 	//获取离线相关数据 -- 转换器
 	INT32 OffInvInfo_Business(UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr);
+
+public:
+	//更新未上传发票信息
+	INT32 UpdateUploadInv(CYWXML_GY &ywxml_gy);
 };
 
 #endif

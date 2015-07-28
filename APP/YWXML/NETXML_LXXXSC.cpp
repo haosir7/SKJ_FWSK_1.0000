@@ -108,9 +108,10 @@ INT32 CLxxxsc::XmlParse( )
 		m_pXmlParse.m_parentElement[3] = m_pXmlParse.m_Child;
 
 		m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[3], "fplxdm");
-		m_ywxml_gy.m_fplxdm = m_pXmlParse.GetText();		//发票类型代码
-		DBG_PRINT(("SKJ_LXXXSC: fplxdm = %s", m_ywxml_gy.m_fplxdm.c_str()));
+// 		m_ywxml_gy.m_fplxdm = m_pXmlParse.GetText();		//发票类型代码
+// 		DBG_PRINT(("SKJ_LXXXSC: fplxdm = %s", m_ywxml_gy.m_fplxdm.c_str()));
 
+		DBG_PRINT(("SKJ_LXXXSC: lxkzxx = %s", m_strLxkzxx.c_str()));
 		m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[3], "lxkzxx");
 		m_strLxkzxx = m_pXmlParse.GetText();		//离线控制信息
 		DBG_PRINT(("SKJ_LXXXSC: lxkzxx = %s", m_strLxkzxx.c_str()));

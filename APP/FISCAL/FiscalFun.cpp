@@ -413,19 +413,6 @@ UINT8 FSC_GetJSKInfo(string &strErr)
 
 UINT8 FSC_InfoUpdate(string &strErr)
 {
-	
-	int ret;
-	string sksbbh ="";
-	string bspbh=""; 
-	string qtxx=""; 
-	
-	ret = g_pAPIBase->GetSksbbh_API(*g_YwXmlArg, sksbbh, bspbh, qtxx,strErr);
-	DBG_PRINT(("ret= %d",ret));
-	DBG_PRINT(("sksbbh= %s",sksbbh.c_str()));
-	DBG_PRINT(("bspbh= %s",bspbh.c_str()));
-	DBG_PRINT(("qtxx= %s",qtxx.c_str()));
-
-
 	UINT8 retcode=0;
 	CSysArg sysArg;
 	char sqlbuf[256];

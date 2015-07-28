@@ -329,7 +329,7 @@ UINT8 FillPrnInvDetail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 		DBG_PRINT(("商品数量          : %u ", pPrnInvInfo->GoodsLines[j].Amount));
 
 		pPrnInvInfo->GoodsLines[j].Price = double2int(p->m_spdj*PRICE_EXTENSION);	//商品单价
-		if (p->m_property==DETAIL_REDUCTION_TEMPLATE)
+		if( (p->m_property==DETAIL_DISCOUNT) || (p->m_property==DETAIL_REDUCTION_TEMPLATE) ) 
 		{
 			pPrnInvInfo->GoodsLines[j].Sum = 0 - p->m_spje;  //本商品行总金额
 		}
@@ -361,6 +361,7 @@ UINT8 FillPrnInvDetail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 		
         //商品名称超长
 		if ((nLen-1) > g_globalArg->pSaveTemplateInfo->MaxSPMCCharacter)//xsr暂时注掉，因为没有模板。
+			//	if ((nLen-1) > 10)
 		{
 			k++;
 			DBG_PRINT(("商品名称超长"));
@@ -409,8 +410,6 @@ UINT8 FillPrnInvTail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 	//一维条码 20ASC
 	memset(pPrnInvInfo->chYWTM, 0, sizeof(pPrnInvInfo->chYWTM));
 	memcpy((void *)pPrnInvInfo->chYWTM, (void *)smallInvInfo->m_fwm.c_str(), smallInvInfo->m_fwm.length());
-//	string TempYWTM = smallInvInfo->m_fwm.substr(12, 8);
-//	memcpy((void *)pPrnInvInfo->chYWTM, (void *)TempYWTM.c_str(), smallInvInfo->m_fwm.length());
 	DBG_PRINT(("一维条码  : %s ", pPrnInvInfo->chYWTM));
 	
 	
@@ -584,7 +583,7 @@ void * NetCommunicate(void *arg)
 			if (SUCCESS != ret)
 			{
 				DBG_PRINT(("strErr = %s", strErr.c_str()));
-				g_globalArg->m_pthreadFlag = 0;
+				//g_globalArg->m_pthreadFlag = 0;
 				g_globalArg->m_pthreadErr = strErr;
 				CommonSleep(nTime);
 			}

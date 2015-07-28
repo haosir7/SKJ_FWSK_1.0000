@@ -65,6 +65,12 @@
 #define XML_FAILURE				-1
 #define XML_INTERNAL_ERR_NO		-110
 
+#if TYPE_MODE == SKJ_MODE
+#define SKJ_PTHREAD_KPMUTEX_OPEN		1
+#elif (TYPE_MODE == ZHQ_MODE)
+#define SKJ_PTHREAD_KPMUTEX_OPEN		0
+#endif
+
 class CReturnInfo
 {
 public:
@@ -86,6 +92,17 @@ public:
 	void SetServInfo(string ip, string port, string path);
 
 	CYWXML_GY &m_ywxml_gy;
+
+	/*!
+	@brief 锁定互斥体	
+	@return  
+	*/ 
+	void MutexLock(void);
+
+	/*!
+	@brief 解锁互斥体	
+	*/ 
+	void MutexUnlock(void);
 
 protected:
 	XMLConstruct m_pXmlConstruct;

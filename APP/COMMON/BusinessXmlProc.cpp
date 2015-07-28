@@ -503,5 +503,12 @@ INT32 CBusinessXmlProc::WLLQFPJGQR_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvo
 	return ret;
 }
 
+INT32 CBusinessXmlProc::UpdateUploadInv(CYWXML_GY &ywxml_gy)
+{
+	INT32 ret = XML_SUCCESS;
+	
+	return ret;
+}
+
 #endif
 

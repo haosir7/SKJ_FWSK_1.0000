@@ -58,6 +58,9 @@
 #ifndef JSK_FAILURE
 #define JSK_FAILURE		-1
 #endif
+#ifndef XML_FAILURE
+#define XML_FAILURE				-1
+#endif
 
 
 class CBusinessBase;
@@ -186,6 +189,12 @@ public:
 	//获取离线相关数据 -- 转换器
 	virtual INT32 OffInvInfo_Business(UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr)=0;
 #endif
+
+
+public:
+	//更新未上传发票信息
+	virtual INT32 UpdateUploadInv(CYWXML_GY &ywxml_gy)=0;
+
 };
 
 
