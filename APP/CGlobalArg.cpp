@@ -193,6 +193,21 @@ UINT8 CGlobalArg::InitGlobalArg()
 	sprintf(tmpbuf, "%.6f", SOFTWARE_VERSION);
 #endif
 
+	tmpStr = tmpbuf;
+	if (g_globalArg->m_machine->m_sVer != tmpStr)
+	{
+		info.SetText("更新软件版本...");
+		info.ReFresh();
+		g_globalArg->m_machine->m_sVer = tmpStr;
+		sprintf(value, "update MACHINE set S_VER = %s", g_globalArg->m_machine->m_sVer.c_str());
+		tmpStr=value;
+		g_globalArg->m_machine->SetSQL(tmpStr);
+		if (g_globalArg->m_machine->ExecuteSQL() != SQLITE_OK)
+		{
+			ShowMsg("更新软件版本错误");
+		}
+	}
+
 	g_YwXmlArg->m_sksbkl = g_globalArg->m_strSksbkl;
 	DBG_PRINT(("g_YwXmlArg->m_sksbkl = %s", g_YwXmlArg->m_sksbkl.c_str() ));
 	g_YwXmlArg->m_zskl = g_globalArg->m_strZskl;

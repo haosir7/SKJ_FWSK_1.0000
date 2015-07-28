@@ -178,6 +178,7 @@ void CInvWasteWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLe
 
 	CaMsgBox::ShowMsg("发票作废成功");
 	DBG_PRINT(("发票作废成功"));
+	DoActive();
 
    //ChangeWin(INV_WASTE_MENU);	 //返回发票作废界面				
    return;
