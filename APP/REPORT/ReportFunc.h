@@ -284,7 +284,14 @@ UINT8 PrnMonth(UINT32 sumDate);
 @param[in] nSum 部类销售金额
 @return  1: SUCCESS; 0: FAILURE
 */
-UINT8 PrnMonthSaleSum(UINT32 nInvCount, INT64 nSum);
+//UINT8 PrnMonthSaleSum(UINT32 nInvCount, INT64 nSum);
+
+/*!
+@brief 打印某月销售统计信息
+@param[in] CTjxxhz 统计汇总信息
+@return  1: SUCCESS; 0: FAILURE
+*/
+UINT8 PrnMonthSaleSum(CTjxxhz *pTjxxhz);
 
 /*!
 @brief 打印某时间段开票统计报表头部

@@ -295,7 +295,7 @@ void CMonthSaleShowWIn::OnButton1(int iEvent, unsigned char * pEventData, int iD
 	UINT8 ret =SUCCESS;
 	CaProgressBar proBar("信息获取中.....");
 	proBar.ReFresh();
-	//ret = PrnMonthSaleSumProc();	 //打印月销售报表
+	ret = PrnMonthSaleSumProc();	 //打印月销售报表
 	if (SUCCESS == ret) 
 	{
 		ChangeWin(MONTH_SALE_SUM_WIN);	 //返回商业统计界面
@@ -341,7 +341,7 @@ UINT8 CMonthSaleShowWIn::PrnMonthSaleSumProc()
 	return SUCCESS;
 }
 
-UINT8 CMonthSaleShowWIn::MonthSaleSumHandle()
+/*UINT8 CMonthSaleShowWIn::MonthSaleSumHandle()
 {
 	DBG_PRINT(("MonthSaleSumHandle()"));
 
@@ -457,9 +457,13 @@ UINT8 CMonthSaleShowWIn::MonthSaleSumHandle()
 	return SUCCESS;
 
 }
+*/
 
-
-
+UINT8 CMonthSaleShowWIn::MonthSaleSumHandle()
+{
+	DBG_PRINT(("MonthSaleSumHandle()"));
+	PrnMonthSaleSum(m_ptrTjxxhz); //打印当月累计数量和金额	
+}
 
 
 

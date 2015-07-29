@@ -16,6 +16,7 @@
 #include "CInvDet.h"
 #include "YWXMLGY.h"
 #include "APIBase.h"
+#include "CTjxxhz.h"
 
 #ifndef WIN32
 #include <sys/timeb.h>
@@ -534,6 +535,7 @@ UINT8 PrnAllDaySaleSum(UINT32 nInvCount, INT64 nSum)
 	return SUCCESS;
 }
 
+
 UINT8 PrnDeptMoney(INT64 &sumMoney, const string *strFilter)
 {
 	DBG_ASSERT_EXIT((strFilter != NULL), (" strFilter == NULL!"));
@@ -717,20 +719,86 @@ UINT8 PrnMonth(UINT32 sumDate)
 	return SUCCESS;
 }
 
-UINT8 PrnMonthSaleSum(UINT32 nInvCount, INT64 nSum)
+// UINT8 PrnMonthSaleSum(UINT32 nInvCount, INT64 nSum)
+// {
+// 	DBG_PRINT((" PrnMonthSaleSum()"));
+// 	DBG_PRINT((" nInvCount = %u, nSum = %d", nInvCount, nSum));
+// 
+// 	sprintf(pGeneralPrnBuff, "开票数量：%u", nInvCount);
+// 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+// 
+// 	sprintf(pGeneralPrnBuff, "月销售总额：%.2f", (double)nSum/SUM_EXTENSION);
+// 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));		
+// 	PrintReportLine("========================================", sizeof("========================================"));
+// 
+// 	return SUCCESS;
+// }
+
+
+UINT8 PrnMonthSaleSum(CTjxxhz *pTjxxhz)
 {
 	DBG_PRINT((" PrnMonthSaleSum()"));
-	DBG_PRINT((" nInvCount = %u, nSum = %d", nInvCount, nSum));
-
-	sprintf(pGeneralPrnBuff, "开票数量：%u", nInvCount);
+	DBG_ASSERT_EXIT((pTjxxhz != NULL), (" pTjxxhz == NULL!"));
+	
+	sprintf(pGeneralPrnBuff, "期初库存份数：%u", pTjxxhz->m_Qckcfs);
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
-	sprintf(pGeneralPrnBuff, "月销售总额：%.2f", (double)nSum/SUM_EXTENSION);
-	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));		
-	PrintReportLine("========================================", sizeof("========================================"));
+	sprintf(pGeneralPrnBuff, "领购发票份数：%u", pTjxxhz->m_Lgfpfs);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
+	sprintf(pGeneralPrnBuff, "退回发票份数：%u", pTjxxhz->m_Thfpfs);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+
+	sprintf(pGeneralPrnBuff, "期末库存份数：%u", pTjxxhz->m_Qmkcfs);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+
+	sprintf(pGeneralPrnBuff, "正数发票份数：%u", pTjxxhz->m_Zsfpfs);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+	
+	sprintf(pGeneralPrnBuff, "正废发票份数：%u", pTjxxhz->m_Zffpfs);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+	
+	sprintf(pGeneralPrnBuff, "负数发票份数：%u", pTjxxhz->m_Fsfpfs);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+	
+	sprintf(pGeneralPrnBuff, "负废发票份数：%u", pTjxxhz->m_Fffpfs);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+	
+	sprintf(pGeneralPrnBuff, "空废发票份数：%u", pTjxxhz->m_Kffpfs);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+
+	PrintReportLine("-----------------------------------", sizeof("-----------------------------------"));
+
+	sprintf(pGeneralPrnBuff, "正数发票累计金额：%.2f", (double)pTjxxhz->m_Zsfpljje/SUM_EXTENSION);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+	
+	sprintf(pGeneralPrnBuff, "正数发票累计税额：%.2f", (double)pTjxxhz->m_Zsfpljse/SUM_EXTENSION);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));	
+
+	sprintf(pGeneralPrnBuff, "正废发票累计金额：%.2f", (double)pTjxxhz->m_Zffpljje/SUM_EXTENSION);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));	
+
+	sprintf(pGeneralPrnBuff, "正废发票累计税额：%.2f", (double)pTjxxhz->m_Zffpljse/SUM_EXTENSION);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));	
+
+	sprintf(pGeneralPrnBuff, "负数发票累计金额：%.2f", (double)pTjxxhz->m_Fsfpljje/SUM_EXTENSION);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));	
+
+	sprintf(pGeneralPrnBuff, "负数发票累计税额：%.2f", (double)pTjxxhz->m_Fsfpljse/SUM_EXTENSION);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));	
+
+	sprintf(pGeneralPrnBuff, "负废发票累计金额：%.2f", (double)pTjxxhz->m_Fffpljje/SUM_EXTENSION);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));	
+
+	sprintf(pGeneralPrnBuff, "负废发票累计税额：%.2f", (double)pTjxxhz->m_Fffpljse/SUM_EXTENSION);
+	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));	
+	
+		
+	PrintReportLine("========================================", sizeof("========================================"));
+	
 	return SUCCESS;
 }
+
 
 //----开票统计
 UINT8 PrnIssueSumHead(UINT32 nStartDate, UINT32 nStartTime, UINT32 nEndDate, UINT32 nEndTime)

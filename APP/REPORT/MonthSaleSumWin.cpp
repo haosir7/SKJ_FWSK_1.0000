@@ -206,7 +206,7 @@ void CMonthSaleSumWIn::OnButton1(int iEvent, unsigned char * pEventData, int iDa
 		CaMsgBox::ShowMsg(strErr);
 		return;
 	}
-	ChangeWin(MONTH_SALE_SHOW_WIN);	 //返回商业统计界面
+	ChangeWin(MONTH_SALE_SHOW_WIN);	 //界面
 }
 
 void CMonthSaleSumWIn::OnButton2(int iEvent, unsigned char * pEventData, int iDataLen)
