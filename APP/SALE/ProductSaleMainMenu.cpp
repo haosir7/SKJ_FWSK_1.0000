@@ -529,6 +529,9 @@ UINT8 CProductSaleMainMenu::ErrMsgBox(UINT8 ret)
 	   case DISCOUNT_MONEY_ZERO:
 		   pText = "折扣行金额为零";
 		   break;
+	   case  INPUT_ERROR:
+		    pText = "含非法字符,请重新输入";
+		   break;
 	   default:;
 	}  
 	
@@ -848,6 +851,11 @@ UINT8 CProductSaleMainMenu::PriceInputProc(void)
 	INT32 dotNum;//小数位数
 	
 	content = (char*)(m_pInput2->m_contentBuf);
+	ret=is_Money(content);
+	if (ret != SUCCESS)
+	{
+		return(ErrMsgBox(INPUT_ERROR));
+	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
  	if(ii > MAX_MONEY)

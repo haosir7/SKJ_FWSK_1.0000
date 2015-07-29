@@ -557,6 +557,36 @@ UINT8 GetServNum(UINT32 &uNum,string &strErr)
 	
 }
 
+UINT8 is_Money(const char *str)
+{
+	UINT32 PointNum=0;
+	UINT32 len = strlen(str);
+		
+	if ((*str == '.')||(*(str+len-1)=='.'))
+	{
+		return FAILURE;
+	}
+	while(len > 0) 
+	{
+		if ((*str < '0' || *str > '9')&&(*str != '.')) 
+		{
+			return FAILURE;
+		}
+		else if (*str == '.')
+		{
+			PointNum++;
+			if(PointNum>1)
+			{
+				return FAILURE;
+			}
+		}
+
+		str++;
+		len--;
+	}
+	return SUCCESS; 
+}
+
 #ifndef WIN32
 void * NetCommunicate(void *arg)
 {

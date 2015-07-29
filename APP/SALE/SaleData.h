@@ -92,7 +92,7 @@ enum retType
 	 NM_EXCEED_MIN,              /**<发票金额超下限*/
 	 BX_RET_MONTH_ERR,           /**< 冲红票非本月以前*/
 	 TAX_UNAUTHORIZED,				/**< 税率未授权*/
-
+     INPUT_ERROR,                  /**< 含非法字符,请重新输入*/
 
 	 //发票管理
      WASTE_NUM_EXCEED,          /**< 超过剩余发票份数*/
