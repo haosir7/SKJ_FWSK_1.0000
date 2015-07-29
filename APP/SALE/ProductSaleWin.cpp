@@ -700,6 +700,9 @@ int CProductSaleWin::ErrMsgBox(UINT8 ret)
 		case REDUCT_MONEY_SMALL:
 			pText = "折让金额过小";
 			break;
+		case  INPUT_ERROR:
+		    pText = "含非法字符,请重新输入";
+		   break;
 		case ONE_INV:
 			pText = "超过一张发票允许的商品行数";
 			break;
@@ -1110,6 +1113,11 @@ UINT8 CProductSaleWin::PriceInputProc(void)
 	INT32 dotNum = 0;//小数位数
 	
 	content = (char*)(m_pInput2->m_contentBuf);
+	ret=is_Money(content);
+	if (ret != SUCCESS)
+	{
+		return(ErrMsgBox(INPUT_ERROR));
+	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
 	if(ii > MAX_MONEY)
@@ -1143,6 +1151,11 @@ UINT8 CProductSaleWin::SumInputProc(void)
 	INT32 dotNum = 0;//小数位数
 	
 	content = (char*)(m_pInput2->m_contentBuf);
+	ret=is_Money(content);
+	if (ret != SUCCESS)
+	{
+		return(ErrMsgBox(INPUT_ERROR));
+	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
 	if(ii > MAX_MONEY)
@@ -1176,6 +1189,11 @@ UINT8 CProductSaleWin::PlusProc(void)
 	INT32 dotNum = 0;//小数位数
 	
 	content = (char*)(m_pInput2->m_contentBuf);
+	ret=is_Money(content);
+	if (ret != SUCCESS)
+	{
+		return(ErrMsgBox(INPUT_ERROR));
+	}
 	ii = atof(content);
     DBG_PRINT(("ii= %lf",ii));
 

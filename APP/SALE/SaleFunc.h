@@ -125,6 +125,13 @@ UINT8 MakeInvLog(UINT8 nInvType, UINT32 EventResult, string Backup = "");
  */
 UINT8 GetServNum(UINT32 &uNum,string &strErr);
 
+/**
+ * brief 输入字符串是否为金额，价格和数量
+ * @param[in]  字符串内容
+ * @return 1: SUCCESS, 0: FAILURE
+ */
+UINT8 is_Money(const char *str);
+
 #ifndef WIN32
 //------线程相关--------//
 void * NetCommunicate(void *arg);
