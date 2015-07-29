@@ -62,7 +62,7 @@ int CProductSaleWin::Create(int iX,int iY,int iW,int iH)
 
 	//创建一个标签 第三行
 	label[3] = new CaLabel(false,CaObject::ALIGN_LEFT);
-	label[3]->Create(m_iColW,curH, m_iBtnW, CHAR_H);
+	label[3]->Create(m_iColW+1,curH, m_iBtnW, CHAR_H);
 	label[3]->SetTitle(title_arr[3], strlen(title_arr[3]));
 
     //创建一个标签 第四行
@@ -73,7 +73,7 @@ int CProductSaleWin::Create(int iX,int iY,int iW,int iH)
 
 	//创建一个标签 第四行
 	label[5] = new CaLabel(false,CaObject::ALIGN_LEFT);
-	label[5]->Create(m_iColW,curH, m_iBtnW, CHAR_H);
+	label[5]->Create(m_iColW+1,curH, m_iBtnW, CHAR_H);
 	label[5]->SetTitle(title_arr[5], strlen(title_arr[5]));
 	
    	curH += LINE_H;
