@@ -186,8 +186,8 @@ void CMonthSaleShowWIn::DoActive()
 {
 	DBG_PRINT((" CMonthSaleShowWIn::DoActive()!"));
 	m_ptrTjxxhz = ((CMonthSaleSumWIn *)m_pFrame->GetWin(MONTH_SALE_SUM_WIN))->m_pTjxxhz;
-	m_iStartDate = ((CMonthSaleSumWIn *)m_pFrame->GetWin(MONTH_SALE_SUM_WIN))->m_StartDate;
-	m_iEndDate = ((CMonthSaleSumWIn *)m_pFrame->GetWin(MONTH_SALE_SUM_WIN))->m_EndDate;
+	m_iStartDate = m_ptrTjxxhz->m_Qsrq;//中间件返回的起始日期
+	m_iEndDate = m_ptrTjxxhz->m_Jzrq;  //中间件返回的截止日期
 
 	m_pageIndex = 1;
 	m_pageNum = 2;

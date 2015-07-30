@@ -795,7 +795,7 @@ UINT8 PrnMonthSaleSum(CTjxxhz *pTjxxhz)
 	
 		
 	PrintReportLine("========================================", sizeof("========================================"));
-	
+	ForwardNLine(FORWARD_LINES);
 	return SUCCESS;
 }
 
