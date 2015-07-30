@@ -131,11 +131,17 @@ int CProductSaleMainMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iD
 		
 	case DISCOUNT_KEY:
 		content = (char*)(m_pInput2->m_contentBuf);
+
 		if (strlen(content)==0)
 		{
 			CaMsgBox::ShowMsg("请先输入折扣率");
 			return SUCCESS;
-		}		
+		}	
+		ret=is_Money(content);
+	   if (ret != SUCCESS)
+	   {
+		return(ErrMsgBox(INPUT_ERROR));
+	   }
 		ii = atof(content);
 		ii = (INT32)ii;//向零取整
 		m_pInput2->Clear();
@@ -892,6 +898,11 @@ UINT8 CProductSaleMainMenu::SumInputProc(void)
 	DBG_PRINT(("进入SumInputProc函数"));
 	
 	content = (char*)(m_pInput2->m_contentBuf);		//m_pInput2就是用户输入的总价
+	ret=is_Money(content);
+	if (ret != SUCCESS)
+	{
+		return(ErrMsgBox(INPUT_ERROR));
+	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
 	 if(ii > MAX_MONEY)
@@ -927,6 +938,11 @@ UINT8 CProductSaleMainMenu::PlusProc(void)
 	INT32 dotNum;//小数位数
 	
 	content = (char*)(m_pInput2->m_contentBuf);
+	ret=is_Money(content);
+	if (ret != SUCCESS)
+	{
+		return(ErrMsgBox(INPUT_ERROR));
+	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
 	if(ii > MAX_MONEY)
