@@ -227,6 +227,11 @@ int CProductSaleWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLe
 			CaMsgBox::ShowMsg("请先输入折扣率");
 			return SUCCESS;
 		}
+			ret=is_Money(content);
+	if (ret != SUCCESS)
+	{
+		return(ErrMsgBox(INPUT_ERROR));
+	}
 		ii = atof(content);
 		ii = (INT32)ii;//向零取整
 		m_pInput2->Clear();
