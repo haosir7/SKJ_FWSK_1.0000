@@ -50,7 +50,6 @@ void SerialProtocol::resetAll() {
 	packageNo = 0;
 	headLen = 0;
 	packageLen = 0;
-	m_AskClearCount = 0;
 
 	newCmd = true;
 }
@@ -249,8 +248,7 @@ UINT8 SerialProtocol::revData(string &strErr)
 		{
 			DBG_PRINT(("ret = 0x%x", ret));
 			resetRspStruct();
-			clearSerial(m_AskClearCount);
-
+			clearSerial();
 			break;
 		}
 		else 
@@ -315,6 +313,7 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 	{
 		tmpLen = pSerial->GetReceiveCount(pSerial);
 		DBG_PRINT(("获取串口缓存的字节数 tmpLen = %d", tmpLen));
+		
 		if (tmpLen < 2)
 		{
 			CommonSleep(100);
@@ -323,14 +322,12 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 		else
 		{
 			ReadPort(pSerial->m_fd, m_revBuf+offset, 2, &readLen);
-			//DBG_PRINT(("m_revBuf[0] = %c	m_revBuf[1]=%c", m_revBuf[0], m_revBuf[1]));
 			offset += readLen;
 			if (offset >= 2)
 			{
 				break;
 			}
 		}
-
 	}
 	DBG_PRINT(("!!!!!!!!!!!!!!!offset = %u", offset));
 	if (offset < 2)
@@ -355,7 +352,6 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 	tmpLen = 0;
 	while(times<REV_TIME)
 	{
-
 		tmpLen = pSerial->GetReceiveCount(pSerial);
 		DBG_PRINT(("获取串口缓存的字节数 tmpLen = %d", tmpLen));
 		if (tmpLen < headLen-offset)
@@ -384,8 +380,6 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 
 	packageLen = ZC_PROTOCOL==m_sendCmd->cmdType? m_revBuf[3]:getShort(m_revBuf+3);
 	DBG_PRINT(("不包含CRC校验字：package lenght is %u", packageLen));
-
-
 	DBG_PRINT(("读取数据和CRC：packageLen+CRC_LEN-offset =  %u", packageLen+CRC_LEN-offset));
 
 	times = 0;
@@ -414,8 +408,6 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 	DBG_PRINT(("!!!!!!!!!!!!!!!offset = %u", offset));
 	if (offset < packageLen+CRC_LEN)
 	{
-		m_AskClearCount = packageLen+CRC_LEN - offset;
-		DBG_PRINT(("m_AskClearCount = %u", m_AskClearCount));
 		DBG_PRINT(("wait next package time out"));
 		strErr = WAIT_TIMEOUT_ERR;
 		return SERCMD_OVERTIME_ERR;
@@ -510,21 +502,22 @@ void SerialProtocol::Rsp_OK()
 	}
 }
 
-void SerialProtocol::clearSerial(UINT8 ClearCount)
+void SerialProtocol::clearSerial()
 {
 	UINT8 temp[255];
 	int readLen=0;
-	UINT8 Count = 0;
-	int writelen = 0;
-//	while(GetReceiveCount_proc(pSerial) <= 0);
- //	while(Count <= ClearCount)
-	{
 
-		ReadPort(pSerial->m_fd, temp, ClearCount, &readLen);
-		Count += readLen;
-		DBG_NPRINT_HEX(temp, ClearCount);
-		DBG_PRINT(("调用清串口函数后的返回结果：readLen = %d       累计读取的字节数 Count = %u", readLen, Count));
+	CommonSleep(300);
+	int tmpLen = pSerial->GetReceiveCount(pSerial);
+	
+	if (tmpLen >0)
+	{
+		ReadPort(pSerial->m_fd, temp, tmpLen, &readLen);
+		DBG_NPRINT_HEX(temp, tmpLen);
 	}
+
+	DBG_PRINT(("调用清串口函数后的返回结果：readLen = %d    申请读取的字节数 tmpLen = %u", readLen, tmpLen));
+	printf("调用清串口函数后的返回结果：readLen = %d    申请读取的字节数 tmpLen = %u\n", readLen, tmpLen);
 }
 
 /*!

@@ -20,7 +20,7 @@
 
 
 #include "LOGCTRL.h"
-#define NO_POS_DEBUG
+//#define NO_POS_DEBUG
 #include "pos_debug.h"
 
 
@@ -500,7 +500,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		m_invDet->m_spmc.append(tmpbuf);
 		//m_invDet->m_spsl = m_tmpAmount;			//商品数量
 		m_invDet->m_spje = moneySum;			//商品金额(含税)
-		m_invDet->m_spse=CountTax(double2int(m_invDet->m_spje*SUM_EXTENSION), (UINT32)(m_invDet->m_sl*SUM_EXTENSION)); //商品税额
+		m_invDet->m_spse=CountTax(m_invDet->m_spje, (UINT32)(m_invDet->m_sl*SUM_EXTENSION)); //商品税额
 	    m_invDet->m_je= m_invDet->m_spje-m_invDet->m_spse; //商品金额(不含税)
 	}
 	
