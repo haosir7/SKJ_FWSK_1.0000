@@ -230,7 +230,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 	{
 		m_property = DETAIL_GOODS_DISCOUNT;
 		m_tmpRate = (INT32)(deptInfo->m_rate);
-		DBG_PRINT(("m_tmpRate =  %f", m_tmpRate));
+		DBG_PRINT(("*****m_tmpRate =  %f", m_tmpRate));
 	}
 	
 	//判断临时价
@@ -490,20 +490,22 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		memset(tmpbuf, 0x00, sizeof(tmpbuf));
 		sprintf(tmpbuf,"(折%d%%)",100-double2int(m_tmpRate));
 		nDifLen = GOODS_NAME_LEN - strlen(tmpbuf); //商品名称可占用的最大长度
-		DBG_PRINT(("nDifLen==%d ", nDifLen));
+		DBG_PRINT(("*****nDifLen==%d ", nDifLen));
 		if (m_invDet->m_spmc.length() > nDifLen)
 		{
 			tmpNamestr.assign(m_invDet->m_spmc, 0, nDifLen);
-			DBG_PRINT(("商品名称截取后为tmpNamestr==%s ", tmpNamestr.c_str()));
+			m_invDet->m_spmc = tmpNamestr;
+			DBG_PRINT(("***商品名称截取后为tmpNamestr==%s ", tmpNamestr.c_str()));
 		}
-		m_invDet->m_spmc = tmpNamestr;
+		
 		m_invDet->m_spmc.append(tmpbuf);
+		DBG_PRINT(("***商品名称m_invDet->m_spmc==%s ", m_invDet->m_spmc.c_str()));
 		//m_invDet->m_spsl = m_tmpAmount;			//商品数量
 		m_invDet->m_spje = moneySum;			//商品金额(含税)
 		m_invDet->m_spse=CountTax(m_invDet->m_spje, (UINT32)(m_invDet->m_sl*SUM_EXTENSION)); //商品税额
 	    m_invDet->m_je= m_invDet->m_spje-m_invDet->m_spse; //商品金额(不含税)
 	}
-	
+	DBG_PRINT(("商品名称m_spmc==%s ", m_invDet->m_spmc.c_str()));
 	m_singleInvInfo->InsertNode(m_invDet);	//插入节点
 	m_singleInvInfo->m_sphsl++;				//当前发票总商品行加1
 	m_tmpGoodsNum++;						//当前总商品行加1
