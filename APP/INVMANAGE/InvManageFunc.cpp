@@ -708,11 +708,11 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO)
     CInvDet *p = Invhead.pHead;
 	while (p)
 	{
-		DBG_PRINT(("p->m_spbm = %u", p->m_spbm));
-		if ("" == p->m_spbm)
-		{
-			p->m_spbm = "0000000000000";
-		}	
+ 		DBG_PRINT(("p->m_spbm = %u", p->m_spbm.c_str()));
+ 		if ("" == p->m_spbm)
+ 		{
+ 			p->m_spbm = "0000000000000";
+ 		}	
 		p = p->pNext;
 		DBG_PRINT(("INV_DET AddNew()"));
 	}	
