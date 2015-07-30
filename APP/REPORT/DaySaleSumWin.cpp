@@ -254,7 +254,7 @@ void CDaySaleSumWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 		retCode = PrnDaySaleSumProc();	 //打印日销售报表
 		if (SUCCESS == retCode) 
 		{
-			ChangeWin(COMMERCE_REPORT_MENU);	 //返回商业统计界面
+			ChangeWin(FISCAL_REPORT_MENU);	 //返回商业统计界面
 		}		
 	}
 	
