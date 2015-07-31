@@ -671,7 +671,8 @@ UINT8 CProductSaleMainMenu::NormalShow()
 	if (g_globalArg->m_operator->m_role==DEMO_ROLE) 
 	{
 		nCurrentInvNo = g_globalArg->m_curInvVol->m_ieno + 1 - g_globalArg->m_curInvVol->m_remain;
-		sprintf(title_array[1], "当前发票号: %08d", nCurrentInvNo);
+		g_globalArg->m_curInvVol->m_curInvNo = nCurrentInvNo; 
+	//	sprintf(title_array[1], "当前发票号: %08d", nCurrentInvNo);
 	}
 	else
 	{
@@ -685,15 +686,17 @@ UINT8 CProductSaleMainMenu::NormalShow()
 		 	} 	
 		 }	
 	}
+
+	//第一行
+	if( 0 != g_globalArg->m_curInvVol->m_curInvNo) 
+	{
+		sprintf(title_array[1], "当前发票号: %08d", g_globalArg->m_curInvVol->m_curInvNo);
+	}	
 	
 	DBG_PRINT((" g_globalArg->m_curInvVol->m_ieno = %u !", g_globalArg->m_curInvVol->m_ieno));
 	DBG_PRINT((" g_globalArg->m_curInvVol->m_remain = %u !", g_globalArg->m_curInvVol->m_remain));
 	
-	//第一行
-	if( 0 != g_globalArg->m_curInvVol->m_curInvNo) 
-	 {
-		sprintf(title_array[1], "当前发票号: %08d", g_globalArg->m_curInvVol->m_curInvNo);
-	 }
+
 	
 	
 	

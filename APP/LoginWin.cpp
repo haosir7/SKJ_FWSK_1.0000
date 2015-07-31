@@ -330,7 +330,8 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 		  g_globalArg->m_curInvVol->m_remain = STUDY_INV_NUM;             /**< 发票卷剩余份数 */
 		  g_globalArg->m_curInvVol->m_usedflag = 0;             /**< 发票卷使用标志 1:该发票卷未开票 0:已开票 */
 		  g_globalArg->m_curInvVol->m_overflag = 1;             /**< 发票卷用完标志 1:未用完 0:用完 */
-		
+		  g_globalArg->m_curInvVol->m_curInvNo = 0;
+
 		  g_globalArg->pSaveTemplateInfo->workMode = TRAINING_MODE; 
 		  m_ifStudyIn = 1;
 		  //if (g_globalArg->m_initFlag == 0)//未初始化 

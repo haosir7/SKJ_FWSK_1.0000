@@ -495,11 +495,11 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		{
 			tmpNamestr.assign(m_invDet->m_spmc, 0, nDifLen);
 			m_invDet->m_spmc = tmpNamestr;
-			DBG_PRINT(("***商品名称截取后为tmpNamestr==%s ", tmpNamestr.c_str()));
+			DBG_PRINT(("商品名称截取后为tmpNamestr==%s ", tmpNamestr.c_str()));
 		}
 		
 		m_invDet->m_spmc.append(tmpbuf);
-		DBG_PRINT(("***商品名称m_invDet->m_spmc==%s ", m_invDet->m_spmc.c_str()));
+		DBG_PRINT(("商品名称m_invDet->m_spmc==%s ", m_invDet->m_spmc.c_str()));
 		//m_invDet->m_spsl = m_tmpAmount;			//商品数量
 		m_invDet->m_spje = moneySum;			//商品金额(含税)
 		m_invDet->m_spse=CountTax(m_invDet->m_spje, (UINT32)(m_invDet->m_sl*SUM_EXTENSION)); //商品税额
@@ -740,28 +740,28 @@ UINT8 SaleData::PayByCash( UINT8 &IfInvSum )
 	
 	//判断，并进行自动汇总
 	//if(g_globalArg->m_curInvVol->m_remain == 0)
-	if (0==g_globalArg->m_curInvVol->m_curInvNo)
-	{
-		if (g_globalArg->m_operator->m_role==DEMO_ROLE)
+// 	if (0==g_globalArg->m_curInvVol->m_curInvNo)
+// 	{
+		if ((g_globalArg->m_operator->m_role==DEMO_ROLE)&&(g_globalArg->m_curInvVol->m_remain == 0))
 		{
 			m_smallInvInfo = NULL;
 			DBG_PRINT((" g_globalArg->m_curInvVol->m_remain = 0!"));
 			DBG_RETURN(MUST_RE_LOGIN);
 		}
-		else
-		{
-			// 			POWOFF_DISABLE(); //屏蔽掉电中断
-			//  			if(!InvSum(IfInvSum))
-			// 			{
-			// 				m_smallInvInfo = NULL;
-			// 				DBG_PRINT(("Get volume Sum error !"));
-			// 				POWOFF_ENABLE(); //开掉电中断
-			// 				DBG_RETURN(INV_SUM_ERROR);
-			// 			}
-			// 			POWOFF_ENABLE(); //开掉电中断
-		}
-		
-	}
+// 		else
+// 		{
+// 			// 			POWOFF_DISABLE(); //屏蔽掉电中断
+// 			//  			if(!InvSum(IfInvSum))
+// 			// 			{
+// 			// 				m_smallInvInfo = NULL;
+// 			// 				DBG_PRINT(("Get volume Sum error !"));
+// 			// 				POWOFF_ENABLE(); //开掉电中断
+// 			// 				DBG_RETURN(INV_SUM_ERROR);
+// 			// 			}
+// 			// 			POWOFF_ENABLE(); //开掉电中断
+// 		}
+// 		
+//	}
 	
 	m_smallInvInfo = NULL;
 	ret = SUCCEED;
