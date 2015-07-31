@@ -4,7 +4,7 @@
 #include "CaProgressBar.h"
 #include "CGlobalArg.h"
 
-CInvDownloadMenu::CInvDownloadMenu():CMultiBtnCommonWin(2)
+CInvDownloadMenu::CInvDownloadMenu():CMultiBtnCommonWin(1)
 {
 }
 
@@ -16,7 +16,7 @@ int CInvDownloadMenu::Create(int iX,int iY,int iW,int iH)
 	CMultiBtnCommonWin::Create(iX, iY, iW, iH);
 	
 	SetTitle(1,"A.号码段查询");
-	SetTitle(2,"B.时间段查询");
+	//SetTitle(2,"B.时间段查询");
 	
 	return 1;
 }

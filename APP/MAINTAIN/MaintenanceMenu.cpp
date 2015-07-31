@@ -71,6 +71,8 @@ void CMaintenanceMenu::OnButton2(int iEvent, unsigned char * pEventData, int iDa
 //修改时钟
 void CMaintenanceMenu::OnButton3(int iEvent, unsigned char * pEventData, int iDataLen)
 {
+	CaMsgBox::ShowMsg("暂不支持,此功能");
+	return;
 	ChangeWin(CHANGE_DATETIME_WIN);		
 }
 
