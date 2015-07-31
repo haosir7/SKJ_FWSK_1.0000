@@ -130,31 +130,31 @@ PrinterIni(bidirection);
 
 	
 
-	sprintf(pGeneralPrnBuff, "正常发票份数 : %lu", volsumdata->PosInvCount);
+	sprintf(pGeneralPrnBuff, "正 票  份 数: %lu", volsumdata->PosInvCount);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
 	
 
-	sprintf(pGeneralPrnBuff, "正常发票开具金额 : %.2f", ((double)(volsumdata->PosInvSum))/SUM_EXTENSION);
+	sprintf(pGeneralPrnBuff, "正 票  金 额: %.2f", ((double)(volsumdata->PosInvSum))/SUM_EXTENSION);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
 	
 
-	sprintf(pGeneralPrnBuff, "废 票  份 数 : %lu", volsumdata->WasteInvCount);
+	sprintf(pGeneralPrnBuff, "废 票  份 数: %lu", volsumdata->WasteInvCount);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
 	
 
-	sprintf(pGeneralPrnBuff, "负 票  份 数 : %lu", volsumdata->ReInvCount);
+	sprintf(pGeneralPrnBuff, "负 票  份 数: %lu", volsumdata->ReInvCount);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
 	
 
-	sprintf(pGeneralPrnBuff, "负 票  金 额 : %.2f", ((double)(volsumdata->ReInvSum))/SUM_EXTENSION);
+	sprintf(pGeneralPrnBuff, "负 票  金 额: %.2f", ((double)(volsumdata->ReInvSum))/SUM_EXTENSION);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
@@ -261,31 +261,31 @@ PrinterIni(bidirection);
 
 	
 
-	sprintf(pGeneralPrnBuff, "正常发票份数 : %lu", dateSegSumData->PosInvCount);
+	sprintf(pGeneralPrnBuff, "正 票  份 数: %lu", dateSegSumData->PosInvCount);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
 	
 
-	sprintf(pGeneralPrnBuff, "正常发票开具金额 : %.2f", ((double)(dateSegSumData->PosInvSum))/SUM_EXTENSION);
+	sprintf(pGeneralPrnBuff, "正 票  金 额: %.2f", ((double)(dateSegSumData->PosInvSum))/SUM_EXTENSION);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
 	
 
-	sprintf(pGeneralPrnBuff, "废 票  份 数 : %lu", dateSegSumData->WasteInvCount);
+	sprintf(pGeneralPrnBuff, "废 票  份 数: %lu", dateSegSumData->WasteInvCount);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
 	
 
-	sprintf(pGeneralPrnBuff, "负 票 份 数 : %lu", dateSegSumData->ReInvCount);
+	sprintf(pGeneralPrnBuff, "负 票  份 数: %lu", dateSegSumData->ReInvCount);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
 	
 
-	sprintf(pGeneralPrnBuff, "负 票  金 额 : %.2f", ((double)(dateSegSumData->ReInvSum))/SUM_EXTENSION);
+	sprintf(pGeneralPrnBuff, "负 票  金 额: %.2f", ((double)(dateSegSumData->ReInvSum))/SUM_EXTENSION);
 
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 
