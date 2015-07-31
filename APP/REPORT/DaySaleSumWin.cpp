@@ -128,7 +128,7 @@ int CDaySaleSumWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen
 	switch(iEvent)
 	{	   
 	case RETURN_MAIN_MENU:  //return to SYSTEMMENU
-			ChangeWin(COMMERCE_REPORT_MENU);			
+			ChangeWin(FISCAL_REPORT_MENU);			
 			return SUCCESS;
 		  break;		
 	default: break;		
