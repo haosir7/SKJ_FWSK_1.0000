@@ -26,6 +26,7 @@
 !libcrypto.a
 !libssl.a
 
+*.deps
 *.tmp
 *.gdb
 *.m4
