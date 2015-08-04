@@ -236,7 +236,7 @@ UINT8 CSysLogDateWin::CheckInput(void)
 
 	if (m_StartDate>m_EndDate) 
 	{
-		CaMsgBox::ShowMsg("起始日期\n大于截至日期!");
+		CaMsgBox::ShowMsg("起始日期\n大于截止日期!");
 		return FAILURE;
 	}
 

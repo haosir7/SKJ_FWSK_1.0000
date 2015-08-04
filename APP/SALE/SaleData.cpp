@@ -1954,7 +1954,7 @@ UINT8 SaleData::DeptSale(UINT32 nDeptNo, string strCode)
 	temptax.m_filter = value;
 	temptax.Requery();
 	errorcode = temptax.LoadOneRecord();
-	if( errorcode != SQLITE_OK )
+	if(( errorcode != SQLITE_OK )&&(g_globalArg->m_operator->m_role!=DEMO_ROLE))//非学习模式
 	{
 		DBG_PRINT(("警告：商品税率未授权 errorcode = %d", errorcode));
 		ret = TAX_UNAUTHORIZED;
