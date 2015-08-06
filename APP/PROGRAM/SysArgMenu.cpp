@@ -60,6 +60,8 @@ int CSysArgMenu::Create(int iX,int iY,int iW,int iH)
 		SysArg_SetTitle(i+1, &(sys_arg_info[i]));
 	}
 	
+	OnActive = S_OnActive;
+
 	DBG_PRINT(("退出CSysArgMenu::Create函数"));
 	return 1;
 }
@@ -261,4 +263,17 @@ void CSysArgMenu::SysArg_SetTitle(int num, struct _Sys_Arg_info *arg_info)
 
 	DBG_PRINT(("退出SysArg_SetTitle函数"));
 
+}
+
+void CSysArgMenu::S_OnActive(CaWindow *obj)
+{
+	((CSysArgMenu *)obj)->DoActive();
+	
+}
+
+void CSysArgMenu::DoActive()
+{
+	DBG_PRINT(("进入CSysArgMenu::DoActive()函数"));
+	
+	ReFresh();
 }
