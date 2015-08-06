@@ -171,7 +171,7 @@
 #define PRODUCT_TYPE_CODE_BYTE1          0x00       /**< 机器类型 字节1*/
 #define PRODUCT_TYPE_CODE_BYTE2          0x07       /**< 机器类型 字节2*/
 
-#elif (POS_TYPE == POS_APE4000R)
+#elif ((POS_TYPE == POS_APE4000R)||(POS_TYPE == POS_APE4000RG))
 #define PRODUCT_TYPE_CODE_BYTE1          0x00       /**< 机器类型 字节1*/
 #define PRODUCT_TYPE_CODE_BYTE2          0x09       /**< 机器类型 字节2*/
 

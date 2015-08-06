@@ -121,7 +121,7 @@ void CSysArgMenu::OnButton7(int iEvent, unsigned char * pEventData, int iDataLen
 			CaMsgBox::ShowMsg("´òÓ¡»úÎ´¼ì²âµ½Ö½");
 			return;
 		}
-		
+#if (POS_TYPE != POS_APE4000RG)		
 		char chValue[256];
 		
 		UINT8 i =0;
@@ -148,6 +148,10 @@ void CSysArgMenu::OnButton7(int iEvent, unsigned char * pEventData, int iDataLen
 			CarriageReturn();
 		}	
 		ForwardNLine(FORWARD_LINES);
+#else
+		BidirectionalParaTest();
+		ForwardNLine(FORWARD_LINES);
+#endif
 	}
 	
 	m_EditSysArgID = SYS_BIDIRECTION_PRINT;

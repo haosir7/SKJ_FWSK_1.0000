@@ -82,7 +82,9 @@ UINT8 YesNoMsBox(string strInfo)
 
 void PrintStr(INT8 *str)
 { 
+#if (POS_TYPE != POS_APE4000RG)
 	PrinterIni(bidirection);
+#endif
 	PrintChineseLine(str, strlen(str));
 	CarriageReturn();
 }

@@ -25,6 +25,10 @@
 #include "YWXMLGY.h"
 #include "APIBase.h"
 #include "YWXmlBase.h"
+#if (POS_TYPE == POS_APE4000RG)
+#include "PrintDriver.h"
+#endif
+
 
 void FSC_InvDateHex(UINT32 date, UINT32 time, UINT8 *hexInvDate)
 {
@@ -201,6 +205,10 @@ UINT8 FSC_InitProc(const string &strOldPsw, const string &strNewPsw, string &str
 	//更新初始化标志
 	g_globalArg->m_initFlag = 1;
 	
+	//6.初始化打印机主要参数
+#if (POS_TYPE == POS_APE4000RG)
+	PrinterIni();
+#endif
 	
 	CaMsgBox::ShowMsg("机器初始化成功");
 	
