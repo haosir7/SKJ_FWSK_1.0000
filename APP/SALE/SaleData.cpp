@@ -486,13 +486,20 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		//rebateDet = NULL;
 		//m_singleInvInfo->m_sphsl++;		//当前发票总商品行加1
 		//m_tmpGoodsNum++;				////当前总商品行加1
-		
+		UINT8 buff[64];
 		memset(tmpbuf, 0x00, sizeof(tmpbuf));
 		sprintf(tmpbuf,"(折%d%%)",100-double2int(m_tmpRate));
 		nDifLen = GOODS_NAME_LEN - strlen(tmpbuf); //商品名称可占用的最大长度
 		DBG_PRINT(("*****nDifLen==%d ", nDifLen));
 		if (m_invDet->m_spmc.length() > nDifLen)
 		{
+			memset(buff, 0x00, sizeof(buff));
+			sprintf((char *)buff, "%s", m_invDet->m_spmc.c_str());
+			if( GetHalfHZCount(buff, nDifLen)%2 != 0 )
+			{
+				nDifLen -=1 ;
+			}
+			
 			tmpNamestr.assign(m_invDet->m_spmc, 0, nDifLen);
 			m_invDet->m_spmc = tmpNamestr;
 			DBG_PRINT(("商品名称截取后为tmpNamestr==%s ", tmpNamestr.c_str()));
