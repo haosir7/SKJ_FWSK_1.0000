@@ -103,15 +103,12 @@ int CProductSaleWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLe
 	INT32 nWin;
 	INT32 nLen  = 0;
 	UINT8 nIndex = 0;
-	UINT32 nCurDate;
 	string strErr("");
 
 	switch(iEvent) 
 	{
 	case ENTER_KEY:
 		m_strSuffix = "";
-
-		nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
 
 		//判断装入纸质发票	
 		if (isPaper() != 0)

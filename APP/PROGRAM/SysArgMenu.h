@@ -25,6 +25,16 @@ public:
 	int ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen);
 	virtual int ReFresh();
 
+	/*!
+	@brief 更新显示内容的静态函数	 
+	*/
+	static void S_OnActive(CaWindow *obj);
+
+	/*!
+	@brief 更新显示内容的函数	 
+	*/
+	void DoActive(); 
+
 	CSysArgMenu();
 	~CSysArgMenu();
 

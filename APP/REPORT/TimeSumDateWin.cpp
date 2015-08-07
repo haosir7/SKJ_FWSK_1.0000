@@ -359,8 +359,16 @@ UINT8 CTimeSumDateWin::CheckInput(void)
 		return FAILURE;
 	}
 	
+	string strErr="";
 	UINT32 nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
 	UINT32 nCurTime = TDateTime::CurrentDateTime().FormatInt(HHMMSS);
+
+	UINT8 ret=CheckCurDate(nCurDate,strErr);
+	if (ret !=SUCCESS)
+	{
+		CaMsgBox::ShowMsg(strErr);
+		return FAILURE;		
+	}
 	if (m_StartDate>nCurDate) 
 	{
 		m_pInput1->SetFocus();

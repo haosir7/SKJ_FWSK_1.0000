@@ -446,8 +446,9 @@ UINT8 CGlobalArg::InitSysArg()
  	m_bidirection = sysArg->m_vInt;
  	DBG_PRINT(("m_bidirection : %lu", m_bidirection)); 
 	bidirection = m_bidirection;
-	PrinterIni(bidirection);
-
+#if (POS_TYPE != POS_APE4000RG)
+PrinterIni(bidirection);
+#endif
 	//Ö¤Êé¿ÚÁî
 	sprintf(tmpChar,  "where SA_ID = %d", SYS_CERTIF_PSW);
 	sysArg->m_filter.append(tmpChar);

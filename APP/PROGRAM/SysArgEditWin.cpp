@@ -347,7 +347,11 @@ void CSysArgEditWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 	char chValue[256];
 	if(tmpid == SYS_BIDIRECTION_PRINT)
 	{
+#if (POS_TYPE != POS_APE4000RG)
 		PrinterIni(bidirection);
+#else
+		SetBidirectionalPara(bidirection);//有打印纸时执行,否则阻塞串口
+#endif
 		sprintf(chValue, "当前参数值:%u",bidirection);
 		PrintAsciiLine(chValue, strlen(chValue));		
 		

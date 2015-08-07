@@ -400,20 +400,20 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 				CaMsgBox::ShowMsg(value);
 			}
 			*/
-	#if 1
+#if 1
 			//信息更新		
 			if (FSC_InfoUpdate(strErr) != SUCCESS)
 			{
 				CaMsgBox::ShowMsg(strErr);
 			}
 			DBG_PRINT(("g_globalArg->m_invKind->m_bsqsrq= %s",g_globalArg->m_invKind->m_bsqsrq.c_str()));
-			string curtime = TDateTime::CurrentDate().FormatString(YYYYMMDD);
-			string tmpCurTime = curtime.assign(curtime, 0, 4);
-			DBG_PRINT(("curtime = %s, tmpCurTime = %s",curtime.c_str(), tmpCurTime.c_str()));
-			if ("1970" == tmpCurTime)
+			UINT32 nCurDate= TDateTime::CurrentDate().FormatInt(YYYYMMDD);
+			
+			UINT8 ret=CheckCurDate(nCurDate,strErr);
+			if (ret !=SUCCESS)
 			{
-				CaMsgBox::ShowMsg("款机日期为1970，请修改");
-				return;
+				CaMsgBox::ShowMsg(strErr);
+				return ;		
 			}
 #endif				
 		}

@@ -7,10 +7,6 @@
 
 #include "FiscalFun.h"
 
-#include "LOGCTRL.h"
-//#define NO_POS_DEBUG
-#include "pos_debug.h"
-
 #include "CInvKind.h"
 #include "CUserInfo.h"
 #include "CUserMore.h"
@@ -25,6 +21,17 @@
 #include "YWXMLGY.h"
 #include "APIBase.h"
 #include "YWXmlBase.h"
+
+#include "ReportFunc.h"
+
+#include "LOGCTRL.h"
+//#define NO_POS_DEBUG
+#include "pos_debug.h"
+
+#if (POS_TYPE == POS_APE4000RG)
+#include "PrintDriver.h"
+#endif
+
 
 void FSC_InvDateHex(UINT32 date, UINT32 time, UINT8 *hexInvDate)
 {
@@ -123,7 +130,14 @@ UINT8 FSC_InitProc(const string &strOldPsw, const string &strNewPsw, string &str
 	// 	proBar.SetText("更新初始化日期和标识中...");
 	// 	proBar.Show();
 	DBG_PRINT(("更新初始化时间中..."));
-	g_globalArg->m_initDate = TDateTime::CurrentDateTime().FormatInt();
+	 UINT32 nCurDate= TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
+	UINT8 ret=CheckCurDate(nCurDate,strErr);
+	if (ret !=SUCCESS)
+	{
+		CaMsgBox::ShowMsg(strErr);
+		return FAILURE;		
+	}
+	g_globalArg->m_initDate =nCurDate;
 	DBG_PRINT(("m_initDate=%d", g_globalArg->m_initDate));
 	memset(sqlbuf,0,sizeof(sqlbuf));
 	sprintf(sqlbuf, "update SYSARG set V_INT = %u where SA_ID = %d",
@@ -201,6 +215,10 @@ UINT8 FSC_InitProc(const string &strOldPsw, const string &strNewPsw, string &str
 	//更新初始化标志
 	g_globalArg->m_initFlag = 1;
 	
+	//6.初始化打印机主要参数
+#if (POS_TYPE == POS_APE4000RG)
+	PrinterIni();
+#endif
 	
 	CaMsgBox::ShowMsg("机器初始化成功");
 	
@@ -652,6 +670,9 @@ UINT8 FSC_ChangeDiskPsw(string strOldPsw, string strNewPsw,string &strErr)
 		return FAILURE;
 	}
 	
+	g_YwXmlArg->m_sksbkl =strNewPsw;
+	g_globalArg->m_strSksbkl= strNewPsw;
+
 	CaMsgBox::ShowMsg("金税盘口令修改成功");
 	
 	return SUCCESS;

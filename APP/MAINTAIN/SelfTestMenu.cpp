@@ -365,7 +365,7 @@ void CSelfTestMenu::OnButton6(int iEvent, unsigned char * pEventData, int iDataL
 		CaMsgBox::ShowMsg("打印机未检测到纸");
 		return;
 	}
-
+#if (POS_TYPE != POS_APE4000RG)
 	char chValue[256];
 	
 	UINT8 i =0;
@@ -397,7 +397,10 @@ void CSelfTestMenu::OnButton6(int iEvent, unsigned char * pEventData, int iDataL
 
 	ForwardNLine(FORWARD_LINES);
 	PrinterIni(bidirection);
-
+#else
+	BidirectionalParaTest();//双向打印参数检测功能并不改变当前设置的双向打印参数,无需再次设置
+	ForwardNLine(FORWARD_LINES);
+#endif
 
 	m_pSysArgEditWin = (CSysArgEditWin *)(m_pFrame->GetWin(SYS_ARG_EDIT_WIN));
 

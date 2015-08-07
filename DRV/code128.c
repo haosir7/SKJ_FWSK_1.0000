@@ -74,7 +74,7 @@ const unsigned int code128[106][6]=
 	{3,1,2,1,1,3},// Y           57
 	{3,1,2,3,1,1},// Z           58
 	{3,3,2,1,1,1},// [           59
-	{3,1,3,1,1,1},// \           60
+	{3,1,4,1,1,1},// \           60
 	{2,2,1,4,1,1},// ]           61
 	{4,3,1,1,1,1},// ^           62
 	{1,1,1,2,2,4},// _           63
@@ -103,7 +103,7 @@ const unsigned int code128[106][6]=
 	{4,1,1,2,1,2},// SYN   v     86
 	{4,2,1,1,1,2},// ETB   w     87
 	{4,2,1,2,1,1},// CAN   x     88
-	{2,1,2,1,3,1},// EM    y     89
+	{2,1,2,1,4,1},// EM    y     89
 	{2,1,4,1,2,1},// SUB   z     90
 	{4,1,2,1,2,1},// ESC   {     91
 	{1,1,1,1,4,3},// FS    |     92
@@ -156,29 +156,21 @@ void CreateRightCodeArray(void)
 	unsigned  char i;
 	unsigned int sum=0;
 	
-	//	printf("%d\n",strlen(WillprintNum));
-	//	printf("%d\n",(sizeof(WillprintNum)/sizeof(char)));
-	//	printf("ok\n");											   
-	//	while(strlen(WillprintNum)--)
 	for(i=0;i<strlen(WillprintNum);i++)	 
 	{
 		a[i]=*(WillprintNum+i);				  
 	}
 	for(i=0;i<strlen(WillprintNum)/2;i++)	  
 	{
-		a[i]=((a[2*i]-0x30))*10+(a[2*i+1]-0x30);
-		//	  	printf("%x\n",a[i]);
-		//		printf("ok\n");
+		a[i]=((a[2*i]-0x30))*10+(a[2*i+1]-0x30);//注意ascii字符表中字符0对应的hex值时0x30
 	}
-	//	CalculateCheckCode();
+
 	for(i=0;i<(strlen(WillprintNum))/2;i++)
 	{
 		sum+=(i+1)*a[i];
 	}
 	sum+=105;
 	checkcode=sum%103;
-	//	printf("%d\n",checkcode);
-	//	return a[24];
 }
 
 
@@ -200,8 +192,10 @@ void CreateRightCode(void)
 			LineCodeTab[k+(((strlen(WillprintNum))/2)*6)+6]=code128[checkcode][k];//校验位
 		}
 		j++; 
-		if(j==(strlen(WillprintNum))/2)	  j=0;
-	
+		if(j==(strlen(WillprintNum))/2)	
+		{
+			j=0;
+		}
 		
 	}
 				 
@@ -217,10 +211,10 @@ void CreateRightCode(void)
 }
 
 
-unsigned char  VerticalLineNum(void)
+unsigned char  VerticalLineNum(void)//计算打印点数(包括黑条与空白)
 {
-	unsigned char i,sum=0;	
-	// 	for(i=0;i<(sizeof(LineCodeTab)/sizeof(int));i++)
+	unsigned char i=0 ;
+	unsigned char sum=0;	
 	
 	for(i=0;i<((((strlen(WillprintNum))/2)+2)*6+7);i++)
 	{
@@ -232,15 +226,20 @@ unsigned char  VerticalLineNum(void)
 }
 void SetPrintLocation(unsigned char RightOffset)   //打印区域向右偏移RightOffset 个dot。
 {
-	unsigned char i;
-	Code128Return( 1,0x1B);								
+	unsigned char i=0;
+	Code128Return( 1,0x1b);								
 	us_delay(1000);
+#if (POS_TYPE != POS_APE4000RG)
 	Code128Return( 1,0x2B);			
 	us_delay(1000);
-	//	 printf("%d\n",PrintWild*(sizeof(LineCodeTab)/sizeof(int)));
-	//		Code128Return( 1,(PrintWild*(sizeof(LineCodeTab)/sizeof(int)));	//黑条数量
 	Code128Return( 1,0x01);			
 			us_delay(1000);
+#else
+	Code128Return( 1,0x2a);			
+	us_delay(1000);
+	Code128Return( 1,0x00);			
+	us_delay(1000);
+#endif
 	Code128Return( 1,RightOffset);
 	us_delay(1000);
 	Code128Return( 1,0x00);					 
@@ -283,14 +282,12 @@ void SetPrintCharLocation(unsigned char RightOffset)   //打印区域向右偏移RightOf
 }
 unsigned char CalculateCenter(unsigned char Offset)		//居中起始点计算 函数
 {
-	unsigned char i;
-	//	i=_MAX_DOT-VerticalLineNum();
-	if(Offset > (_MAX_DOT-VerticalLineNum())/2)
-	{
-		//	Offset = Offset - (_MAX_DOT-VerticalLineNum()/2);	
-	}
+	unsigned char i=0;
+
 	if(!(Offset%2)) 
+	{
 		Offset=Offset/2;
+	}
 	else					  
 	{
 		Offset=(Offset+_1Dot)/2;
@@ -314,6 +311,7 @@ unsigned char CalculateCharLocation(void)		//居中点计算 函数
 	return i;
 	
 }
+#if (POS_TYPE != POS_APE4000RG)
 void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned char Offset)
 {
 	unsigned int i,j,n,m;
@@ -410,6 +408,8 @@ void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned c
 	}	
 	
 }
+
+
 void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char PrintOffset)
 {
 	unsigned char i;
@@ -471,6 +471,128 @@ void PrintLineCode(const unsigned char *chBuf)
 
 }
 
+#else
+
+void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned char Offset)
+{
+	unsigned int i,j,n,m;
+	unsigned int print_times,line_high,printwild;			
+
+	for(line_high=0;line_high<LineHigh;line_high++)
+	{
+		for(print_times=0;print_times<PrintTimes;print_times++)				  
+		{			 
+			Code128Return( 1,0x1b);								
+			us_delay(1000);
+			Code128Return( 1,0x2a);			
+			us_delay(1000);
+			Code128Return( 1,0x00);			
+			us_delay(1000);
+			Code128Return( 1,VerticalLineNum()+Offset);
+			us_delay(1000);
+			Code128Return( 1,0x00);
+			us_delay(1000);
+			for(i=0;i<Offset;i++)
+			{				
+				Code128Return( 1,0x00);	//头部静止区对应的条形码,Offset个点距	
+				us_delay(2000);					 
+			}
+			for(i=0;i<((((strlen(WillprintNum))/2)+2)*6+7);i++)
+			{
+#if 1										 
+				if(i%2==0)											  
+				{
+					for(m=0;m<linecodetab[i];m++)
+					{ 
+						Code128Return( 1,0xff);	//黑条数量
+						us_delay(2000);	
+					}
+				}
+				else
+				{
+					
+					for(n=0;n<linecodetab[i];n++)
+					{ 
+						Code128Return( 1,0x00);	//空白条数量
+						us_delay(2000);		
+					}
+				}
+#endif
+			}
+			
+			Code128Return( 1,0x1b);
+			us_delay(1000);
+			Code128Return( 1,0x4a);
+			us_delay(1000);
+			Code128Return( 1,0x01);
+			us_delay(1000);		
+		}
+		//printf("\n**************GetPrinterStatus_check**************\n");		
+		//while(GetPrinterStatus());
+		//while(GetPrinterStatus());
+		//while(GetPrinterStatus());
+		Code128Return( 1,0x1b);
+		us_delay(1000);
+		Code128Return( 1,0x4a);
+		us_delay(1000);
+		Code128Return( 1,0x0c);
+		us_delay(1000);	
+	}		
+}
+
+void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char PrintOffset)
+{
+	unsigned char i=0;
+
+	CreateRightCode();
+	PrintOffset = PrintOffset-(VerticalLineNum()+15);
+	
+	for(i=0;i<PrintHigh;i++)//打印高度
+	{
+		while(GetPrinterStatus());
+		//while(GetPrinterStatus());
+		//while(GetPrinterStatus());
+		//PrintLineCodeImg(1,Printtimes,CalculateCenter(PrintOffset+(167-((strlen(WillprintNum)+2)*11+13)/2)/2));
+		PrintLineCodeImg(1,Printtimes,CalculateCenter(PrintOffset));
+
+		us_delay(2000);
+	}
+	Code128Return( 1,0x1B);
+	us_delay(1000);
+	Code128Return( 1,0x4a);//打印机进纸指令
+	us_delay(1000);
+	Code128Return( 1,0x06);
+	us_delay(1000);
+	
+	
+	Code128Return( 1,0x1B);
+	us_delay(1000);
+	Code128Return( 1,0x4a);
+	us_delay(1000);
+	Code128Return( 1,0x04);
+	us_delay(1000);	
+	
+}
+void PrintLineCode(const unsigned char *chBuf)
+{
+	//CodeTwo(2, 0x1B,0x2E);
+	CommonSleep(1);
+	
+	WillprintNum= chBuf;
+
+	//打印一维条形码
+	Print_Con(3,2,_MAX_DOT);	   //打印高度，打印次数，偏移量
+
+	us_delay(5000);
+
+	PrintYwtm(chBuf);//打印数字校验码
+	us_delay(3000);
+	CommonSleep(1);
+	CarriageReturn();
+	LineFormard();
+}
+
+#endif
 
 void us_delay(unsigned int us)	//1 us delay
 {

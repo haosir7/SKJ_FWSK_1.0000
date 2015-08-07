@@ -62,7 +62,9 @@ INT8 print_invoice_head( TPrnInvoiceInfo *invData)
 	//prn_log2("g_YW_PowerOffData->ProcData.fptk_data.RemainLineCount = %u",g_YW_PowerOffData->ProcData.fptk_data.RemainLineCount);
 	prn_log2("m_RemainLineCount = %u", *m_RemainLineCount);
 	
-	PrinterIni(bidirection);
+#if (POS_TYPE != POS_APE4000RG)
+PrinterIni(bidirection);
+#endif
 	SetLineSpace(0);
 	
 	while(GetUsedLines());
@@ -330,7 +332,6 @@ INT8 print_invoice_tail(TPrnInvoiceInfo *invData)
 	if (pSaveTemplateInfo->EndBackwardFlag == 0)
 	{
 		ForwardNPoint(pSaveTemplateInfo->EndForwardPoint);
-//		BackwardNPoint(pSaveTemplateInfo->EndForwardPoint);
 	}
 #if SIDA_PRINTER
 	else
@@ -679,7 +680,11 @@ INT8 isPaper(void)
 	prn_log("before GetPrinterStatus");
 	
 	ch = GetPrinterStatus();
+#if (POS_TYPE != POS_APE4000RG)
 	ch &= 0x01;
+#else
+	ch &= 0x04;
+#endif
 	prn_log2("Receive data %x", ch);
 	
 	switch (ch)
