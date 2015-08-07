@@ -19,12 +19,12 @@
 #include "YWXmlBase.h"
 
 #if (TYPE_MODE == ZHQ_MODE)
-CFiscalMenu::CFiscalMenu():CMultiBtnCommonWin(8, 2)
+CFiscalMenu::CFiscalMenu():CMultiBtnCommonWin(9, 2)
 {
 
 }
 #else
-CFiscalMenu::CFiscalMenu():CMultiBtnCommonWin(7,2)
+CFiscalMenu::CFiscalMenu():CMultiBtnCommonWin(8,2)
 {
 	
 }
@@ -44,9 +44,10 @@ int CFiscalMenu::Create(int iX,int iY,int iW,int iH)
 	SetTitle(4,"D.网络抄报");
 	SetTitle(5,"E.金税盘口令");
 	SetTitle(6,"F.发票上传");
-	SetTitle(7,  "G.发票补录");
+	SetTitle(7, "G.发票补录");
+	SetTitle(8, "H.上传日志");
 #if TYPE_MODE == ZHQ_MODE
-	SetTitle(8,  "H.离线数据");
+	SetTitle(9,  "I.离线数据");
 #endif
 
 	return 1;
@@ -198,9 +199,24 @@ void CFiscalMenu::OnButton7(int iEvent, unsigned char * pEventData, int iDataLen
 	ChangeWin(FPBL_WIN);
 }
 
+
+//发票补录
+void CFiscalMenu::OnButton8(int iEvent, unsigned char * pEventData, int iDataLen)
+{
+	if (g_globalArg->m_initFlag != 1)
+	{
+		CaMsgBox::ShowMsg("机器未初始化");
+		DBG_PRINT(("退出FiscalMainMenu::OnButton8函数"));
+		
+		return ;
+	}
+	
+	ChangeWin(ERR_UP_INV_WIN);
+}
+
 #if (TYPE_MODE == ZHQ_MODE)
 //离线数据
-void CFiscalMenu::OnButton8(int iEvent, unsigned char * pEventData, int iDataLen)
+void CFiscalMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 	if (g_globalArg->m_initFlag != 1)
 	{

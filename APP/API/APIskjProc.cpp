@@ -583,5 +583,28 @@ INT32 CAPIskjProc::LibClearDepot(string &strErr)
 // 	return SUCCESS;
 // }
 
+
+/*!
+ 金税盘发票查询（发票段信息查询）
+*/
+INT32 InvUpFailInfo_API(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
+{
+	INT32 ret = SUCCESS;
+
+	CInvBusinessFunc invBusFun;
+	
+	ret= invBusFun.ErrUpInvPro(ywxml_gy, ErrInvNum, pInvUpFailInfo, strErr);
+	
+	if (ret !=SUCCESS)
+	{
+		return FAILURE;
+	}
+
+	return ret;
+}
+
+
+
+
 #endif
 

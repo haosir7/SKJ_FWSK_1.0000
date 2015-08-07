@@ -34,6 +34,7 @@
 #include "YWXML_SKSBQTYXXCX.h"
 #include "YWXML_BGZSKL.h"
 #include "YWXML_FPBL.h"
+#include "YWXML_ERRUPINV.h"
 
 #include "NETXML_FPSC.h"
 #include "NETXML_FPSCJGHQ.h"
@@ -405,6 +406,7 @@ INT32 CBusinessXmlProc::BGZSKL_Business(CYWXML_GY &ywxml_gy, string oldPwd, stri
 	return ret;
 }
 
+
 //发票补录
 INT32 CBusinessXmlProc::FPBL_Business(CYWXML_GY &ywxml_gy, UINT32 SDate, UINT32 EDate, string &strErr)
 {
@@ -413,6 +415,29 @@ INT32 CBusinessXmlProc::FPBL_Business(CYWXML_GY &ywxml_gy, UINT32 SDate, UINT32 
 	CFpbl Fpbl(ywxml_gy, SDate, EDate);
 	
 	ret = Fpbl.YWXml_Proc(strErr);
+	
+	return ret;
+}
+
+//2.29.获取上传出错发票信息
+INT32 CBusinessXmlProc::ErrUpInv_Business(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
+{
+	INT32 ret = XML_SUCCESS;
+	ywxml_gy.m_strID = BUSINESS_YWID_ERRUPINV;
+	
+	CErrInvInfo ErrInvInfo;
+	CErrUpInv ErrUpInv(ywxml_gy, ErrInvInfo);
+	
+	ret = ErrUpInv.YWXml_Proc(strErr);
+
+	DBG_PRINT(("ErrInvInfo num = %u", ErrInvInfo.m_ErrUpNum));
+	ErrInvNum = ErrInvInfo.m_ErrUpNum;
+	for(int i=0; i<ErrInvNum; i++)
+	{
+		pInvUpFailInfo[i].m_fpdm = ErrInvInfo.InvUpFailInfo[i].m_fpdm;
+		pInvUpFailInfo[i].m_fpdm = ErrInvInfo.InvUpFailInfo[i].m_fphm;
+		pInvUpFailInfo[i].m_ErrInfo = ErrInvInfo.InvUpFailInfo[i].m_ErrInfo;
+	}
 	
 	return ret;
 }

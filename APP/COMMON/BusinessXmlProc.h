@@ -99,6 +99,9 @@ public:
 	
 	//变更证书口令
 	INT32 BGZSKL_Business(CYWXML_GY &ywxml_gy, string oldPwd, string newPwd, string &strErr);
+
+	//2.29.获取上传出错发票信息
+	INT32 ErrUpInv_Business(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr);
 	
 	//3.1发票上传
 	INT32 NETFPSC_Business(CYWXML_GY &ywxml_gy, const string &Fpmx, UINT32 Fpzs, string &Slxlh, string &strErr);

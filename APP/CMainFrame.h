@@ -91,7 +91,8 @@ typedef enum _WINDOW{
                     INV_CHECK_OLD_PRN_WIN,
 //					//Report end
 //
-//					//added by ZL 
+//					//added by ZL
+					ERR_UP_INV_WIN, 
 					PROGRAM_CTRL_MAIN_MENU,
 					DEPT_EDIT_WIN,
 //					PLU_EDIT_WIN,
@@ -154,6 +155,7 @@ typedef enum _WINDOW{
 					ZHQ_SERVERIP_SET_WIN,
 					FPBL_WIN,
 					HQLXSJ_WIN
+					
 					//net module window end
 
 } WINDOW_ID;    //ÐÂÔöÆ´Òô´°¿Ú

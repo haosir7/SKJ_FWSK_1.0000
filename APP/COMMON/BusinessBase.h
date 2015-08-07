@@ -16,6 +16,7 @@
 #include "CInvVol.h"
 #include "CTax.h"
 #include "CTjxxhz.h"
+#include "CInvUpFailInfo.h"
 
 //业务流程调用函数接口方式
 #ifndef BUSINESS_JSK_MODE
@@ -155,6 +156,9 @@ public:
 
 	//变更证书口令
 	virtual INT32 BGZSKL_Business(CYWXML_GY &ywxml_gy, string oldPwd, string newPwd, string &strErr)=0;
+
+	//获取上传出错发票信息
+	virtual INT32 ErrUpInv_Business(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)=0;
 
 
 	//3.1发票上传

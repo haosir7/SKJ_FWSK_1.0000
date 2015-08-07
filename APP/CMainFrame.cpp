@@ -126,6 +126,7 @@
 #include "ChangeDiskPswWin.h"
 #include "FpblWin.h"
 #include "HqlxsjWin.h"
+#include "ErrUpInvWin.h"
 
 CMainFrame::~CMainFrame(){}
 CMainFrame::CMainFrame(){}
@@ -902,6 +903,12 @@ CaWindow *CMainFrame::CreateWin(int id)
 	case FPBL_WIN:
 		{
 			pWin = new CFpblWin;
+			pWin->Create(0,0,SCREEN_W, SCREEN_H);
+		}
+		break;
+	case ERR_UP_INV_WIN:
+		{
+			pWin = new CErrInvUpWin;
 			pWin->Create(0,0,SCREEN_W, SCREEN_H);
 		}
 		break;

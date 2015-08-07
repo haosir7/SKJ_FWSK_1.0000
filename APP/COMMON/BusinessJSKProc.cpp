@@ -337,6 +337,17 @@ INT32 CBusinessJSKProc::BGZSKL_Business(CYWXML_GY &ywxml_gy, string oldPwd, stri
 	return ret;
 }
 
+//2.29.获取上传出错发票信息
+INT32 CBusinessJSKProc::ErrUpInv_Business(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
+{
+	INT32 ret = JSK_SUCCESS;
+	
+// 	CJSKManageProc::set_JSKPara(ywxml_gy.m_jqbh, ywxml_gy.m_sksbkl, ywxml_gy.m_bspkl);
+// 	ret = CJSKInvManageProc::BSPFPCX_Proc(ywxml_gy.m_fplxdm, invNum, pInvVol, strErr);
+	
+	return ret;
+}
+
 //3.1发票上传
 INT32 CBusinessJSKProc::NETFPSC_Business(CYWXML_GY &ywxml_gy, const string &Fpmx, UINT32 Fpzs, string &Slxlh, string &strErr)
 {

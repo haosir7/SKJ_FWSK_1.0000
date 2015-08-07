@@ -11,6 +11,7 @@
 #include "YWXMLGY.h"
 #include "CInvVol.h"
 #include "CTjxxhz.h"
+#include "CInvUpFailInfo.h"
 
 class CInvBusinessFunc
 {
@@ -85,6 +86,9 @@ public:
 	*/
 	INT32 WLLQFPJGQRPro(CYWXML_GY &ywxml_gy, CInvVol *pInvVol, string &strErr);
 
+
+	//2.29.获取上传出错发票信息
+	INT32 ErrUpInvPro(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr);
 
 };
 
