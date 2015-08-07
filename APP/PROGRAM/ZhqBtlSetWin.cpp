@@ -111,7 +111,7 @@ int CZhqBtlSetWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 	{	   
 	case RETURN_MAIN_MENU: 
 		{
-			ChangeWin(ZHQ_PARA_SET_MENU);						
+			ChangeWin(ZHQ_MANAGE_MENU);						
 			return SUCCESS;
 		}
 		break;		
@@ -182,7 +182,7 @@ void CZhqBtlSetWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataL
 	if (SUCCESS == ret)
 	{
 		CaMsgBox::ShowMsg("波特率修改成功!");
-		ChangeWin(ZHQ_PARA_SET_MENU);
+		ChangeWin(ZHQ_MANAGE_MENU);
 	}
 	else
 	{
@@ -192,7 +192,7 @@ void CZhqBtlSetWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataL
 
 void CZhqBtlSetWin::OnButton2(int iEvent, unsigned char * pEventData, int iDataLen)
 {
-	ChangeWin(ZHQ_PARA_SET_MENU);
+	ChangeWin(ZHQ_MANAGE_MENU);
 }
 
 void CZhqBtlSetWin::DispCurInfo()

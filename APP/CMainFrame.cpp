@@ -865,7 +865,7 @@ CaWindow *CMainFrame::CreateWin(int id)
 		break;
 
 #if TYPE_MODE == ZHQ_MODE
-	case ZHQ_PARA_SET_MENU:
+	case ZHQ_MANAGE_MENU:
 		{
 			pWin = new CZhqParaSetMenu;
 			pWin->Create(0,0,SCREEN_W, SCREEN_H);

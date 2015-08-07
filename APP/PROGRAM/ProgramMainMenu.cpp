@@ -17,7 +17,7 @@
 
 //调用转换器接口，
 #if (TYPE_MODE == ZHQ_MODE)
-CProgramCtrlMenu::CProgramCtrlMenu():CMultiBtnCommonWin(10, 2)
+CProgramCtrlMenu::CProgramCtrlMenu():CMultiBtnCommonWin(9, 2)
 {
 }
 #else
@@ -42,8 +42,7 @@ int CProgramCtrlMenu::Create(int iX,int iY,int iW,int iH)
 	SetTitle(7,  "G.软件升级");
 	SetTitle(8,  "H.密码修改");
 #if TYPE_MODE == ZHQ_MODE
-	SetTitle(9,  "I.转换器设置");
-	SetTitle(0,  "J.联机测试");
+	SetTitle(9,  "I.转换器管理");
 #endif	
 	return 1;
 }
@@ -120,33 +119,11 @@ void CProgramCtrlMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDa
 
 #if TYPE_MODE == ZHQ_MODE
 	
-	ChangeWin(ZHQ_PARA_SET_MENU);	
+	ChangeWin(ZHQ_MANAGE_MENU);	
 #endif
 
 	return ;
 }
-
-//联机测试
-void CProgramCtrlMenu::OnButton10(int iEvent, unsigned char * pEventData, int iDataLen)
-{	
-#if TYPE_MODE == ZHQ_MODE
-	INT32 ret;
-	string strErr = "";
-	ret = g_globalArg->OnLineTest(strErr);
-	if (SUCCESS == ret)
-	{
-		CaMsgBox::ShowMsg("联机测试成功");
-	}
-	else
-	{
-		CaMsgBox::ShowMsg(strErr);
-		DBG_PRINT(("strErr : %s", strErr.c_str()));
-		//CaMsgBox::ShowMsg("联机测试失败");
-	}
-#endif
-	return ;
-}
-
 
 int CProgramCtrlMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 {

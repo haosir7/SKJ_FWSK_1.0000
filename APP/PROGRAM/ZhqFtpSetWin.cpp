@@ -59,7 +59,7 @@ int CZhqFtpSetWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 			if (msgBox.m_iStatus == OK_PRESSED)
 			{
 				ClearFTPWin();
-				ChangeWin(ZHQ_PARA_SET_MENU);						
+				ChangeWin(ZHQ_MANAGE_MENU);						
 				return SUCCESS;
 			}								
 		}
@@ -172,7 +172,7 @@ void CZhqFtpSetWin::OnBtn1(int iEvent, unsigned char * pEventData, int iDataLen)
 	DBG_PRINT(("NetPara表更新成功"));
 	CaMsgBox::ShowMsg("转换器网络设置成功");
 
-	ChangeWin(ZHQ_PARA_SET_MENU);
+	ChangeWin(ZHQ_MANAGE_MENU);
 }
 
 void CZhqFtpSetWin::OnBtn2(int iEvent, unsigned char * pEventData, int iDataLen)
@@ -268,7 +268,7 @@ void CZhqFtpSetWin::S_OnActive(CaWindow *obj)
 
 void CZhqFtpSetWin::DoActive()
 {		
-	m_netpara =  ((CZhqParaSetMenu *)m_pFrame->GetWin(ZHQ_PARA_SET_MENU))->m_ComNetpara;
+	m_netpara =  ((CZhqParaSetMenu *)m_pFrame->GetWin(ZHQ_MANAGE_MENU))->m_ComNetpara;
 	DispFTPInfo();
 	this->ReFresh();
 

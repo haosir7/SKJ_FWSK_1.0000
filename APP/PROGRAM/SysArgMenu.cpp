@@ -10,6 +10,10 @@
 #include "printer.h"
 #include "MaintenanceFunc.h"
 
+#include "LOGCTRL.h"
+//#define NO_POS_DEBUG
+#include "pos_debug.h"
+
 
 struct _Sys_Arg_info sys_arg_info[] = 
 {
@@ -250,10 +254,14 @@ void CSysArgMenu::SysArg_SetTitle(int num, struct _Sys_Arg_info *arg_info)
 	else
 	{
 		sprintf(str_val, "£º%u", m_sysArg->m_vInt);
+
+		DBG_PRINT(("m_sysArg->m_vInt : %u", m_sysArg->m_vInt));
+
 	}
 	title_string += str_val;
-
+	DBG_PRINT(("title_string : %s", title_string.c_str()));
 	SetTitle(num, title_string.c_str());
+
 
 	DBG_PRINT(("ÍË³öSysArg_SetTitleº¯Êý"));
 

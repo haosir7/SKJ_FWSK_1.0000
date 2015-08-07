@@ -55,7 +55,7 @@ int CZhqServeripSetWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDat
 			if (msgBox.m_iStatus == OK_PRESSED)
 			{
 		ClearZHQServWin();
-		ChangeWin(ZHQ_PARA_SET_MENU);						
+		ChangeWin(ZHQ_MANAGE_MENU);						
 		return SUCCESS;
 			}	
 		}
@@ -198,7 +198,7 @@ void CZhqServeripSetWin::S_OnActive(CaWindow *obj)
 void CZhqServeripSetWin::DoActive()
 {
 
-	m_netpara =  ((CZhqParaSetMenu *)m_pFrame->GetWin(ZHQ_PARA_SET_MENU))->m_ComNetpara;
+	m_netpara =  ((CZhqParaSetMenu *)m_pFrame->GetWin(ZHQ_MANAGE_MENU))->m_ComNetpara;
 
 	DispZHQServInfo();
 	this->ReFresh();

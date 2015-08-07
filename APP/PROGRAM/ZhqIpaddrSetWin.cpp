@@ -55,7 +55,7 @@ int CZhqIpaddrSetWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataL
 			if (msgBox.m_iStatus == OK_PRESSED)
 			{
 		ClearIpAddrWin();
-		ChangeWin(ZHQ_PARA_SET_MENU);						
+		ChangeWin(ZHQ_MANAGE_MENU);						
 		return SUCCESS;
 			}					
 		}
@@ -131,7 +131,7 @@ void CZhqIpaddrSetWin::OnBtn1(int iEvent, unsigned char * pEventData, int iDataL
 void CZhqIpaddrSetWin::OnBtn2(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 	ClearIpAddrWin();
-	ChangeWin(ZHQ_PARA_SET_MENU);
+	ChangeWin(ZHQ_MANAGE_MENU);
 }
 
 UINT8 CZhqIpaddrSetWin::CheckInputValid(string &strErr)
@@ -239,7 +239,7 @@ void CZhqIpaddrSetWin::S_OnActive(CaWindow *obj)
 void CZhqIpaddrSetWin::DoActive()
 {
 
-	m_netpara =  ((CZhqParaSetMenu *)m_pFrame->GetWin(ZHQ_PARA_SET_MENU))->m_ComNetpara;
+	m_netpara =  ((CZhqParaSetMenu *)m_pFrame->GetWin(ZHQ_MANAGE_MENU))->m_ComNetpara;
 
 	CaMsgBox msgBox("是否动态获取本机IP地址?",CaMsgBox::MB_YESNO);
 	msgBox.ShowBox();

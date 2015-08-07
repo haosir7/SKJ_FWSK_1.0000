@@ -450,5 +450,28 @@ INT32 CAPIzhqProc::LibClearDepot(string &strErr)
 	return ret;
 }
 
+
+
+INT32 CAPIzhqProc::InvUpFailInfo_API(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
+{
+
+	UINT8 ret = SUCCESS;
+	
+	ret = m_SerialProc.InvUpFailInfo_Serial(ywxml_gy, ErrInvNum, pInvUpFailInfo, strErr);
+		
+ 	return ret;
+}
+
+
+
+// INT32 CAPIzhqProc::ServerTest_API(CYWXML_GY &ywxml_gy, string &strErr)
+// {
+// 	UINT8 ret = SUCCESS;
+// 	
+// 	ret = m_SerialProc.ServerTest_Serial(ywxml_gy, strErr);
+// 	
+// 	return ret;
+// }
+
 #endif
 

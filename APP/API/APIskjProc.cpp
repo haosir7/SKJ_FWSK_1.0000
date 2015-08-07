@@ -576,5 +576,12 @@ INT32 CAPIskjProc::LibClearDepot(string &strErr)
 	return SUCCESS;
 }
 
+
+// INT32 CAPIskjProc::ServerTest_API(CYWXML_GY &ywxml_gy, string &strErr)
+// {
+// 
+// 	return SUCCESS;
+// }
+
 #endif
 

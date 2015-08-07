@@ -17,6 +17,7 @@
 #include "CNetPara.h"
 #include "CTax.h"
 #include "CTjxxhz.h"
+#include "CInvUpFailInfo.h"
 
 #include "CNetPara.h"
 
@@ -293,6 +294,23 @@ public:
 	@return  1 SUCCESS； 0  FAILURE
 	*/
 	virtual INT32 LibClearDepot(string &strErr)=0;
+
+	/*!
+	@brief  获取上传出错发票信息
+	@param[in] ywxml_gy
+	@param[out] ErrInvNum		出错的发票张数
+	@param[out] pInvUpFailInfo	出错的发票信息
+	@param[out] strErr			错误信息
+	*/
+	virtual INT32 InvUpFailInfo_API(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)=0;
+
+	/*!
+	@brief 网络连接测试
+	@param[in] ywxml_gy
+	@param[out] strErr   错误信息
+	@return  1 SUCCESS； 0  FAILURE
+	*/
+	//virtual INT32 ServerTest_API(CYWXML_GY &ywxml_gy, string &strErr)=0;
 };
 
 

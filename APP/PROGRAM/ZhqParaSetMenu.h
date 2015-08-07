@@ -29,6 +29,8 @@ private:
 
 	void OnButton1(int iEvent, unsigned char * pEventData, int iDataLen);
 	void OnButton2(int iEvent, unsigned char * pEventData, int iDataLen);
+	void OnButton3(int iEvent, unsigned char * pEventData, int iDataLen);
+	void OnButton4(int iEvent, unsigned char * pEventData, int iDataLen);
 };
 
 

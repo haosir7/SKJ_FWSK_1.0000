@@ -15,6 +15,7 @@
 #include "CTax.h"
 #include "CTjxxhz.h"
 #include "CNetPara.h"
+#include "CInvUpFailInfo.h"
 
 #include "YWXMLGY.h"
 
@@ -319,6 +320,24 @@ UINT8 hqlxsj_Serial(string &wscfpzs, string &wscfpsj, string &wscfpljje, string 
 @param[out] strErr	错误信息
 */
 UINT8 zhqClear_Serial(string &strErr);
+
+
+/*!
+@brief  获取上传出错发票信息
+@param[in] ywxml_gy
+@param[out] ErrInvNum		出错的发票张数
+@param[out] pInvUpFailInfo	出错的发票信息
+@param[out] strErr			错误信息
+*/
+UINT8 InvUpFailInfo_Serial(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr);
+
+
+/*!
+@brief  网络连接测试 检查服务器网络是否正常
+@param[in] 
+@param[out] strErr	错误信息
+*/
+//UINT8 ServerTest_Serial(CYWXML_GY &ywxml_gy, string &strErr);
 
 
 /*!

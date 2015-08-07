@@ -104,6 +104,9 @@
 
 #define	QTXX_LEN		500				//其他信息长度
 
+#define ERRFPZS_LEN			8				//出错发票张数长度
+#define ERRMESSAGE_LEN		128				//出错发票原因描述
+
 
 #define KPLX_ZSFP			0				//正数发票类型
 #define KPLX_FSFP			1				//负数发票类型
@@ -174,6 +177,8 @@
 #define SERIAL_ZSKLBG_CMD			0x1C		//证书口令变更命令
 #define SERIAL_FPBL_CMD				0x1D		//发票补录命令
 #define SERIAL_HQLXSJ_CMD			0x30		//获取离线数据命令
+#define SERIAL_GETUPLOADWRONGINV_CMD 0x31		//获取上传出错发票信息命令
+#define SERIAL_SERVERTES_CMD		0x32		//网络连接测试命令
 #define SERIAL_ZHQQK_CMD			0x99		//获取离线数据命令
 
 #endif

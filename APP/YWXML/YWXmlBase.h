@@ -21,6 +21,7 @@
 
 #define MAX_TAX_NUM			10
 #define INVVOL_MAX_NUM  100            //发票卷最大条数20150519linzihao
+#define INV_UP_FAIL_MAX_NUM		10		//获取发票上传出错的最大发票张数
 
 
 #define BUSINESS_YWID_SKSBBH		"SKSBBH"			//税控设备编号查询

@@ -14,7 +14,6 @@
 #include "netManager.h"
 #include "NetManageMenu.h"
 
-
 #if (TEST_CONNECT_TYPE==2)
 #include "NetCommunication.h"
 #endif
@@ -52,6 +51,25 @@ void CNetManageMenu::OnButton1(int iEvent, unsigned char * pEventData, int iData
 
 void CNetManageMenu::OnButton2(int iEvent, unsigned char * pEventData, int iDataLen)
 {
+
+// 	BAR_DEF();
+// 	BAR_SHOW("网络连接测试...");
+// 
+// 	INT32 ret = SUCCESS;
+// 	string strErr = "";
+// 
+// 	ret = g_pAPIBase->LXXXUpdatePro_API(*g_YwXmlArg, strErr);
+// 	if(ret == SUCCESS)
+// 	{
+// 		CaMsgBox::ShowMsg("网络连接测试成功!");	
+// 	}
+// 	else
+// 	{
+// 		CaMsgBox::ShowMsg(strErr);
+// 	}
+
+
+
 //	string strErr;
 	ConnectTest();
 //	if( ret == SUCCESS )

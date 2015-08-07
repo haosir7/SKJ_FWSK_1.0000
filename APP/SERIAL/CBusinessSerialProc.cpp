@@ -2,6 +2,7 @@
 #include "CBusinessSerialProc.h"
 #include "SerialConfig.h"
 #include "CGlobalArg.h"
+#include "YWXmlBase.h"
 
 
 #include "LOGCTRL.h"
@@ -2602,6 +2603,145 @@ UINT8 CBusinessSerialProc::zhqClear_Serial(string &strErr)
 	
 	return SUCCESS;
 }
+
+
+
+UINT8 CBusinessSerialProc::InvUpFailInfo_Serial(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
+{
+	DBG_PRINT(("----------获取上传出错发票信息----------"));
+	
+	UINT32 offset = 0;
+	UINT8 cmdNo = SERIAL_GETUPLOADWRONGINV_CMD;	//命令号赋值
+	enum ProtocolType cmdType = ZC_PROTOCOL;
+	
+	m_serialProtocol->FillParament(ywxml_gy.m_nsrsbh, NSRSBH_LEN);
+	m_serialProtocol->FillParament(ywxml_gy.m_sksbbh, SBBH_LEN);
+	m_serialProtocol->FillParament(ywxml_gy.m_sksbkl, KOULING_LEN);
+	m_serialProtocol->FillParament(ywxml_gy.m_jqbh, JQBH_LEN);
+	
+	UINT8 ret = m_serialProtocol->sendData(cmdType, cmdNo, strErr);
+	DBG_PRINT(("ret= %u",ret));
+	if (ret != SUCCESS)
+	{
+		m_serialProtocol->resetAll();
+		
+		return FAILURE;
+	}
+	
+	ret = m_serialProtocol->revData(strErr);
+	DBG_PRINT(("ret = %u", ret));
+	if (ret != SERCMD_SUCCESS)
+	{
+		m_serialProtocol->resetAll();
+		
+		DBG_PRINT(("revData() ret = %u", ret));
+		return FAILURE;
+	}
+	if(ret == SERCMD_SUCCESS)
+	{
+		if('O'==m_serialProtocol->m_rspCmd->head[0] && 'K'==m_serialProtocol->m_rspCmd->head[1])
+		{
+			INT8 StrTempBuf[TMP_BUF_LEN];
+			
+			memset(StrTempBuf, 0, sizeof(StrTempBuf));
+			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, ERRFPZS_LEN);
+			ErrInvNum = (UINT32)atoi(StrTempBuf);
+			DBG_PRINT(("出错发票张数 ErrInvNum = %d", ErrInvNum));
+			offset += ERRFPZS_LEN;
+
+			if (ErrInvNum > INV_UP_FAIL_MAX_NUM)
+			{
+				ErrInvNum = INV_UP_FAIL_MAX_NUM;
+			}
+			
+			UINT32 i = 0;
+			for (i=0; i< ErrInvNum; i++)
+			{
+				memset(StrTempBuf, 0, sizeof(StrTempBuf));
+				memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, FPDM_LEN);
+				pInvUpFailInfo[i].m_fpdm.assign(StrTempBuf);
+				DBG_PRINT(("pInvUpFailInfo[%u].m_fpdm: %s", i, pInvUpFailInfo[i].m_fpdm.c_str()));
+				offset += FPDM_LEN;
+				
+				memset(StrTempBuf, 0, sizeof(StrTempBuf));
+				memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, FPHM_LEN);
+				pInvUpFailInfo[i].m_fphm = (UINT32)atoi(StrTempBuf);
+				DBG_PRINT(("pInvUpFailInfo[%u].m_fphm: %u", i, pInvUpFailInfo[i].m_fphm));
+				offset += FPHM_LEN;
+				
+				memset(StrTempBuf, 0, sizeof(StrTempBuf));
+				memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, ERRMESSAGE_LEN);
+				pInvUpFailInfo[i].m_ErrInfo.assign(StrTempBuf);
+				DBG_PRINT(("pInvUpFailInfo[%u].m_ErrInfo: %s", i, pInvUpFailInfo[i].m_ErrInfo.c_str()));
+				offset += ERRMESSAGE_LEN;
+			}
+
+			m_serialProtocol->resetAll();
+		}
+		else
+		{
+			FindErrInfo((INT8 *)m_serialProtocol->m_rspCmd->rspData, strErr);
+			m_serialProtocol->resetAll();
+			
+			return FAILURE;
+		}
+	}
+	
+	return SUCCESS;
+
+}
+
+// UINT8 CBusinessSerialProc::ServerTest_Serial(CYWXML_GY &ywxml_gy, string &strErr)
+// {
+// 	DBG_PRINT(("----------网络连接测试----------"));
+// 	
+// 	UINT8 cmdNo = SERIAL_SERVERTES_CMD;	//命令号赋值
+// 	enum ProtocolType cmdType = ZC_PROTOCOL;
+// 
+// 	m_serialProtocol->FillParament(ywxml_gy.m_nsrsbh, NSRSBH_LEN);
+// 	m_serialProtocol->FillParament(ywxml_gy.m_sksbbh, SBBH_LEN);
+// 	m_serialProtocol->FillParament(ywxml_gy.m_sksbkl, KOULING_LEN);
+// 	m_serialProtocol->FillParament(ywxml_gy.m_jqbh, JQBH_LEN);
+// 	m_serialProtocol->FillParament(ywxml_gy.m_zskl, ZSKOULING_LEN);
+// 
+// 
+// 	UINT8 ret = m_serialProtocol->sendData(cmdType, cmdNo, strErr);
+// 	DBG_PRINT(("ret= %u",ret));
+// 	if (ret != SUCCESS)
+// 	{
+// 		m_serialProtocol->resetAll();
+// 		
+// 		return FAILURE;
+// 	}
+// 	
+// 	ret = m_serialProtocol->revData(strErr);
+// 	DBG_PRINT(("ret = %u", ret));
+// 	if (ret != SERCMD_SUCCESS)
+// 	{
+// 		m_serialProtocol->resetAll();
+// 		
+// 		DBG_PRINT(("revData() ret = %u", ret));
+// 		return FAILURE;
+// 	}
+// 	if(ret == SERCMD_SUCCESS)
+// 	{
+// 		DBG_PRINT(("m_serialProtocol->m_rspCmd->head : %c%c", m_serialProtocol->m_rspCmd->head[0], m_serialProtocol->m_rspCmd->head[1]));
+// 		if('E'==m_serialProtocol->m_rspCmd->head[0] && 'R'==m_serialProtocol->m_rspCmd->head[1])
+// 		{
+// 			FindErrInfo((INT8 *)m_serialProtocol->m_rspCmd->rspData, strErr);
+// 			m_serialProtocol->resetAll();
+// 			
+// 			return FAILURE;
+// 		}
+// 		
+// 		m_serialProtocol->resetAll();
+// 	}
+// 	
+// 	return SUCCESS;
+// 
+// }
+
+
 
 UINT8 CBusinessSerialProc::FindErrInfo(INT8 *ErrBuf, string &strErr)
 {
