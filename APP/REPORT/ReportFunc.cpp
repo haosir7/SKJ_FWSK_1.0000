@@ -90,6 +90,20 @@ UINT8 YesNoMsgBox(string strInfo)
 	}
 }
 
+
+UINT8 CheckCurDate(UINT32 nCurDate,string &strErr)
+{
+	DBG_PRINT(("nCurDate= %u",nCurDate));
+    if (nCurDate < 2000)
+    {
+		strErr="款机时钟异常,请及时校正!";
+		return FAILURE;
+    }
+	
+	return SUCCESS;
+	
+}
+
 //月统计查询
 UINT8 GetMonthSumCount(CTjxxhz *pTjxxhz, string &strErr)
 {
@@ -99,6 +113,8 @@ UINT8 GetMonthSumCount(CTjxxhz *pTjxxhz, string &strErr)
 	
 	retCode = g_pAPIBase->TJXXCXPro_API(*g_YwXmlArg, pTjxxhz, strErr);
 	DBG_PRINT(("GetMonthSumCount_retCode : %d", retCode));
+
+	DBG_PRINT(("g_YwXmlArg->m_fplxdm : %s", g_YwXmlArg->m_fplxdm.c_str()));
 
 	if (retCode != SUCCESS)
 	{
@@ -172,6 +188,7 @@ UINT8 PrnSysLogHead(UINT32 nStartDate, UINT32 nEndDate)
 
 	PrintReportLine("         << 安 全 日 志 报 表 >>", sizeof("         << 安 全 日 志 报 表 >>"));
 	nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
+	
 	nCurTime = TDateTime::CurrentDateTime().FormatInt(HHMMSS);
 
 	sprintf(pGeneralPrnBuff, "制表日期：%04lu-%02lu-%02lu   时间：%02lu:%02lu:%02lu", nCurDate / 10000,

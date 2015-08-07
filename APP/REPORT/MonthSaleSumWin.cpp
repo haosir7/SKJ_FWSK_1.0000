@@ -220,7 +220,7 @@ UINT8 CMonthSaleSumWIn::CheckInput(void)
 	
 	char *content1;
 	UINT32 nNum = 0;
-
+string strErr="";
 	content1 = (char*)(m_pInput1->m_contentBuf); 
 	DBG_PRINT(("CheckInput content1 = %s", content1));
 
@@ -253,16 +253,20 @@ UINT8 CMonthSaleSumWIn::CheckInput(void)
 	}
 
 	UINT32 nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
+
 	year = nCurDate/10000;
 	month = (nCurDate%10000)/100;
 	day = nCurDate%100;
 	nCurDate = year*100+month;
 
-	if (1970 == year)
+	UINT8 ret=CheckCurDate(nCurDate,strErr);
+	if (ret !=SUCCESS)
 	{
-		CaMsgBox::ShowMsg("当前日期为1970,请修改");
+		CaMsgBox::ShowMsg(strErr);
 		return FAILURE;
 	}
+
+
 	if (m_StartDate>nCurDate) 
 	{
 		m_pInput1->SetFocus();
@@ -376,6 +380,13 @@ UINT8 CMonthSaleSumWIn::CheckInput(void)
 	}
 
 	UINT32 nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
+    UINT8 ret=CheckCurDate(nCurDate,strErr);
+	if (ret !=SUCCESS)
+	{
+		CaMsgBox::ShowMsg(strErr);
+		return FAILURE;		
+	}
+
 	if (m_StartDate>nCurDate) 
 	{
 		m_pInput1->SetFocus();
@@ -444,7 +455,7 @@ UINT8 CMonthSaleSumWIn::PrnMonthSaleSumProc()
 	DBG_PRINT(("PrnMonthSaleSumProc()"));
 
 	UINT8 ret;
-	string strTime = "";
+	string strErr = "";
 	INT8 chValue[256];
 	memset((void*)chValue, 0, sizeof(chValue));
 
@@ -460,6 +471,14 @@ UINT8 CMonthSaleSumWIn::PrnMonthSaleSumProc()
 		return FAILURE;
 	}
 
+
+	UINT32 nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
+	UINT8 ret=CheckCurDate(nCurDate,strErr);
+	if (ret !=SUCCESS)
+	{
+		CaMsgBox::ShowMsg(strErr);
+		return FAILURE;		
+	}
 	CaProgressBar proBar("月销售统计打印中.....");
 	proBar.ReFresh();
 

@@ -240,7 +240,14 @@ UINT8 CSysLogDateWin::CheckInput(void)
 		return FAILURE;
 	}
 
+	string strErr="";
 	UINT32 nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
+	UINT8 ret=CheckCurDate(nCurDate,strErr);
+	if (ret !=SUCCESS)
+	{
+		CaMsgBox::ShowMsg(strErr);
+		return FAILURE;		
+	}
 	if(m_EndDate>nCurDate)
 	{
 		m_pInput2->SetFocus();
@@ -281,6 +288,16 @@ UINT8 CSysLogDateWin::PrnSysLog(UINT32 nStartDate, UINT32 nEndDate)
 	{	
 		CaMsgBox::ShowMsg("打印机未检测到纸");
 		return FAILURE;
+	}
+
+	string strErr="";
+
+	UINT32 nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
+	ret=CheckCurDate(nCurDate,strErr);
+	if (ret !=SUCCESS)
+	{
+		CaMsgBox::ShowMsg(strErr);
+		return FAILURE;		
 	}
 
 	CaProgressBar proBar("日志打印中.....");

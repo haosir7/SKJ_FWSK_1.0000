@@ -83,7 +83,13 @@ typedef struct _TCheckOldInfo
 @return  1: SUCCESS（是）; 0: FAILURE（否）
 */
 UINT8 YesNoMsgBox(string strInfo);
-
+/*!
+@brief 获取当前日期和时间
+@param[in] nCurDate 日期
+@param[out] strErr  错误信息
+@return  1: SUCCESS（是）; 0: FAILURE（否）
+*/
+UINT8 CheckCurDate(UINT32 nCurDate, string &strErr);
 /*!
 @brief 获取日汇总表某时间段的记录数	
 @param[in] nStartDate   起始日期

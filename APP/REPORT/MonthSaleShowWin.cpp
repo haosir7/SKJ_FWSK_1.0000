@@ -314,7 +314,7 @@ UINT8 CMonthSaleShowWIn::PrnMonthSaleSumProc()
 	DBG_PRINT(("PrnMonthSaleSumProc()"));
 
 	UINT8 ret;
-	string strTime = "";
+	string strErr = "";
 	INT8 chValue[256];
 	memset((void*)chValue, 0, sizeof(chValue));
 
@@ -330,10 +330,20 @@ UINT8 CMonthSaleShowWIn::PrnMonthSaleSumProc()
 		return FAILURE;
 	}
 
+
+	UINT32 nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
+	 ret=CheckCurDate(nCurDate,strErr);
+	if (ret !=SUCCESS)
+	{
+		CaMsgBox::ShowMsg(strErr);
+		return FAILURE;		
+	}
+
 	CaProgressBar proBar("月销售统计打印中.....");
 	proBar.ReFresh();
 
 	//打印报表头
+	
 	PrnSaleSumHead(m_iStartDate, 0, m_iEndDate, 235959, 0);
 
 	MonthSaleSumHandle();
