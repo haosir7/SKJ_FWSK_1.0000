@@ -587,7 +587,7 @@ INT32 CAPIskjProc::LibClearDepot(string &strErr)
 /*!
  金税盘发票查询（发票段信息查询）
 */
-INT32 InvUpFailInfo_API(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
+INT32 CAPIskjProc::InvUpFailInfo_API(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
 {
 	INT32 ret = SUCCESS;
 
