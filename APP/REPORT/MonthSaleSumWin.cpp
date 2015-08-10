@@ -220,7 +220,7 @@ UINT8 CMonthSaleSumWIn::CheckInput(void)
 	
 	char *content1;
 	UINT32 nNum = 0;
-string strErr="";
+    string strErr="";
 	content1 = (char*)(m_pInput1->m_contentBuf); 
 	DBG_PRINT(("CheckInput content1 = %s", content1));
 
@@ -254,11 +254,6 @@ string strErr="";
 
 	UINT32 nCurDate = TDateTime::CurrentDateTime().FormatInt(YYYYMMDD);
 
-	year = nCurDate/10000;
-	month = (nCurDate%10000)/100;
-	day = nCurDate%100;
-	nCurDate = year*100+month;
-
 	UINT8 ret=CheckCurDate(nCurDate,strErr);
 	if (ret !=SUCCESS)
 	{
@@ -266,6 +261,10 @@ string strErr="";
 		return FAILURE;
 	}
 
+	year = nCurDate/10000;
+	month = (nCurDate%10000)/100;
+	day = nCurDate%100;
+	nCurDate = year*100+month;
 
 	if (m_StartDate>nCurDate) 
 	{

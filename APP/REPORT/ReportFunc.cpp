@@ -93,12 +93,13 @@ UINT8 YesNoMsgBox(string strInfo)
 
 UINT8 CheckCurDate(UINT32 nCurDate,string &strErr)
 {
+	DBG_PRINT(("nCurDate= %u",nCurDate));
 	nCurDate =nCurDate /10000;
 
 	DBG_PRINT(("nCurDate= %u",nCurDate));
     if (nCurDate < 2000)
     {
-		strErr="款机时钟异常,请连接金税盘\n重新登录!";
+		strErr="款机时钟异常,请连接金税盘,重新登录!";
 		return FAILURE;
     }
 	
