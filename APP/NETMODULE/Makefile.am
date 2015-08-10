@@ -16,4 +16,4 @@ LANConnection.cpp ADSLConnection.cpp 3GConnection.cpp M2M_APN_Connection.cpp M2M
 
 #SUBDIRS = proc
 
-INCLUDES = -I../../SYS -I../../TPL -I../../GUI -I../../DB -I../../LIB -I../../DRV -I../API -I../COMMON  -I./proc -I./gui_net -I../ -I./ 
+INCLUDES = -I../../SYS -I../../TPL -I../../GUI -I../../DB -I../../LIB -I../../DRV -I../API -I../COMMON  -I../YWXML -I./proc -I./gui_net -I../ -I./ 
