@@ -70,9 +70,9 @@ INT8 print_volumeinfo(struct TVolSumPrnData *volsumdata,UINT8 bFindBlackMark)
 	UINT8 invCode[INV_TYPE_CODE_LEN*2+1];
 
 //	PrinterIni(BIDIRECTIONAL);
-#if (POS_TYPE != POS_APE4000RG)
+
 PrinterIni(bidirection);
-#endif
+
 
 	SetLineSpace(REPORT_LINE_SPACE);
 
@@ -215,9 +215,9 @@ int print_dateseginvsuminfo( struct TDateSegSumPrnData * dateSegSumData,
 	
 
 //	PrinterIni(BIDIRECTIONAL);
-#if (POS_TYPE != POS_APE4000RG)
+
 PrinterIni(bidirection);
-#endif
+
 
 
 	SetLineSpace(REPORT_LINE_SPACE);
@@ -370,10 +370,7 @@ int print_daystatinfo( struct TDaySumInfoPrnData *daySumData, UINT8 bFindBlackMa
 
 
 //	PrinterIni(BIDIRECTIONAL);
-#if (POS_TYPE != POS_APE4000RG)
 PrinterIni(bidirection);
-#endif
-
 
 	SetLineSpace(REPORT_LINE_SPACE);
 
@@ -502,9 +499,7 @@ int print_sbstatinfo(  struct TDeclareSumPrnData *DeclareSumPrnData )
 	
 
 //	PrinterIni(BIDIRECTIONAL);
-#if (POS_TYPE != POS_APE4000RG)
 PrinterIni(bidirection);
-#endif
 
 
 	SetLineSpace(REPORT_LINE_SPACE);
@@ -630,10 +625,7 @@ int print_macinfo(struct TMachinePrnData *machineData,  UINT8 bFindBlackMark )
 {
 
 //	PrinterIni(BIDIRECTIONAL);
-#if (POS_TYPE != POS_APE4000RG)
 PrinterIni(bidirection);
-#endif
-	
 
 	SetLineSpace(REPORT_LINE_SPACE);
 
@@ -706,9 +698,8 @@ PrinterIni(bidirection);
 int print_corpinfo(struct TCorpInfoPrnData *corpData,  UINT8 bFindBlackMark )
 {
 //	PrinterIni(BIDIRECTIONAL);
-#if (POS_TYPE != POS_APE4000RG)
 PrinterIni(bidirection);
-#endif
+
 	SetLineSpace(REPORT_LINE_SPACE);
 
 	UINT8 flagBuff[64];
@@ -1163,9 +1154,7 @@ INT8 print_invoiceLimits( struct TInvLimitPrnData *invLimits, UINT8 bFindBlackMa
 {
 
 //	PrinterIni(BIDIRECTIONAL);
-#if (POS_TYPE != POS_APE4000RG)
 PrinterIni(bidirection);
-#endif
 
 
 	SetLineSpace(REPORT_LINE_SPACE);

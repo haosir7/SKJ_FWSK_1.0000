@@ -70,9 +70,527 @@ void  msdelay(UINT32 Msecs)
     return;
 }
 
-#if (POS_TYPE != POS_APE4000RG)
+ 
+#if (POS_TYPE == POS_APE4000RG)
+
 void OpenPrinterDEV()
 {
+
+#ifndef WIN32
+
+	printf("4000RG_uart1 opened start\n");
+	INT32 res;
+
+	pPrinterSerial = &Printerserial;
+	SerialPortContruct(pPrinterSerial);
+	
+	res = pPrinterSerial->InitPort(pPrinterSerial, "/dev/uart1", 1, 57600);
+	
+	if (res == FAILURE) 
+	{
+		pPrinterSerial->ClosePort(pPrinterSerial);
+		printf("4000RG_open uart1 error\n");
+		exit(-1);
+	}
+	else
+	{
+		printf("4000RG_uart1 opened\n");
+	}
+	fd_uart1 = pPrinterSerial->m_fd;
+	printf("4000RG_uart1: InitPort Success %d\n", fd_uart1);
+
+#endif
+	return;
+}
+
+void PrinterIni(UINT8 bidirectionalPrint)
+{
+	printf("\n*****************************4000RG_PrinterIni_Begin********************\n");
+
+	return;
+}
+
+void YMPrinterIni(void)
+{
+#ifndef WIN32
+	
+	printf("\n*****************************PrinterIni_Begin********************\n");
+
+	SendCmd(2, 0x1B, 0x40);//设置初始化命令,该命令不会改变双向打印参数的设置,以及下面两项
+
+	UINT8 str_Blackmarkset[]= {0x1b, 0x10, 0x23, 0x00, 0x07, 0x01, 0x56};//黑标检测设置为有效
+	UINT8 str_Printerinitset[]= {0x1b, 0x10, 0x18, 0x00, 0x08, 0x00, 0xaa, 0xf5};//打印初始位置相对于黑标的偏移量,检测到黑标后,继续进纸30mm,约170步
+	UINT8 str_Jinzhimodeset[]= {0x1b, 0x10, 0x2a, 0x00, 0x07, 0x00, 0x5c};//进纸模式设置,在缺纸下重新上纸打印机将自动卷纸到打印位,在黑标模式下,进纸时检测黑标
+
+	write(fd_uart1, str_Blackmarkset, sizeof(str_Blackmarkset));
+	write(fd_uart1, str_Printerinitset, sizeof(str_Printerinitset));
+	write(fd_uart1, str_Jinzhimodeset, sizeof(str_Jinzhimodeset));
+
+	printf("\n*****************************PrinterIni_End********************\n");
+#endif //WIN32
+
+	return;
+}
+
+void SetChineseMode(void)
+{
+#if SIDA_PRINTER
+	return;
+#endif
+	SendCmd(2, 0x1C, 0x26);
+	SendCmd(3, 0x1C, 0x21, 0x00);//选择中文方式下的打印模式
+}
+
+void SetAsciiMode(void)
+{
+#if SIDA_PRINTER
+	return;
+#endif
+	SendCmd(3, 0x1B,0x21, 0X01);
+	
+}
+
+void ForwardNPoint(UINT16 N)
+{
+	printf("\n*****************************ForwardNPoint N0 = %u********************\n",N);
+	if (N == 0)
+	{
+		return;
+	}
+	SendCmd(3, 0x1B, 0x4A, N);
+}
+
+
+void ForwardNLine(UINT8 N)
+{
+	UINT8 i;
+	
+	printf("\n*****************************ForwardNLine N0 = %u********************\n",N);
+	SendCmd(3, 0x1B, 0x64, N);
+}
+
+
+void SetDoubleChineseMode(void)
+{
+	printf("\n*****************************SetDoubleChineseMode********************\n");
+
+	SendCmd(3, 0x1C, 0x21, 0x04);//选择中文方式下的打印模式
+}
+
+
+void CancelDoubleChineseMode(void)
+{
+	printf("\n*****************************CancelDoubleChineseMode********************\n");
+
+	SendCmd(3, 0x1C, 0x21, 0x00);//选择中文方式下的打印模式
+}
+
+
+void SetLineSpace(UINT8 N)
+{
+	printf("\n*****************************SetLineSpace N0 = %u********************\n",N);
+
+	if (N < 16)
+	{
+		N = N + 16;
+	}
+	printf("\n*****************************SetLineSpace N1 = %u********************\n",N);
+	SendCmd(3, 0x1B, 0x33, N);
+}
+
+
+void CarriageReturn(void)
+{
+	printf("\n*****************************CarriageReturn********************\n");
+
+	SendCmd(1, 0x0D);
+}
+
+
+void LineFormard(void)
+{
+	printf("\n*****************************LineFormard********************\n");
+
+	SendCmd(1, 0x0A);
+}
+
+
+void SeekForntBorderBlackMark(void)
+{
+	printf("\n*****************************SeekForntBorderBlackMark********************\n");
+
+	SendCmd(2, 0x1D, 0x0C);
+}
+
+void SeekBackBorderBlackMark(void)
+{
+	printf("\n*****************************SeekBackBorderBlackMark********************\n");
+
+	SendCmd(2, 0x1D, 0x0C);
+}
+
+
+void SetHT(void)
+{
+	SendCmd(2, 0x1B,0x44 );
+}
+
+
+void ExecuteHT(void)
+{
+	SendCmd(1,0x09);
+}
+
+
+void PrintChineseLine(INT8 *LineBuff, UINT8 BuffLen)
+{
+#ifndef WIN32	
+	printf("\n*****************************PrintChineseLine_Begin********************\n");
+
+	UINT8 i;
+	
+	if ((BuffLen == 0) || (LineBuff == NULL))
+	{
+		return;
+	}
+#if (XUNPU_PRINTER == 0)
+	while ((GetPrinterStatus() & 0x80) == 0x80)
+	{
+		prn_log("printer is busy.");
+	}
+#endif
+
+	SetChineseMode();
+	for(i=0; i<BuffLen; i++)
+	{
+		if (*LineBuff == 0x0)
+		{
+			break;
+		}
+		
+#if PRINTER_INTERRUPT
+		ser_send_char(2, (*LineBuff++)); 
+#else
+//		SC_UART1_SendByte((*LineBuff++));
+		write(fd_uart1, LineBuff+i, 1);
+#endif
+
+	}
+	
+	CarriageReturn();
+	LineFormard();
+
+	printf("\n*****************************PrintChineseLine_End********************\n");
+
+#endif	//WIN32
+	
+	return;
+}
+
+
+void PrintDoubleChineseLine(INT8 *LineBuff, UINT8 BuffLen)
+{
+#ifndef WIN32
+	printf("\n*****************************PrintDoubleChineseLine_Begin********************\n");
+
+	UINT8 i;
+	
+	if ((BuffLen == 0) || (LineBuff == NULL))
+	{
+		return;
+	}
+
+#if XUNPU_PRINTER == 0	
+	while ((GetPrinterStatus() & 0x80) == 0x80)
+	{
+		prn_log("printer is busy.");
+	}
+#endif
+
+	SetChineseMode();
+	SetDoubleChineseMode();
+	for(i=0; i<BuffLen; i++)
+	{
+		if (*LineBuff == 0x0)
+		{
+			break;
+		}
+		
+#if PRINTER_INTERRUPT
+		ser_send_char(2, (*LineBuff++)); 
+#else
+//		SC_UART1_SendByte((*LineBuff++));
+		write(fd_uart1, LineBuff+i, 1);
+#endif
+
+	}
+	CancelDoubleChineseMode();
+	CarriageReturn();
+	LineFormard();
+
+	printf("\n*****************************PrintDoubleChineseLine_End********************\n");
+
+#endif	//WIN32
+
+	return;
+}
+
+
+
+void PrintAsciiLine(INT8 *LineBuff, UINT8 BuffLen)
+{
+#ifndef WIN32
+	printf("\n*****************************PrintAsciiLine_Begin********************\n");
+
+	UINT8 i;
+	
+	if ((BuffLen == 0) || (LineBuff == NULL))
+	{
+		return;
+	}
+#if XUNPU_PRINTER == 0
+	while ((GetPrinterStatus() & 0x80) == 0x80)
+	{
+		prn_log("printer is busy.");
+	}
+#endif
+		
+	SetAsciiMode();
+	for(i=0; i<BuffLen; i++)
+	{
+		if (*LineBuff == 0x0)
+		{
+			break;
+		}
+		
+#if PRINTER_INTERRUPT
+		ser_send_char(2, (*LineBuff++)); 
+#else
+//		SC_UART1_SendByte((*LineBuff++));
+		write(fd_uart1, LineBuff+i, 1);
+#endif
+
+	}
+
+	CarriageReturn();
+	LineFormard();
+
+	printf("\n*****************************PrintAsciiLine_End********************\n");
+
+#endif	//WIN32
+	return;
+}
+
+
+void PrintReportLine(INT8 *LineBuff, UINT8 BuffLen)
+{
+#ifndef WIN32
+	printf("\n*****************************PrintReportLine_Begin********************\n");
+
+	UINT8 i;
+
+#if XUNPU_PRINTER == 0	
+	while ((GetPrinterStatus() & 0x80) == 0x80)
+	{
+		prn_log("printer is busy.");
+	}
+#endif
+	if ((BuffLen == 0) || (LineBuff == NULL))
+	{
+		return;
+	}
+	
+	i = BuffLen;
+	do
+	{
+		if (LineBuff[--i] == ' ')
+		{
+			LineBuff[i] = 0x0;
+		}
+		else
+		{
+			break;
+		}
+		
+	}
+	while (i != 0);//在填充LineBuff数组的尾巴?
+		
+	SetChineseMode();
+	for(i=0; i<BuffLen; i++)
+	{
+		if (*LineBuff == 0x0)
+		{
+			break;
+		}
+		
+#if PRINTER_INTERRUPT
+		ser_send_char(2, (*LineBuff++)); 
+#else
+//		SC_UART1_SendByte((*LineBuff++));
+		write(fd_uart1, LineBuff+i, 1);
+#endif
+
+	}
+	CarriageReturn();
+	LineFormard();
+
+	printf("\n*****************************PrintReportLine_End********************\n");
+
+#endif	//WIN32
+	return;
+}
+
+void PrintSeparateLine(void)
+{
+	PrintReportLine("----------------------------------------", 40); 
+}
+
+
+#if SIDA_PRINTER == 1
+
+void BackwardNPoint(UINT16 N)
+{
+	printf("\n*****************************BackwardNPoint N0 = %u********************\n",N);
+
+	if (N == 0)
+	{
+		return;
+	}
+	
+	while (N > 32)
+	{	
+		SendCmd(3, 0x1B, 0x4B, 0x20);
+		N -= 32;
+	}
+	
+	SendCmd(3, 0x1B, 0x4B, N);
+}
+
+
+void SetWordSpace(UINT8 N)
+{
+	printf("\n*****************************SetWordSpace N0 = %u********************\n",N);
+
+	if (N<=32)
+	{
+		SendCmd(3, 0x1B,0x20, N);
+	}
+}
+
+
+void SetBidirectionalPara(UINT8 N)
+{
+#if SIDA_PRINTER 
+	printf("\n*****************************SetBidirectionalPara N0 = %u********************\n",N);
+	if ((GetPrinterStatus() & 0x04) == 0x00)	//有打印纸时执行,否则阻塞串口
+	{
+		UINT8 checksum = 0;
+		INT32 tempi = 0;
+		if (N > 9)
+		{
+			return;
+		}
+		UINT8 str_BIDparaset[7]= {0x1b, 0x10, 0x03, 0x00, 0x07, N, 0x00};
+		for (tempi = 0; tempi<6; tempi++)
+		{
+			checksum += str_BIDparaset[tempi];
+		}
+		str_BIDparaset[6]= checksum;
+		printf("str_BIDparaset[6] = %x",str_BIDparaset[6]);
+		write(fd_uart1, str_BIDparaset, 7);
+	}
+#endif
+
+}
+
+void BidirectionalParaTest(void)
+{
+	printf("\n*****************************BidirectionalParaTest********************\n");
+	SetLineSpace(24);
+	UINT8 checksum = 0;
+	INT32 tempi = 0;
+	UINT8 str_BIDparaset[7]= {0x1b, 0x10, 0x02, 0x00, 0x07, 0x00, 0x34};
+	write(fd_uart1, str_BIDparaset, 7);
+}
+
+UINT8 GetPrinterStatus(void)
+{
+	UINT32 timeOut = 0;
+	INT32 tempi=0;
+	UINT8 chPut=0, chGet=0;
+
+#ifndef WIN32
+
+#if PRINTER_INTERRUPT		
+	while (ser_can_read(2))
+	{
+		ser_get_char(2);
+	}
+
+	SendCmd(2, 0x1B,0x76);//返回打印机状态
+
+	while (ser_can_read(2) == 0);	
+	
+	status = ser_get_char(2);
+#else
+
+	UINT8 str_Getstatus[7] = {0x1b, 0x10, 0x06, 0x00, 0x07, 0x00, 0x38};
+	for (tempi=0; tempi<7;tempi++)
+	{
+		pPrinterSerial->PutChar(pPrinterSerial, &str_Getstatus[tempi]);
+	}
+	CommonSleep(100);
+	INT32 nCount = 0;
+	while((nCount<1) && (timeOut < 10))
+	{
+		nCount = pPrinterSerial->GetReceiveCount(pPrinterSerial);
+		CommonSleep(100);
+		timeOut++;
+		printf("timeOut = %u\n", timeOut);
+	}
+	printf("最终的 nCount = %d\n",nCount);
+	if (nCount >= 1)
+	{
+		printf("uart1: GetChar Success!\n");
+		for (tempi=nCount; tempi>0; tempi--)
+		{
+			chGet = pPrinterSerial->GetChar(pPrinterSerial);
+			nCount = pPrinterSerial->GetReceiveCount(pPrinterSerial);
+			printf("此时的 nCount = %d\n",nCount);
+			printf("此时的 chGet = 0x%x\n", chGet);
+		}
+	}
+	else
+	{
+		chGet = 0x01;
+		printf("uart1: GetChar Failure!");
+	}
+
+#endif
+
+#endif	//WIN32
+	printf("最终的 chGet = 0x%x\n", chGet);
+	return chGet;
+}
+
+
+UINT8 GetUsedLines(void)
+{
+	return 0;
+}
+
+
+UINT16 GetUsedBytes(void)
+{	
+	return 0;
+}
+#endif	//SIDA_PRINTER == 1
+
+#else
+
+void OpenPrinterDEV()
+{
+
 #ifndef WIN32
 	printf("uart1 opened start\n");
 	if ((fd_uart1 = open("/dev/uart1", O_RDWR)) == -1)
@@ -607,513 +1125,9 @@ UINT16 GetUsedBytes(void)
 }
 #endif	//SIDA_PRINTER == 1
 
-#else
-void OpenPrinterDEV()
-{
-#ifndef WIN32
 
-	printf("uart1 opened start\n");
-	INT32 res;
+#endif	//POS_TYPE == POS_APE4000RG
 
-	pPrinterSerial = &Printerserial;
-	SerialPortContruct(pPrinterSerial);
-	
-	res = pPrinterSerial->InitPort(pPrinterSerial, "/dev/uart1", 1, 57600);
-	
-	if (res == FAILURE) 
-	{
-		pPrinterSerial->ClosePort(pPrinterSerial);
-		printf("open uart1 error\n");
-		exit(-1);
-	}
-	else
-	{
-		printf("uart1 opened\n");
-	}
-	fd_uart1 = pPrinterSerial->m_fd;
-	printf("uart1: InitPort Success %d\n", fd_uart1);
-
-#endif
-	return;
-}
-
-void PrinterIni(void)
-{
-#ifndef WIN32
-	
-	printf("\n*****************************PrinterIni_Begin********************\n");
-
-	SendCmd(2, 0x1B, 0x40);//设置初始化命令,该命令不会改变双向打印参数的设置,以及下面两项
-
-	UINT8 str_Blackmarkset[]= {0x1b, 0x10, 0x23, 0x00, 0x07, 0x01, 0x56};//黑标检测设置为有效
-	UINT8 str_Printerinitset[]= {0x1b, 0x10, 0x18, 0x00, 0x08, 0x00, 0xaa, 0xf5};//打印初始位置相对于黑标的偏移量,检测到黑标后,继续进纸30mm,约170步
-	UINT8 str_Jinzhimodeset[]= {0x1b, 0x10, 0x2a, 0x00, 0x07, 0x00, 0x5c};//进纸模式设置,在缺纸下重新上纸打印机将自动卷纸到打印位,在黑标模式下,进纸时检测黑标
-
-	write(fd_uart1, str_Blackmarkset, sizeof(str_Blackmarkset));
-	write(fd_uart1, str_Printerinitset, sizeof(str_Printerinitset));
-	write(fd_uart1, str_Jinzhimodeset, sizeof(str_Jinzhimodeset));
-
-	printf("\n*****************************PrinterIni_End********************\n");
-#endif //WIN32
-
-	return;
-}
-
-void SetChineseMode(void)
-{
-#if SIDA_PRINTER
-	return;
-#endif
-	SendCmd(2, 0x1C, 0x26);
-	SendCmd(3, 0x1C, 0x21, 0x00);//选择中文方式下的打印模式
-}
-
-void SetAsciiMode(void)
-{
-#if SIDA_PRINTER
-	return;
-#endif
-	SendCmd(3, 0x1B,0x21, 0X01);
-	
-}
-
-void ForwardNPoint(UINT16 N)
-{
-	printf("\n*****************************ForwardNPoint N0 = %u********************\n",N);
-	if (N == 0)
-	{
-		return;
-	}
-	SendCmd(3, 0x1B, 0x4A, N);
-}
-
-
-void ForwardNLine(UINT8 N)
-{
-	UINT8 i;
-	
-	printf("\n*****************************ForwardNLine N0 = %u********************\n",N);
-	SendCmd(3, 0x1B, 0x64, N);
-}
-
-
-void SetDoubleChineseMode(void)
-{
-	printf("\n*****************************SetDoubleChineseMode********************\n");
-
-	SendCmd(3, 0x1C, 0x21, 0x04);//选择中文方式下的打印模式
-}
-
-
-void CancelDoubleChineseMode(void)
-{
-	printf("\n*****************************CancelDoubleChineseMode********************\n");
-
-	SendCmd(3, 0x1C, 0x21, 0x00);//选择中文方式下的打印模式
-}
-
-
-void SetLineSpace(UINT8 N)
-{
-	printf("\n*****************************SetLineSpace N0 = %u********************\n",N);
-
-	if (N < 16)
-	{
-		N = N + 16;
-	}
-	printf("\n*****************************SetLineSpace N1 = %u********************\n",N);
-	SendCmd(3, 0x1B, 0x33, N);
-}
-
-
-void CarriageReturn(void)
-{
-	printf("\n*****************************CarriageReturn********************\n");
-
-	SendCmd(1, 0x0D);
-}
-
-
-void LineFormard(void)
-{
-	printf("\n*****************************LineFormard********************\n");
-
-	SendCmd(1, 0x0A);
-}
-
-
-void SeekForntBorderBlackMark(void)
-{
-	printf("\n*****************************SeekForntBorderBlackMark********************\n");
-
-	SendCmd(2, 0x1D, 0x0C);
-}
-
-void SeekBackBorderBlackMark(void)
-{
-	printf("\n*****************************SeekBackBorderBlackMark********************\n");
-
-	SendCmd(2, 0x1D, 0x0C);
-}
-
-
-void SetHT(void)
-{
-	SendCmd(2, 0x1B,0x44 );
-}
-
-
-void ExecuteHT(void)
-{
-	SendCmd(1,0x09);
-}
-
-
-void PrintChineseLine(INT8 *LineBuff, UINT8 BuffLen)
-{
-#ifndef WIN32	
-	printf("\n*****************************PrintChineseLine_Begin********************\n");
-
-	UINT8 i;
-	
-	if ((BuffLen == 0) || (LineBuff == NULL))
-	{
-		return;
-	}
-#if (XUNPU_PRINTER == 0)
-	while ((GetPrinterStatus() & 0x80) == 0x80)
-	{
-		prn_log("printer is busy.");
-	}
-#endif
-
-	SetChineseMode();
-	for(i=0; i<BuffLen; i++)
-	{
-		if (*LineBuff == 0x0)
-		{
-			break;
-		}
-		
-#if PRINTER_INTERRUPT
-		ser_send_char(2, (*LineBuff++)); 
-#else
-//		SC_UART1_SendByte((*LineBuff++));
-		write(fd_uart1, LineBuff+i, 1);
-#endif
-
-	}
-	
-	CarriageReturn();
-	LineFormard();
-
-	printf("\n*****************************PrintChineseLine_End********************\n");
-
-#endif	//WIN32
-	
-	return;
-}
-
-
-void PrintDoubleChineseLine(INT8 *LineBuff, UINT8 BuffLen)
-{
-#ifndef WIN32
-	printf("\n*****************************PrintDoubleChineseLine_Begin********************\n");
-
-	UINT8 i;
-	
-	if ((BuffLen == 0) || (LineBuff == NULL))
-	{
-		return;
-	}
-
-#if XUNPU_PRINTER == 0	
-	while ((GetPrinterStatus() & 0x80) == 0x80)
-	{
-		prn_log("printer is busy.");
-	}
-#endif
-
-	SetChineseMode();
-	SetDoubleChineseMode();
-	for(i=0; i<BuffLen; i++)
-	{
-		if (*LineBuff == 0x0)
-		{
-			break;
-		}
-		
-#if PRINTER_INTERRUPT
-		ser_send_char(2, (*LineBuff++)); 
-#else
-//		SC_UART1_SendByte((*LineBuff++));
-		write(fd_uart1, LineBuff+i, 1);
-#endif
-
-	}
-	CancelDoubleChineseMode();
-	CarriageReturn();
-	LineFormard();
-
-	printf("\n*****************************PrintDoubleChineseLine_End********************\n");
-
-#endif	//WIN32
-
-	return;
-}
-
-
-
-void PrintAsciiLine(INT8 *LineBuff, UINT8 BuffLen)
-{
-#ifndef WIN32
-	printf("\n*****************************PrintAsciiLine_Begin********************\n");
-
-	UINT8 i;
-	
-	if ((BuffLen == 0) || (LineBuff == NULL))
-	{
-		return;
-	}
-#if XUNPU_PRINTER == 0
-	while ((GetPrinterStatus() & 0x80) == 0x80)
-	{
-		prn_log("printer is busy.");
-	}
-#endif
-		
-	SetAsciiMode();
-	for(i=0; i<BuffLen; i++)
-	{
-		if (*LineBuff == 0x0)
-		{
-			break;
-		}
-		
-#if PRINTER_INTERRUPT
-		ser_send_char(2, (*LineBuff++)); 
-#else
-//		SC_UART1_SendByte((*LineBuff++));
-		write(fd_uart1, LineBuff+i, 1);
-#endif
-
-	}
-
-	CarriageReturn();
-	LineFormard();
-
-	printf("\n*****************************PrintAsciiLine_End********************\n");
-
-#endif	//WIN32
-	return;
-}
-
-
-void PrintReportLine(INT8 *LineBuff, UINT8 BuffLen)
-{
-#ifndef WIN32
-	printf("\n*****************************PrintReportLine_Begin********************\n");
-
-	UINT8 i;
-
-#if XUNPU_PRINTER == 0	
-	while ((GetPrinterStatus() & 0x80) == 0x80)
-	{
-		prn_log("printer is busy.");
-	}
-#endif
-	if ((BuffLen == 0) || (LineBuff == NULL))
-	{
-		return;
-	}
-	
-	i = BuffLen;
-	do
-	{
-		if (LineBuff[--i] == ' ')
-		{
-			LineBuff[i] = 0x0;
-		}
-		else
-		{
-			break;
-		}
-		
-	}
-	while (i != 0);//在填充LineBuff数组的尾巴?
-		
-	SetChineseMode();
-	for(i=0; i<BuffLen; i++)
-	{
-		if (*LineBuff == 0x0)
-		{
-			break;
-		}
-		
-#if PRINTER_INTERRUPT
-		ser_send_char(2, (*LineBuff++)); 
-#else
-//		SC_UART1_SendByte((*LineBuff++));
-		write(fd_uart1, LineBuff+i, 1);
-#endif
-
-	}
-	CarriageReturn();
-	LineFormard();
-
-	printf("\n*****************************PrintReportLine_End********************\n");
-
-#endif	//WIN32
-	return;
-}
-
-void PrintSeparateLine(void)
-{
-	PrintReportLine("----------------------------------------", 40); 
-}
-
-
-#if SIDA_PRINTER == 1
-
-void BackwardNPoint(UINT16 N)
-{
-	printf("\n*****************************BackwardNPoint N0 = %u********************\n",N);
-
-	if (N == 0)
-	{
-		return;
-	}
-	
-	while (N > 32)
-	{	
-		SendCmd(3, 0x1B, 0x4B, 0x20);
-		N -= 32;
-	}
-	
-	SendCmd(3, 0x1B, 0x4B, N);
-}
-
-
-void SetWordSpace(UINT8 N)
-{
-	printf("\n*****************************SetWordSpace N0 = %u********************\n",N);
-
-	if (N<=32)
-	{
-		SendCmd(3, 0x1B,0x20, N);
-	}
-}
-
-
-void SetBidirectionalPara(UINT8 N)
-{
-#if SIDA_PRINTER 
-	printf("\n*****************************SetBidirectionalPara N0 = %u********************\n",N);
-	if ((GetPrinterStatus() & 0x04) == 0x00)	//有打印纸时执行,否则阻塞串口
-	{
-		UINT8 checksum = 0;
-		INT32 tempi = 0;
-		if (N > 9)
-		{
-			return;
-		}
-		UINT8 str_BIDparaset[7]= {0x1b, 0x10, 0x03, 0x00, 0x07, N, 0x00};
-		for (tempi = 0; tempi<6; tempi++)
-		{
-			checksum += str_BIDparaset[tempi];
-		}
-		str_BIDparaset[6]= checksum;
-		printf("str_BIDparaset[6] = %x",str_BIDparaset[6]);
-		write(fd_uart1, str_BIDparaset, 7);
-	}
-#endif
-
-}
-
-void BidirectionalParaTest(void)
-{
-	printf("\n*****************************BidirectionalParaTest********************\n");
-	SetLineSpace(24);
-	UINT8 checksum = 0;
-	INT32 tempi = 0;
-	UINT8 str_BIDparaset[7]= {0x1b, 0x10, 0x02, 0x00, 0x07, 0x00, 0x34};
-	write(fd_uart1, str_BIDparaset, 7);
-}
-
-UINT8 GetPrinterStatus(void)
-{
-	UINT32 timeOut = 0;
-	INT32 tempi=0;
-	UINT8 chPut=0, chGet=0;
-
-#ifndef WIN32
-
-#if PRINTER_INTERRUPT		
-	while (ser_can_read(2))
-	{
-		ser_get_char(2);
-	}
-
-	SendCmd(2, 0x1B,0x76);//返回打印机状态
-
-	while (ser_can_read(2) == 0);	
-	
-	status = ser_get_char(2);
-#else
-
-	UINT8 str_Getstatus[7] = {0x1b, 0x10, 0x06, 0x00, 0x07, 0x00, 0x38};
-	for (tempi=0; tempi<7;tempi++)
-	{
-		pPrinterSerial->PutChar(pPrinterSerial, &str_Getstatus[tempi]);
-	}
-	CommonSleep(100);
-	INT32 nCount = 0;
-	while((nCount<1) && (timeOut < 10))
-	{
-		nCount = pPrinterSerial->GetReceiveCount(pPrinterSerial);
-		CommonSleep(100);
-		timeOut++;
-		printf("timeOut = %u\n", timeOut);
-	}
-	printf("最终的 nCount = %d\n",nCount);
-	if (nCount >= 1)
-	{
-		printf("uart1: GetChar Success!\n");
-		for (tempi=nCount; tempi>0; tempi--)
-		{
-			chGet = pPrinterSerial->GetChar(pPrinterSerial);
-			nCount = pPrinterSerial->GetReceiveCount(pPrinterSerial);
-			printf("此时的 nCount = %d\n",nCount);
-			printf("此时的 chGet = 0x%x\n", chGet);
-		}
-	}
-	else
-	{
-		chGet = 0x01;
-		printf("uart1: GetChar Failure!");
-	}
-
-#endif
-
-#endif	//WIN32
-	printf("最终的 chGet = 0x%x\n", chGet);
-	return chGet;
-}
-
-
-UINT8 GetUsedLines(void)
-{
-	return 0;
-}
-
-
-UINT16 GetUsedBytes(void)
-{	
-	return 0;
-}
-#endif	//SIDA_PRINTER == 1
-
-#endif
 
 void Code128Return(int n, int cmd)
 {

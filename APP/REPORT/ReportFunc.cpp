@@ -1232,9 +1232,9 @@ INT8 print_taxiteminfo(UINT8 bFindBlackMark )
 	UINT8 i;
 	INT8 tmpCode[2 * TAX_ITME_CODE_LEN + 1];
 
-#if (POS_TYPE != POS_APE4000RG)
+
 PrinterIni(bidirection);
-#endif
+
 	SetLineSpace(REPORT_LINE_SPACE);
 
 	PrintRptTitle("税 种 税 目 信 息");

@@ -317,6 +317,7 @@ void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned c
 	unsigned int i,j,n,m;
 	unsigned int print_times,line_high,printwild;			
 	CreateRightCode();
+
 	for(line_high=0;line_high<LineHigh;line_high++)
 	{
 		for(print_times=0;print_times<PrintTimes;print_times++)				  
