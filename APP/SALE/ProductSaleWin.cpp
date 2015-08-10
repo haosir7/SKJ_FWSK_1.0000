@@ -33,7 +33,7 @@ int CProductSaleWin::Create(int iX,int iY,int iW,int iH)
 	char title[OBJ_TITLE_MAX_LEN + 1];
     int titleLen=0;
 	
-    m_iBtnW = (SCREEN_W/2 + 8 ) ;	//Label的宽度
+    m_iBtnW = (SCREEN_W/2 + 6) ;	//Label的宽度
 	m_iColW = m_iBtnW ;			//Label的列宽
     
 	m_pFrame->RegsiterWin(this,PRODUCT_SALE_WIN);
