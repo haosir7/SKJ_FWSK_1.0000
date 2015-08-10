@@ -400,7 +400,7 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 				CaMsgBox::ShowMsg(value);
 			}
 			*/
-#if 1
+#if 0
 			//信息更新		
 			if (FSC_InfoUpdate(strErr) != SUCCESS)
 			{

@@ -31,13 +31,10 @@ int CProductSaleWin::Create(int iX,int iY,int iW,int iH)
 {
 	int curH;
 	char title[OBJ_TITLE_MAX_LEN + 1];
-//	string curtime = TDateTime::CurrentDateTime().FormatString(YYYYMMDDHHMMSS);
-	string curtime = TDateTime::CurrentDate().FormatString(YYYYMMDD);
-	curtime += "  ";
     int titleLen=0;
 	
-    m_iBtnW = (SCREEN_W/2 - 0 ) ;	//Label的宽度
-	m_iColW = m_iBtnW + 0;			//Label的列宽
+    m_iBtnW = (SCREEN_W/2 + 8 ) ;	//Label的宽度
+	m_iColW = m_iBtnW ;			//Label的列宽
     
 	m_pFrame->RegsiterWin(this,PRODUCT_SALE_WIN);
    
@@ -58,22 +55,24 @@ int CProductSaleWin::Create(int iX,int iY,int iW,int iH)
 	label[2] = new CaLabel(false,CaObject::ALIGN_LEFT);
 	curH += LINE_H;
 	label[2]->Create(0,curH, m_iBtnW, CHAR_H); //参数是坐标
+	DBG_PRINT(("title_arr[2]= %s",title_arr[2]));
 	label[2]->SetTitle(title_arr[2], strlen(title_arr[2]));
 
 	//创建一个标签 第三行
 	label[3] = new CaLabel(false,CaObject::ALIGN_LEFT);
-	label[3]->Create(m_iColW+1,curH, m_iBtnW, CHAR_H);
+	label[3]->Create(m_iColW,curH, m_iBtnW, CHAR_H);
 	label[3]->SetTitle(title_arr[3], strlen(title_arr[3]));
 
     //创建一个标签 第四行
 	label[4] = new CaLabel(false,CaObject::ALIGN_LEFT);
 	curH += LINE_H;
 	label[4]->Create(0,curH, m_iBtnW, CHAR_H); //参数是坐标
+	DBG_PRINT(("title_arr[4]= %s",title_arr[4]));
 	label[4]->SetTitle(title_arr[4], strlen(title_arr[4]));
 
 	//创建一个标签 第四行
 	label[5] = new CaLabel(false,CaObject::ALIGN_LEFT);
-	label[5]->Create(m_iColW+1,curH, m_iBtnW, CHAR_H);
+	label[5]->Create(m_iColW,curH, m_iBtnW, CHAR_H);
 	label[5]->SetTitle(title_arr[5], strlen(title_arr[5]));
 	
    	curH += LINE_H;
@@ -833,6 +832,8 @@ UINT8 CProductSaleWin::DeptSaleShow()
     strcpy(title_arr[1], (strTemp.c_str()));
 
 	sprintf(title_arr[2], "单价:%.2lf", pSaleData->m_invDet->m_spdj);
+	DBG_PRINT(("title_arr[2]= %s",title_arr[2]));
+
 	sprintf(tmp, "数量:%%.%luf", pSaleData->m_invDet->m_dotNum); //数量输出处理
 	sprintf(title_arr[3], tmp, pSaleData->m_invDet->m_spsl);
 	if (((pSaleData->m_invtype==RETURN_INV)||(pSaleData->m_invtype==RET_MANUAL_INV)||(pSaleData->m_invtype==RET_SPECIAL_INV))

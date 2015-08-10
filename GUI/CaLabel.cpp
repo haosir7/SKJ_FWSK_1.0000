@@ -91,7 +91,9 @@ int CaLabel::SetTitle(const char * pData, int iLen)
 	memset( m_caTitleImgBuf, 0, OBJ_TITLE_MAX_LEN*IMG_BYTES );
 
 	int len = ( iLen <= OBJ_TITLE_MAX_LEN )?iLen:OBJ_TITLE_MAX_LEN;
+	//DBG_PRN("------------",("len= %d",len));
 	memcpy( m_caTitle, pData, len );
+	//DBG_PRN("------------",("m_caTitle= %s",m_caTitle));
 	m_iTitleLen = len;
 
 	int bufLen=m_iW/CHAR_W;
