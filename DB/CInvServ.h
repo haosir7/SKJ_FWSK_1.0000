@@ -6,6 +6,25 @@
 
 #include "CInvHead.h"
 
+#define MAX_ERR_INV_COUNT	10
+class CDataInvServ
+{
+public:
+	
+	CDataInvServ()
+	{
+		m_fpdm = "";
+		m_fphm = 0;
+		m_errMsg = "";
+	}
+	~CDataInvServ(){}
+	
+	string m_fpdm;			/**< 发票代码 */
+	UINT32 m_fphm;			/**< 发票号码 */
+	string m_errMsg;		/**< 错误描述 */
+};
+
+
 /**
  *@class CInvServ 
  *@brief 发票服务表

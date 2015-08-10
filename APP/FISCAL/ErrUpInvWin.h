@@ -27,8 +27,8 @@
 #include "CaMsgBox.h"
 #include "TDateTime.h"
 #include "InvManageFunc.h"
-#include "CInvUpFailInfo.h"
 #include "YWXmlBase.h"
+#include "CInvServ.h"
 
 #include "SysMacDef.h"
 #include "CGlobalArg.h"
@@ -51,7 +51,7 @@ public:
 
 	UINT32 m_pageIndex;							/**< 当前页码*/
 	UINT32 m_pageNum;							/**< 总页码数*/
-	CInvUpFailInfo m_InvUpFailInfo[INV_UP_FAIL_MAX_NUM];	/**< 发票领用信息*/
+	CDataInvServ m_InvUpFailInfo[MAX_ERR_INV_COUNT];	/**< 发票领用信息*/
 	UINT32 m_recordIndex;						/**< 记录在表中的序号*/
 
 	/*!
@@ -120,7 +120,7 @@ public:
 	@param[in] nPageIndex  本次屏幕显示的页码号
 	@return  1: SUCCESS; 0: FAILURE
 	*/
-	UINT8 QueryShow(CInvUpFailInfo *pInvUpFailInfo, UINT32 nPageIndex);
+	UINT8 QueryShow(CDataInvServ *pInvUpFailInfo, UINT32 nPageIndex);
 
 };
 

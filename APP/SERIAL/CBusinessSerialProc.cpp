@@ -2606,7 +2606,7 @@ UINT8 CBusinessSerialProc::zhqClear_Serial(string &strErr)
 
 
 
-UINT8 CBusinessSerialProc::InvUpFailInfo_Serial(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
+UINT8 CBusinessSerialProc::InvUpFailInfo_Serial(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
 {
 	DBG_PRINT(("----------获取上传出错发票信息----------"));
 	
@@ -2645,34 +2645,34 @@ UINT8 CBusinessSerialProc::InvUpFailInfo_Serial(CYWXML_GY &ywxml_gy, UINT32 &Err
 			
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
 			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, ERRFPZS_LEN);
-			ErrInvNum = (UINT32)atoi(StrTempBuf);
-			DBG_PRINT(("出错发票张数 ErrInvNum = %d", ErrInvNum));
+			nCount = (UINT32)atoi(StrTempBuf);
+			DBG_PRINT(("出错发票张数 nCount = %d", nCount));
 			offset += ERRFPZS_LEN;
 
-			if (ErrInvNum > INV_UP_FAIL_MAX_NUM)
+			if (nCount > MAX_ERR_INV_COUNT)
 			{
-				ErrInvNum = INV_UP_FAIL_MAX_NUM;
+				nCount = MAX_ERR_INV_COUNT;
 			}
 			
 			UINT32 i = 0;
-			for (i=0; i< ErrInvNum; i++)
+			for (i=0; i< nCount; i++)
 			{
 				memset(StrTempBuf, 0, sizeof(StrTempBuf));
 				memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, FPDM_LEN);
-				pInvUpFailInfo[i].m_fpdm.assign(StrTempBuf);
-				DBG_PRINT(("pInvUpFailInfo[%u].m_fpdm: %s", i, pInvUpFailInfo[i].m_fpdm.c_str()));
+				pDataInvServ[i].m_fpdm.assign(StrTempBuf);
+				DBG_PRINT(("pDataInvServ[%u].m_fpdm: %s", i, pDataInvServ[i].m_fpdm.c_str()));
 				offset += FPDM_LEN;
 				
 				memset(StrTempBuf, 0, sizeof(StrTempBuf));
 				memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, FPHM_LEN);
-				pInvUpFailInfo[i].m_fphm = (UINT32)atoi(StrTempBuf);
-				DBG_PRINT(("pInvUpFailInfo[%u].m_fphm: %u", i, pInvUpFailInfo[i].m_fphm));
+				pDataInvServ[i].m_fphm = (UINT32)atoi(StrTempBuf);
+				DBG_PRINT(("pDataInvServ[%u].m_fphm: %u", i, pDataInvServ[i].m_fphm));
 				offset += FPHM_LEN;
 				
 				memset(StrTempBuf, 0, sizeof(StrTempBuf));
 				memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, ERRMESSAGE_LEN);
-				pInvUpFailInfo[i].m_ErrInfo.assign(StrTempBuf);
-				DBG_PRINT(("pInvUpFailInfo[%u].m_ErrInfo: %s", i, pInvUpFailInfo[i].m_ErrInfo.c_str()));
+				pDataInvServ[i].m_errMsg.assign(StrTempBuf);
+				DBG_PRINT(("pDataInvServ[%u].m_errMsg: %s", i, pDataInvServ[i].m_errMsg.c_str()));
 				offset += ERRMESSAGE_LEN;
 			}
 

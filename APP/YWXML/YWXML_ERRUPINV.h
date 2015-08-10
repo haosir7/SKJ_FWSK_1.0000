@@ -11,13 +11,13 @@
 
 #include "IncludeMe.h"
 #include "YWXmlBase.h"
-#include "CInvUpFailInfo.h"
+#include "CInvServ.h"
 
 
 class CErrInvInfo
 {
 public:
-	CInvUpFailInfo InvUpFailInfo[INV_UP_FAIL_MAX_NUM];
+	CDataInvServ InvUpFailInfo[MAX_ERR_INV_COUNT];
 	UINT32 m_ErrUpNum;
 	
 	CErrInvInfo();

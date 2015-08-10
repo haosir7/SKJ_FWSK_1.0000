@@ -452,12 +452,12 @@ INT32 CAPIzhqProc::LibClearDepot(string &strErr)
 
 
 
-INT32 CAPIzhqProc::InvUpFailInfo_API(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
+INT32 CAPIzhqProc::InvUpFailInfo_API(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
 {
 
 	UINT8 ret = SUCCESS;
 	
-	ret = m_SerialProc.InvUpFailInfo_Serial(ywxml_gy, ErrInvNum, pInvUpFailInfo, strErr);
+	ret = m_SerialProc.InvUpFailInfo_Serial(ywxml_gy, pDataInvServ, nCount, strErr);
 		
  	return ret;
 }

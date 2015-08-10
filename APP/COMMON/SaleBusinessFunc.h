@@ -11,6 +11,7 @@
 #include "YWXMLGY.h"
 #include "CInvVol.h"
 #include "CInvHead.h"
+#include "CInvServ.h"
 
 #define	MAX_ERR_NUM		5
 
@@ -81,6 +82,14 @@ public:
 	*/
 	INT32 FpblProStart(CYWXML_GY &ywxml_gy, UINT32 SDate, UINT32 EDate, string &strErr);
 
+	/*!
+	@brief 获取上传错误发票信息
+	@param[out] pDataInvServ   错误发票信息类
+	@param[out] nCount   错误发票信息条数
+	@param[out] strErr   错误信息
+	@return  1 SUCCESS； 0  FAILURE
+	*/
+	INT32 GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr);
 };
 
 

@@ -15,7 +15,7 @@
 #include "CTax.h"
 #include "CTjxxhz.h"
 #include "CNetPara.h"
-#include "CInvUpFailInfo.h"
+#include "CInvServ.h"
 
 #include "YWXMLGY.h"
 
@@ -329,7 +329,7 @@ UINT8 zhqClear_Serial(string &strErr);
 @param[out] pInvUpFailInfo	出错的发票信息
 @param[out] strErr			错误信息
 */
-UINT8 InvUpFailInfo_Serial(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr);
+UINT8 InvUpFailInfo_Serial(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr);
 
 
 /*!

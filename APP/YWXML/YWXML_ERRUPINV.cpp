@@ -94,8 +94,8 @@ INT32 CErrUpInv::XmlParse( )
 		DBG_PRINT(("SKJ_ERRUPINV: InvUpFailInfo[%d].m_fphm = %u", temp_i, m_ErrInvInfo.InvUpFailInfo[temp_i].m_fphm));
 
 		m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[4], "cwms");
-		m_ErrInvInfo.InvUpFailInfo[temp_i].m_ErrInfo = m_pXmlParse.GetText();	//发票代码
-		DBG_PRINT(("SKJ_ERRUPINV: InvUpFailInfo[%d].m_ErrInfo = %s", temp_i,m_ErrInvInfo.InvUpFailInfo[temp_i].m_ErrInfo.c_str()));
+		m_ErrInvInfo.InvUpFailInfo[temp_i].m_errMsg = m_pXmlParse.GetText();	//发票代码
+		DBG_PRINT(("SKJ_ERRUPINV: InvUpFailInfo[%d].m_errMsg = %s", temp_i,m_ErrInvInfo.InvUpFailInfo[temp_i].m_errMsg.c_str()));
 	}
 
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "returncode");

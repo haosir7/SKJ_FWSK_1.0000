@@ -118,6 +118,14 @@ public:
 	@return  1 SUCCESS； 0  FAILURE
 	*/
 	INT32 UpdateUploadInvInfo(CYWXML_GY &ywxml_gy);
+
+	/*!
+	@brief 安全通道连接测试
+	@param[in] 
+	@return  1 SUCCESS； 0  FAILURE
+	*/
+	INT32 SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr);
+
 };
 
 

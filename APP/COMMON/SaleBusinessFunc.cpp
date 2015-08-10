@@ -2,7 +2,6 @@
 #include "SaleBusinessFunc.h"
 #include "BusinessBase.h"
 #include "commonFunc.h"
-#include "CGlobalArg.h"
 
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
@@ -86,10 +85,6 @@ INT32 CSaleBusinessFunc::InvoiceUpload(CYWXML_GY &ywxml_gy, string &strErr)
 	//从金税盘获取上传发票信息
 	ret = g_pBusBase->FPSC_Business(ywxml_gy, czlx, fpzx, strInvInfo, strErr);
 	DBG_PRINT(("ret = %d", ret));
-	if(ret == -101)
-	{
-		g_globalArg->m_pthreadFlag = 0;
-	}
 	ret = g_pBusBase->ErrParse(ret, strErr);
 	if(ret != SUCCESS)
 	{
@@ -159,3 +154,12 @@ INT32 CSaleBusinessFunc::FpblProStart(CYWXML_GY &ywxml_gy, UINT32 SDate, UINT32 
 	return ret;
 }
 
+INT32 CSaleBusinessFunc::GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
+{
+	INT32 ret = SUCCESS;
+	
+	ret = g_pBusBase->GetErrUpInvInfo(ywxml_gy, pDataInvServ, nCount, strErr);
+	ret = g_pBusBase->ErrParse(ret, strErr);
+	
+	return ret;
+}

@@ -169,7 +169,7 @@ void CErrInvUpWin::DoActive()
 	DBG_PRINT((" CErrInvUpWin::DoActive()!"));
 	m_pageIndex = 1;
 	string StrErr = "";
-	g_pAPIBase->InvUpFailInfo_API(*g_YwXmlArg, m_pageNum, m_InvUpFailInfo, StrErr);//获得未导入的发票卷数
+	g_pAPIBase->InvUpFailInfo_API(*g_YwXmlArg, m_InvUpFailInfo, m_pageNum, StrErr);//获得未导入的发票卷数
 	QueryShow(m_InvUpFailInfo, m_pageIndex);//组织屏幕显示信息
 	ChangeTitle();
 	ReFresh();	
@@ -188,7 +188,7 @@ UINT8 CErrInvUpWin::ChangeTitle()
 //--------------------------------------------------------------------------------------------------------------------
 //获取未导入发票卷信息，并修改屏幕显示
 //--------------------------------------------------------------------------------------------------------------------
-UINT8 CErrInvUpWin::QueryShow(CInvUpFailInfo *pInvUpFailInfo, UINT32 nPageIndex)
+UINT8 CErrInvUpWin::QueryShow(CDataInvServ *pInvUpFailInfo, UINT32 nPageIndex)
 {
 	DBG_ASSERT_EXIT((pInvUpFailInfo != NULL), (" pInvUpFailInfo == NULL!"));
 	
@@ -204,7 +204,7 @@ UINT8 CErrInvUpWin::QueryShow(CInvUpFailInfo *pInvUpFailInfo, UINT32 nPageIndex)
  	sprintf(title_array[0], "[页%u/%u]", nPageIndex, m_pageNum);
  	sprintf(title_array[1], "发票代码: %s", pInvUpFailInfo[nPageIndex-1].m_fpdm.c_str());
  	sprintf(title_array[2], "发票号码: %08u", pInvUpFailInfo[nPageIndex-1].m_fphm);
- 	sprintf(title_array[3], "错误描述: %s", pInvUpFailInfo[nPageIndex-1].m_ErrInfo.c_str());
+ 	sprintf(title_array[3], "错误描述: %s", pInvUpFailInfo[nPageIndex-1].m_errMsg.c_str());
 	//sprintf(title_array[4], "购买日期: %u", pInvVol->m_date); 
 
 	return ret;

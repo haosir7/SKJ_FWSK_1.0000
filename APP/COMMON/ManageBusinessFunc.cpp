@@ -152,4 +152,12 @@ INT32 CManageBusinessFunc::UpdateUploadInvInfo(CYWXML_GY &ywxml_gy)
 	return ret;
 }
 
+INT32 CManageBusinessFunc::SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr)
+{
+	INT32 ret = SUCCESS;
+	
+	ret = g_pBusBase->SSLConnectTest(ywxml_gy, strErr);
+	
+	return ret;
+}
 
