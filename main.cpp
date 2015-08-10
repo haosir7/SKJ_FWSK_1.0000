@@ -83,7 +83,7 @@ int main()
 	info.SetText("款机硬件初始化...");
 	info.ReFresh();
 	KeyEnable();
-	I2C_Init();
+//	I2C_Init();
     OpenPrinterDEV();
 //	PrinterComIni();
 //	InitTmplate();
