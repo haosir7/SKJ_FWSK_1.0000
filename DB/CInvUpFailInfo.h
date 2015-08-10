@@ -6,7 +6,7 @@
 
 /**
  *@class CInvUpFailInfo 
- *@brief 已退发票信息表
+ *@brief 发票上传出错的信息
  *@brief 
  */
 class CInvUpFailInfo

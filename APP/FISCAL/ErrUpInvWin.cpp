@@ -169,7 +169,14 @@ void CErrInvUpWin::DoActive()
 	DBG_PRINT((" CErrInvUpWin::DoActive()!"));
 	m_pageIndex = 1;
 	string StrErr = "";
-	g_pAPIBase->InvUpFailInfo_API(*g_YwXmlArg, m_pageNum, m_InvUpFailInfo, StrErr);//获得未导入的发票卷数
+	INT32 ret;
+	ret = g_pAPIBase->InvUpFailInfo_API(*g_YwXmlArg, m_pageNum, m_InvUpFailInfo, StrErr);//获得未导入的发票卷数
+ 	if (SUCCESS != ret)
+ 	{
+		m_pageIndex = 1;
+		m_pageNum = 0;
+		CaMsgBox::ShowMsg(StrErr);
+	}
 	QueryShow(m_InvUpFailInfo, m_pageIndex);//组织屏幕显示信息
 	ChangeTitle();
 	ReFresh();	
@@ -181,7 +188,7 @@ UINT8 CErrInvUpWin::ChangeTitle()
 	label[1]->SetTitle(title_array[1], strlen(title_array[1]));
 	label[2]->SetTitle(title_array[2], strlen(title_array[2]));
 	label[3]->SetTitle(title_array[3], strlen(title_array[3]));
-    label[4]->SetTitle(title_array[4], strlen(title_array[4]));  
+    //label[4]->SetTitle(title_array[4], strlen(title_array[4]));  
 	return SUCCESS;
 }
 
