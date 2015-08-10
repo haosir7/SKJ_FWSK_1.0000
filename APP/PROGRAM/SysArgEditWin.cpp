@@ -343,12 +343,14 @@ void CSysArgEditWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 	g_globalArg->InitSysArg();
 
 	m_pInput1->Clear();
-
+	DBG_PRINT(("***PrinterIni(bidirection)"));
 	char chValue[256];
 	if(tmpid == SYS_BIDIRECTION_PRINT)
 	{
+		DBG_PRINT(("***PrinterIni(bidirection)"));
 #if (POS_TYPE != POS_APE4000RG)
 		PrinterIni(bidirection);
+		DBG_PRINT(("***PrinterIni(bidirection)"));
 #else
 		SetBidirectionalPara(bidirection);//有打印纸时执行,否则阻塞串口
 #endif
@@ -375,7 +377,7 @@ void CSysArgEditWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 	}
 	else
 	{
-		((CSysArgMenu *)(m_pFrame->GetWin(SYSTEM_ARG_MENU)))->ReFresh();
+//		((CSysArgMenu *)(m_pFrame->GetWin(SYSTEM_ARG_MENU)))->ReFresh();
 		ChangeWin(SYSTEM_ARG_MENU);
 	}
 	return;
