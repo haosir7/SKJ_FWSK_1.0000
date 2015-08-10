@@ -953,19 +953,18 @@ bool TDateTime::SetCurrentDateTime(TDateTime &rhs)
 	}
 	
 	//¸üRTCÊ±¼ä
-	unsigned char tmp[3];
-	int datetime;
-	datetime = rhs.FormatInt(YYYYMMDD);
-	int2bin(&tmp[0], (datetime / 10000) % 100, 1);
-	int2bin(&tmp[1], (datetime / 100) % 100, 1);
-	int2bin(&tmp[2], datetime % 100, 1);
-	SetRTCData(tmp);
-
-	datetime = rhs.FormatInt(HHMMSS);
-	int2bin(&tmp[0], (datetime / 10000) % 100, 1);
-	int2bin(&tmp[1], (datetime / 100) % 100, 1);
-	int2bin(&tmp[2], datetime % 100, 1);
-	SetRTCTime(tmp);
+//	unsigned char tmp[3];
+//	int datetime;
+//	datetime = rhs.FormatInt(YYYYMMDD);
+//	int2bin(&tmp[0], (datetime / 10000) % 100, 1);
+//	int2bin(&tmp[1], (datetime / 100) % 100, 1);
+//	int2bin(&tmp[2], datetime % 100, 1);
+//	SetRTCData(tmp);
+//	datetime = rhs.FormatInt(HHMMSS);
+//	int2bin(&tmp[0], (datetime / 10000) % 100, 1);
+//	int2bin(&tmp[1], (datetime / 100) % 100, 1);
+//	int2bin(&tmp[2], datetime % 100, 1);
+//	SetRTCTime(tmp);
                	
 
 #endif

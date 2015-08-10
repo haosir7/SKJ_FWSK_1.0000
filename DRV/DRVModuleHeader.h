@@ -24,7 +24,7 @@
 #endif
 
 #ifndef USE_RTC_DRV
-#define USE_RTC_DRV							1
+#define USE_RTC_DRV							0
 #endif
 
 
