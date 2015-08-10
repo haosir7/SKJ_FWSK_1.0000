@@ -93,6 +93,8 @@ UINT8 YesNoMsgBox(string strInfo)
 
 UINT8 CheckCurDate(UINT32 nCurDate,string &strErr)
 {
+	nCurDate =nCurDate /10000;
+
 	DBG_PRINT(("nCurDate= %u",nCurDate));
     if (nCurDate < 2000)
     {
