@@ -8,11 +8,16 @@
 
 #include "ErrUpInvWin.h"
 #include "APIBase.h"
+#include "TemplateGeneralFuc.h"
 
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
 #include "pos_debug.h"
 #include <string>
+
+#define  ERR_MES_MAX_LEN	54	//错误信息描述最大字节数
+#define	 LINE_ERR_MES_LEN	22	//第三行显示的最大字节数
+
 
 CErrInvUpWin::CErrInvUpWin():CaWindow()
 {
@@ -54,12 +59,13 @@ int CErrInvUpWin::Create(int iX,int iY,int iW,int iH)
 	//创建一个标签  第三行
 	label[2] = new CaLabel(false,CaObject::ALIGN_LEFT);
 	curH += LINE_H;
-	label[2]->Create(0,curH, m_iBtnW, CHAR_H);
+	label[2]->Create(0,curH, SCREEN_W, CHAR_H);
 	label[2]->SetTitle(title_array[2], strlen(title_array[2]));
 
 	//创建一个标签 第三行
 	label[3] = new CaLabel(false,CaObject::ALIGN_LEFT);
-	label[3]->Create(m_iColW,curH, m_iBtnW, CHAR_H);
+	curH += LINE_H;
+	label[3]->Create(0,curH, SCREEN_W, CHAR_H);
 	label[3]->SetTitle(title_array[3], strlen(title_array[3]));
 	
 	//创建一个标签  第四行
@@ -171,7 +177,8 @@ void CErrInvUpWin::DoActive()
 	string StrErr = "";
 	INT32 ret;
 	ret = g_pAPIBase->InvUpFailInfo_API(*g_YwXmlArg, m_pageNum, m_InvUpFailInfo, StrErr);//获得未导入的发票卷数
- 	if (SUCCESS != ret)
+ 	DBG_PRINT((" m_pageNum = %u!", m_pageNum));
+	if (SUCCESS != ret)
  	{
 		m_pageIndex = 1;
 		m_pageNum = 0;
@@ -188,7 +195,7 @@ UINT8 CErrInvUpWin::ChangeTitle()
 	label[1]->SetTitle(title_array[1], strlen(title_array[1]));
 	label[2]->SetTitle(title_array[2], strlen(title_array[2]));
 	label[3]->SetTitle(title_array[3], strlen(title_array[3]));
-    //label[4]->SetTitle(title_array[4], strlen(title_array[4]));  
+    label[4]->SetTitle(title_array[4], strlen(title_array[4]));  
 	return SUCCESS;
 }
 
@@ -200,6 +207,9 @@ UINT8 CErrInvUpWin::QueryShow(CInvUpFailInfo *pInvUpFailInfo, UINT32 nPageIndex)
 	DBG_ASSERT_EXIT((pInvUpFailInfo != NULL), (" pInvUpFailInfo == NULL!"));
 	
 	UINT8 ret = SUCCESS;
+	UINT8 MesLen = 0;
+	string TempErr = "";
+	UINT8 buff[LINE_ERR_MES_LEN+1];
 
 	DBG_PRINT((" nPageIndex == %u", nPageIndex));
 	//页码序号超限
@@ -208,11 +218,45 @@ UINT8 CErrInvUpWin::QueryShow(CInvUpFailInfo *pInvUpFailInfo, UINT32 nPageIndex)
 		return FAILURE;
 	}
 	
- 	sprintf(title_array[0], "[页%u/%u]", nPageIndex, m_pageNum);
+ 	sprintf(title_array[0], "ESC键返回      [页%u/%u]", nPageIndex, m_pageNum);
  	sprintf(title_array[1], "发票代码: %s", pInvUpFailInfo[nPageIndex-1].m_fpdm.c_str());
  	sprintf(title_array[2], "发票号码: %08u", pInvUpFailInfo[nPageIndex-1].m_fphm);
- 	sprintf(title_array[3], "错误描述: %s", pInvUpFailInfo[nPageIndex-1].m_ErrInfo.c_str());
-	//sprintf(title_array[4], "购买日期: %u", pInvVol->m_date); 
+
+	DBG_PRINT((" pInvUpFailInfo[%u].m_ErrInfo.length() == %u", nPageIndex-1, pInvUpFailInfo[nPageIndex-1].m_ErrInfo.length()));
+	MesLen = pInvUpFailInfo[nPageIndex-1].m_ErrInfo.length();
+	if (MesLen > ERR_MES_MAX_LEN)
+	{
+			MesLen = ERR_MES_MAX_LEN;
+	}
+
+	if (MesLen <= LINE_ERR_MES_LEN)
+ 	{
+		sprintf(title_array[3], "错误描述: %s", pInvUpFailInfo[nPageIndex-1].m_ErrInfo.c_str());
+ 	}
+ 	else
+ 	{	
+		TempErr = pInvUpFailInfo[nPageIndex-1].m_ErrInfo.substr(0, LINE_ERR_MES_LEN);
+		DBG_PRINT(("截取的字符串为： %s", TempErr.c_str()));
+
+		memset(buff, 0, sizeof(buff));
+		sprintf((char *)buff, "%s", TempErr.c_str());
+		if( GetHalfHZCount(buff, LINE_ERR_MES_LEN)%2 == 0 )
+		{
+			sprintf(title_array[3], "错误描述: %s",TempErr.c_str());
+			TempErr = pInvUpFailInfo[nPageIndex-1].m_ErrInfo.substr(LINE_ERR_MES_LEN, MesLen - LINE_ERR_MES_LEN);
+			sprintf(title_array[4], "%s", TempErr.c_str());
+		}
+		else
+		{
+			TempErr = pInvUpFailInfo[nPageIndex-1].m_ErrInfo.substr(0, LINE_ERR_MES_LEN - 1);
+			DBG_PRINT(("截取的字符串为： %s", TempErr.c_str()));
+			sprintf(title_array[3], "错误描述: %s",TempErr.c_str());
+
+			TempErr = pInvUpFailInfo[nPageIndex-1].m_ErrInfo.substr(LINE_ERR_MES_LEN - 1, MesLen - LINE_ERR_MES_LEN + 1);
+			sprintf(title_array[4], "%s", TempErr.c_str());
+		}
+
+ 	}
 
 	return ret;
 }
