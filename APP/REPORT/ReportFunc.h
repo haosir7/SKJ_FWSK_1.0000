@@ -85,7 +85,7 @@ typedef struct _TCheckOldInfo
 UINT8 YesNoMsgBox(string strInfo);
 /*!
 @brief 获取当前日期和时间
-@param[in] nCurDate 日期
+@param[in] nCurDate 日期 例如：YYYYMMDD 20150810
 @param[out] strErr  错误信息
 @return  1: SUCCESS（是）; 0: FAILURE（否）
 */
