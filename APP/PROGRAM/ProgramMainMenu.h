@@ -31,7 +31,7 @@ private:
 	void OnButton6(int iEvent, unsigned char * pEventData, int iDataLen);
 	void OnButton7(int iEvent, unsigned char * pEventData, int iDataLen);
 	void OnButton8(int iEvent, unsigned char * pEventData, int iDataLen);
-	void OnButton9(int iEvent, unsigned char * pEventData, int iDataLen);
+	//void OnButton9(int iEvent, unsigned char * pEventData, int iDataLen);
 	//void OnButton10(int iEvent, unsigned char * pEventData, int iDataLen);
 public :
 	CUserInfo m_userInfo;
