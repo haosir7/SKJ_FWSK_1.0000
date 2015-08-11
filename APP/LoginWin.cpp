@@ -413,7 +413,7 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 			if (ret !=SUCCESS)
 			{
 				CaMsgBox::ShowMsg(strErr);
-				return ;		
+				//return ;		
 			}
 #endif				
 		}

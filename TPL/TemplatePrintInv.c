@@ -62,9 +62,9 @@ INT8 print_invoice_head( TPrnInvoiceInfo *invData)
 	//prn_log2("g_YW_PowerOffData->ProcData.fptk_data.RemainLineCount = %u",g_YW_PowerOffData->ProcData.fptk_data.RemainLineCount);
 	prn_log2("m_RemainLineCount = %u", *m_RemainLineCount);
 	
-#if (POS_TYPE != POS_APE4000RG)
+
 PrinterIni(bidirection);
-#endif
+
 	SetLineSpace(0);
 	
 	while(GetUsedLines());

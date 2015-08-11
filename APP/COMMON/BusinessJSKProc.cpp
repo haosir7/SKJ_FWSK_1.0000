@@ -30,6 +30,7 @@
 #include "SKJNETXML_FPSCJGHQ.h"
 #include "SKJNETXML_WLCB.h"
 #include "SKJNETXML_QLJS.h"
+#include "SKJNETXML_QLJSJGQR.h"
 
 CBusinessJSKProc::CBusinessJSKProc()
 {
@@ -337,17 +338,6 @@ INT32 CBusinessJSKProc::BGZSKL_Business(CYWXML_GY &ywxml_gy, string oldPwd, stri
 	return ret;
 }
 
-//2.29.获取上传出错发票信息
-INT32 CBusinessJSKProc::ErrUpInv_Business(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
-{
-	INT32 ret = JSK_SUCCESS;
-	
-// 	CJSKManageProc::set_JSKPara(ywxml_gy.m_jqbh, ywxml_gy.m_sksbkl, ywxml_gy.m_bspkl);
-// 	ret = CJSKInvManageProc::BSPFPCX_Proc(ywxml_gy.m_fplxdm, invNum, pInvVol, strErr);
-	
-	return ret;
-}
-
 //3.1发票上传
 INT32 CBusinessJSKProc::NETFPSC_Business(CYWXML_GY &ywxml_gy, const string &Fpmx, UINT32 Fpzs, string &Slxlh, string &strErr)
 {
@@ -483,7 +473,20 @@ INT32 CBusinessJSKProc::QLJS_Business(CYWXML_GY &ywxml_gy, string Qtxx,string &F
 	
 	return ret;
 }
-//3.5离线信息上传
+//3.5清零解锁结果确认
+INT32 CBusinessJSKProc::QLJSJGQR_Business(CYWXML_GY &ywxml_gy, string Qtxx, string &strErr)
+{
+	INT32 ret = JSK_SUCCESS;
+	
+	ywxml_gy.m_strID = BUSINESS_NETID_QLJSJGQR;
+	CSKJQljsjgqr Qljsjgqr(ywxml_gy, Qtxx);
+	
+	ret = Qljsjgqr.NETXml_Proc(strErr);
+	
+	return ret;
+}
+
+//3.6离线信息上传
 INT32 CBusinessJSKProc::NETLXXXSC_Business(CYWXML_GY &ywxml_gy, CInvKind *invkind, string strQtxx, string &strLzkzxx, string &strErr)
 {
 	INT32 ret = JSK_SUCCESS;
@@ -504,7 +507,7 @@ INT32 CBusinessJSKProc::NETLXXXSC_Business(CYWXML_GY &ywxml_gy, CInvKind *invkin
 	
 	return JSK_SUCCESS;
 }
-//3.6网络领取发票
+//3.7网络领取发票
 INT32 CBusinessJSKProc::WLLQFP_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, string strQtxx, string &strErr)
 {
 	INT32 ret = JSK_SUCCESS;
@@ -530,7 +533,7 @@ INT32 CBusinessJSKProc::WLLQFP_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, s
 	
 	return JSK_SUCCESS;
 }
-//3.7网络领取发票结果确认
+//3.8网络领取发票结果确认
 INT32 CBusinessJSKProc::WLLQFPJGQR_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, string strQtxx, string &strErr)
 {
 	INT32 ret = JSK_SUCCESS;
@@ -590,6 +593,31 @@ INT32 CBusinessJSKProc::UpdateUploadInv(CYWXML_GY &ywxml_gy)
 
 	CJSKManageProc::set_JSKPara(ywxml_gy.m_jqbh, ywxml_gy.m_sksbkl, "");
 	ret = CJSKDeclareProc::DelUploadInv();
+	
+	return ret;
+}
+
+//安全通道连接测试
+INT32 CBusinessJSKProc::SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr)
+{
+	INT32 ret = JSK_SUCCESS;
+	
+	CStructOrganize structorgnize;
+	CNsrPara nsrpara(&structorgnize);
+	ret = nsrpara.SSLConnectTest(ywxml_gy.m_nsrsbh, ywxml_gy.m_zskl, strErr);
+	if(ret != SUCCESS)
+	{
+		return ret;
+	}
+	
+	return ret;
+}
+
+INT32 CBusinessJSKProc::GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
+{
+	INT32 ret = JSK_SUCCESS;
+	
+	ret = CJSKMakeInvoice::GetErrUpInv(pDataInvServ, nCount, strErr);
 	
 	return ret;
 }

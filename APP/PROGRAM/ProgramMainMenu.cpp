@@ -17,7 +17,7 @@
 
 //调用转换器接口，
 #if (TYPE_MODE == ZHQ_MODE)
-CProgramCtrlMenu::CProgramCtrlMenu():CMultiBtnCommonWin(8, 2)
+CProgramCtrlMenu::CProgramCtrlMenu():CMultiBtnCommonWin(9, 2)
 {
 }
 #else
@@ -37,14 +37,13 @@ int CProgramCtrlMenu::Create(int iX,int iY,int iW,int iH)
 	SetTitle(2,  "B.开票员管理");
 	SetTitle(3,  "C.客户管理");
 	SetTitle(4,  "D.参数编程");
-	SetTitle(5,  "E.数据传输");
-	SetTitle(6,  "F.软件升级");
-	SetTitle(7,  "G.密码修改");
+	SetTitle(5,  "E.网络管理");
+	SetTitle(6,  "F.数据传输");
+	SetTitle(7,  "G.软件升级");
+	SetTitle(8,  "H.密码修改");
 #if TYPE_MODE == ZHQ_MODE
-	SetTitle(8,  "H.转换器管理");
-#elif	TYPE_MODE == SKJ_MODE
-	SetTitle(8,  "H.网络管理");
-#endif
+	SetTitle(9,  "I.转换器管理");
+#endif	
 	return 1;
 }
 
@@ -86,9 +85,14 @@ void CProgramCtrlMenu::OnButton4(int iEvent, unsigned char * pEventData, int iDa
 	ChangeWin(SYSTEM_ARG_MENU);
 }
 
+//网络设置
+void CProgramCtrlMenu::OnButton5(int iEvent, unsigned char * pEventData, int iDataLen)
+{
+	ChangeWin(NET_MANAGE_MENU);
+}
 
 //数据传输
-void CProgramCtrlMenu::OnButton5(int iEvent, unsigned char * pEventData, int iDataLen)
+void CProgramCtrlMenu::OnButton6(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 	//ChangeWin(TEMPLATE_TRANS_MENU);
 	ChangeWin(DATA_IO_MENU);
@@ -96,36 +100,30 @@ void CProgramCtrlMenu::OnButton5(int iEvent, unsigned char * pEventData, int iDa
 
 
 //软件升级
-void CProgramCtrlMenu::OnButton6(int iEvent, unsigned char * pEventData, int iDataLen)
+void CProgramCtrlMenu::OnButton7(int iEvent, unsigned char * pEventData, int iDataLen)
 {	
 	ChangeWin(SYSTEM_UPGRADE_WIN);	
 }
 
 
 //修改密码
-void CProgramCtrlMenu::OnButton7(int iEvent, unsigned char * pEventData, int iDataLen)
-{
+void CProgramCtrlMenu::OnButton8(int iEvent, unsigned char * pEventData, int iDataLen)
+	{
 	ChangeWin(PASSWD_EDIT_WIN);	
 }
 
-#if TYPE_MODE == ZHQ_MODE
+
 //转换器参数设置
-void CProgramCtrlMenu::OnButton8(int iEvent, unsigned char * pEventData, int iDataLen)
+void CProgramCtrlMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDataLen)
 {	
+
+#if TYPE_MODE == ZHQ_MODE
+	
 	ChangeWin(ZHQ_MANAGE_MENU);	
+#endif
 
 	return ;
 }
-
-#elif TYPE_MODE == SKJ_MODE
-
-//网络设置
-void CProgramCtrlMenu::OnButton8(int iEvent, unsigned char * pEventData, int iDataLen)
-{
-	ChangeWin(NET_MANAGE_MENU);
-}
-
-#endif
 
 int CProgramCtrlMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 {

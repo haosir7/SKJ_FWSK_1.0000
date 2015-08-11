@@ -217,7 +217,7 @@ UINT8 FSC_InitProc(const string &strOldPsw, const string &strNewPsw, string &str
 	
 	//6.初始化打印机主要参数
 #if (POS_TYPE == POS_APE4000RG)
-	PrinterIni();
+	YMPrinterIni();
 #endif
 	
 	CaMsgBox::ShowMsg("机器初始化成功");

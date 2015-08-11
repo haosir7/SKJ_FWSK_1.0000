@@ -100,8 +100,6 @@ public:
 	//变更证书口令
 	INT32 BGZSKL_Business(CYWXML_GY &ywxml_gy, string oldPwd, string newPwd, string &strErr);
 	
-	//2.29.获取上传出错发票信息
-	INT32 ErrUpInv_Business(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr);
 
 	//3.1发票上传
 	INT32 NETFPSC_Business(CYWXML_GY &ywxml_gy, const string &Fpmx, UINT32 Fpzs, string &Slxlh, string &strErr);
@@ -115,13 +113,16 @@ public:
 	//3.4清零解锁
 	INT32 QLJS_Business(CYWXML_GY &ywxml_gy, string Qtxx,string &Fpjkmw, string &strErr);
 	
-	//3.5离线信息上传
+	//3.5清零解锁结果确认
+	INT32 QLJSJGQR_Business(CYWXML_GY &ywxml_gy, string Qtxx, string &strErr);
+	
+	//3.6离线信息上传
 	INT32 NETLXXXSC_Business(CYWXML_GY &ywxml_gy, CInvKind *invkind, string strQtxx, string &strLzkzxx, string &strErr);
 	
-	//3.6网络领取发票
+	//3.7网络领取发票
 	INT32 WLLQFP_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, string strQtxx, string &strErr);
 	
-	//3.7网络领取发票结果确认
+	//3.8网络领取发票结果确认
 	INT32 WLLQFPJGQR_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, string strQtxx, string &strErr);
 
 	//网络参数维护 -- 转换器
@@ -136,6 +137,13 @@ public:
 public:
 	//更新未上传发票信息
 	INT32 UpdateUploadInv(CYWXML_GY &ywxml_gy);
+
+	//安全通道连接测试
+	INT32 SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr);
+
+	//获取上传错误发票信息 
+	INT32 GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr);
+
 };
 
 #endif

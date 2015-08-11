@@ -94,9 +94,12 @@ UINT8 YesNoMsgBox(string strInfo)
 UINT8 CheckCurDate(UINT32 nCurDate,string &strErr)
 {
 	DBG_PRINT(("nCurDate= %u",nCurDate));
+	nCurDate =nCurDate /10000;
+
+	DBG_PRINT(("nCurDate= %u",nCurDate));
     if (nCurDate < 2000)
     {
-		strErr="款机时钟异常,请及时校正!";
+		strErr="款机时钟异常,请连接金税盘,重新登录!";
 		return FAILURE;
     }
 	
@@ -1229,9 +1232,9 @@ INT8 print_taxiteminfo(UINT8 bFindBlackMark )
 	UINT8 i;
 	INT8 tmpCode[2 * TAX_ITME_CODE_LEN + 1];
 
-#if (POS_TYPE != POS_APE4000RG)
+
 PrinterIni(bidirection);
-#endif
+
 	SetLineSpace(REPORT_LINE_SPACE);
 
 	PrintRptTitle("税 种 税 目 信 息");

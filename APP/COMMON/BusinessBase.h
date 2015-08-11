@@ -16,7 +16,8 @@
 #include "CInvVol.h"
 #include "CTax.h"
 #include "CTjxxhz.h"
-#include "CInvUpFailInfo.h"
+#include "CInvServ.h"
+#include "VersionConfig.h"
 
 //业务流程调用函数接口方式
 #ifndef BUSINESS_JSK_MODE
@@ -157,9 +158,6 @@ public:
 	//变更证书口令
 	virtual INT32 BGZSKL_Business(CYWXML_GY &ywxml_gy, string oldPwd, string newPwd, string &strErr)=0;
 
-	//获取上传出错发票信息
-	virtual INT32 ErrUpInv_Business(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)=0;
-
 
 	//3.1发票上传
 	virtual INT32 NETFPSC_Business(CYWXML_GY &ywxml_gy, const string &Fpmx, UINT32 Fpzs, string &Slxlh, string &strErr)=0;
@@ -173,13 +171,16 @@ public:
 	//3.4清零解锁
 	virtual	INT32 QLJS_Business(CYWXML_GY &ywxml_gy, string Qtxx,string &Fpjkmw, string &strErr)=0;
 
-	//3.5离线信息上传
+	//3.5清零解锁结果确认
+	virtual	INT32 QLJSJGQR_Business(CYWXML_GY &ywxml_gy, string Qtxx, string &strErr)=0;
+	
+	//3.6离线信息上传
 	virtual INT32 NETLXXXSC_Business(CYWXML_GY &ywxml_gy, CInvKind *invkind, string strQtxx, string &strLzkzxx, string &strErr)=0;
 
-	//3.6网络领取发票
+	//3.7网络领取发票
 	virtual INT32 WLLQFP_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, string strQtxx, string &strErr)=0;
 
-	//3.7网络领取发票结果确认
+	//3.8网络领取发票结果确认
 	virtual INT32 WLLQFPJGQR_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, string strQtxx, string &strErr)=0;
 
 	//发票补录
@@ -199,6 +200,12 @@ public:
 	//更新未上传发票信息
 	virtual INT32 UpdateUploadInv(CYWXML_GY &ywxml_gy)=0;
 
+	//安全通道连接测试
+	virtual INT32 SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr)=0;
+	
+	//获取上传错误发票信息 
+	virtual INT32 GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)=0;
+	
 };
 
 

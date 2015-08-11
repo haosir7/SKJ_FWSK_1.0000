@@ -40,6 +40,7 @@
 #include "NETXML_FPSCJGHQ.h"
 #include "NETXML_WLCB.h"
 #include "NETXML_QLJS.h"
+#include "NETXML_QLJSJGQR.h"
 #include "NETXML_LXXXSC.h"
 #include "NETXML_WLLQFP.h"
 #include "NETXML_WLLQFPJGQR.h"
@@ -419,29 +420,6 @@ INT32 CBusinessXmlProc::FPBL_Business(CYWXML_GY &ywxml_gy, UINT32 SDate, UINT32 
 	return ret;
 }
 
-//2.29.获取上传出错发票信息
-INT32 CBusinessXmlProc::ErrUpInv_Business(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
-{
-	INT32 ret = XML_SUCCESS;
-	ywxml_gy.m_strID = BUSINESS_YWID_ERRUPINV;
-	
-	CErrInvInfo ErrInvInfo;
-	CErrUpInv ErrUpInv(ywxml_gy, ErrInvInfo);
-	
-	ret = ErrUpInv.YWXml_Proc(strErr);
-
-	DBG_PRINT(("ErrInvInfo num = %u", ErrInvInfo.m_ErrUpNum));
-	ErrInvNum = ErrInvInfo.m_ErrUpNum;
-	for(int i=0; i<ErrInvNum; i++)
-	{
-		pInvUpFailInfo[i].m_fpdm = ErrInvInfo.InvUpFailInfo[i].m_fpdm;
-		pInvUpFailInfo[i].m_fpdm = ErrInvInfo.InvUpFailInfo[i].m_fphm;
-		pInvUpFailInfo[i].m_ErrInfo = ErrInvInfo.InvUpFailInfo[i].m_ErrInfo;
-	}
-	
-	return ret;
-}
-
 //3.1发票上传
 INT32 CBusinessXmlProc::NETFPSC_Business(CYWXML_GY &ywxml_gy, const string &Fpmx, UINT32 Fpzs, string &Slxlh, string &strErr)
 {	
@@ -489,10 +467,22 @@ INT32 CBusinessXmlProc::QLJS_Business(CYWXML_GY &ywxml_gy, string Qtxx,string &F
 	ret = Qljs.NETXml_Proc(strErr);
 	
 	return ret;
-
 }
 
-//3.5离线信息上传
+//3.5清零解锁结果确认
+INT32 CBusinessXmlProc::QLJSJGQR_Business(CYWXML_GY &ywxml_gy, string Qtxx, string &strErr)
+{
+	INT32 ret = XML_SUCCESS;
+
+	ywxml_gy.m_strID = BUSINESS_NETID_QLJSJGQR;
+	CQljsjgqr Qljsjgqr(ywxml_gy, Qtxx);
+	
+	ret = Qljsjgqr.NETXml_Proc(strErr);
+	
+	return ret;
+}
+
+//3.6离线信息上传
 INT32 CBusinessXmlProc::NETLXXXSC_Business(CYWXML_GY &ywxml_gy, CInvKind *invkind, string strQtxx, string &strLzkzxx, string &strErr)
 {
 	INT32 ret = XML_SUCCESS;
@@ -504,7 +494,7 @@ INT32 CBusinessXmlProc::NETLXXXSC_Business(CYWXML_GY &ywxml_gy, CInvKind *invkin
 	return ret;
 }
 
-//3.6网络领取发票
+//3.7网络领取发票
 INT32 CBusinessXmlProc::WLLQFP_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, string strQtxx, string &strErr)
 {
 	INT32 ret = XML_SUCCESS;
@@ -516,7 +506,7 @@ INT32 CBusinessXmlProc::WLLQFP_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, s
 	return ret;
 }
 
-//3.7网络领取发票结果确认
+//3.8网络领取发票结果确认
 INT32 CBusinessXmlProc::WLLQFPJGQR_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvol, string strQtxx, string &strErr)
 {
 	INT32 ret = XML_SUCCESS;
@@ -531,6 +521,37 @@ INT32 CBusinessXmlProc::WLLQFPJGQR_Business(CYWXML_GY &ywxml_gy, CInvVol *pInvvo
 INT32 CBusinessXmlProc::UpdateUploadInv(CYWXML_GY &ywxml_gy)
 {
 	INT32 ret = XML_SUCCESS;
+	
+	return ret;
+}
+
+//安全通道连接测试
+INT32 CBusinessXmlProc::SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr)
+{
+	INT32 ret = XML_SUCCESS;
+	
+	return ret;
+}
+
+//2.29.获取上传出错发票信息
+INT32 CBusinessXmlProc::GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
+{
+	INT32 ret = XML_SUCCESS;
+	ywxml_gy.m_strID = BUSINESS_YWID_ERRUPINV;
+	
+	CErrInvInfo ErrInvInfo;
+	CErrUpInv ErrUpInv(ywxml_gy, ErrInvInfo);
+	
+	ret = ErrUpInv.YWXml_Proc(strErr);
+	
+	DBG_PRINT(("ErrInvInfo num = %u", ErrInvInfo.m_ErrUpNum));
+	nCount = ErrInvInfo.m_ErrUpNum;
+	for(int i=0; i<nCount; i++)
+	{
+		pDataInvServ[i].m_fpdm = ErrInvInfo.InvUpFailInfo[i].m_fpdm;
+		pDataInvServ[i].m_fpdm = ErrInvInfo.InvUpFailInfo[i].m_fphm;
+		pDataInvServ[i].m_errMsg = ErrInvInfo.InvUpFailInfo[i].m_errMsg;
+	}
 	
 	return ret;
 }

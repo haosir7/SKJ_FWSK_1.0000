@@ -10,7 +10,6 @@
 #include "YWXML_GPXXXPJS.h"
 #include "YWXML_BSPFPCX.h"
 #include "BusinessBase.h"
-#include "YWXML_ERRUPINV.h"
 
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
@@ -168,11 +167,3 @@ INT32 CInvBusinessFunc::WLLQFPJGQRPro(CYWXML_GY &ywxml_gy, CInvVol *pInvVol, str
 }
 
 
-
-INT32 CInvBusinessFunc::ErrUpInvPro(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
-{
-	INT32 ret = SUCCESS;
-	ret = g_pBusBase->ErrUpInv_Business(ywxml_gy, ErrInvNum, pInvUpFailInfo, strErr);
-	
-	return g_pBusBase->ErrParse(ret, strErr);;
-}

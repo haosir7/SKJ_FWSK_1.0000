@@ -11,10 +11,6 @@
 #include "NetModelEditWin.h"
 #include "ADSLInfoSetWin.h"
 
-#include "SysMacDef.h"
-#include "APIBase.h"
-#include "YWXMLGY.h"
-
 #include "netManager.h"
 #include "NetManageMenu.h"
 
@@ -56,26 +52,26 @@ void CNetManageMenu::OnButton1(int iEvent, unsigned char * pEventData, int iData
 void CNetManageMenu::OnButton2(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 
-	BAR_DEF();
-	BAR_SHOW("网络连接测试...");
-
-	INT32 ret = SUCCESS;
-	string strErr = "";
-
-	ret = g_pAPIBase->LXXXUpdatePro_API(*g_YwXmlArg, strErr);
-	if(ret == SUCCESS)
-	{
-		CaMsgBox::ShowMsg("网络连接测试成功!");	
-	}
-	else
-	{
-		CaMsgBox::ShowMsg(strErr);
-	}
+// 	BAR_DEF();
+// 	BAR_SHOW("网络连接测试...");
+// 
+// 	INT32 ret = SUCCESS;
+// 	string strErr = "";
+// 
+// 	ret = g_pAPIBase->LXXXUpdatePro_API(*g_YwXmlArg, strErr);
+// 	if(ret == SUCCESS)
+// 	{
+// 		CaMsgBox::ShowMsg("网络连接测试成功!");	
+// 	}
+// 	else
+// 	{
+// 		CaMsgBox::ShowMsg(strErr);
+// 	}
 
 
 
 //	string strErr;
-//	ConnectTest();
+	ConnectTest();
 //	if( ret == SUCCESS )
 //		CaMsgBox::ShowMsg(strErr);
 }

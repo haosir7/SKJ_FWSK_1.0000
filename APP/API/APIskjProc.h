@@ -284,7 +284,7 @@ public:
 	@param[out] pInvUpFailInfo	出错的发票信息
 	@param[out] strErr			错误信息
 	*/
-	INT32 InvUpFailInfo_API(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr);
+	INT32 InvUpFailInfo_API(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr);
 
 	/*!
 	@brief 网络连接测试

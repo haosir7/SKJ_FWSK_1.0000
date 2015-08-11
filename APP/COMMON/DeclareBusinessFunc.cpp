@@ -95,6 +95,13 @@ INT32 CDeclareBusinessFunc::NetUpdateTaxProc(CYWXML_GY &ywxml_gy, string &strErr
 
 	ret = g_pBusBase->JKHC_Business(ywxml_gy, strFpjkmw, strErr);
 	ret = g_pBusBase->ErrParse(ret, strErr);
+	if(ret != SUCCESS)
+	{
+		return FAILURE;
+	}
+
+	ret = g_pBusBase->QLJSJGQR_Business(ywxml_gy, strFpjkmw, strErr);
+	ret = g_pBusBase->ErrParse(ret, strErr);
 
 	return ret;
 }

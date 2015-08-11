@@ -587,13 +587,13 @@ INT32 CAPIskjProc::LibClearDepot(string &strErr)
 /*!
  金税盘发票查询（发票段信息查询）
 */
-INT32 InvUpFailInfo_API(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)
+INT32 CAPIskjProc::InvUpFailInfo_API(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
 {
 	INT32 ret = SUCCESS;
 
-	CInvBusinessFunc invBusFun;
+	CSaleBusinessFunc salFunc;
 	
-	ret= invBusFun.ErrUpInvPro(ywxml_gy, ErrInvNum, pInvUpFailInfo, strErr);
+	ret= salFunc.GetErrUpInvInfo(ywxml_gy, pDataInvServ, nCount, strErr);
 	
 	if (ret !=SUCCESS)
 	{

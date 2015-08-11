@@ -200,7 +200,7 @@ void CFiscalMenu::OnButton7(int iEvent, unsigned char * pEventData, int iDataLen
 }
 
 
-//获取出错的发票信息
+//发票补录
 void CFiscalMenu::OnButton8(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 	if (g_globalArg->m_initFlag != 1)

@@ -17,7 +17,7 @@
 #include "CNetPara.h"
 #include "CTax.h"
 #include "CTjxxhz.h"
-#include "CInvUpFailInfo.h"
+#include "CInvServ.h"
 
 #include "CNetPara.h"
 
@@ -302,7 +302,7 @@ public:
 	@param[out] pInvUpFailInfo	出错的发票信息
 	@param[out] strErr			错误信息
 	*/
-	virtual INT32 InvUpFailInfo_API(CYWXML_GY &ywxml_gy, UINT32 &ErrInvNum, CInvUpFailInfo *pInvUpFailInfo, string &strErr)=0;
+	virtual INT32 InvUpFailInfo_API(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)=0;
 
 	/*!
 	@brief 网络连接测试
