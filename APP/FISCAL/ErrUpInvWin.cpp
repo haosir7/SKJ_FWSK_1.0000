@@ -252,7 +252,14 @@ UINT8 CErrInvUpWin::QueryShow(CInvUpFailInfo *pInvUpFailInfo, UINT32 nPageIndex)
 			DBG_PRINT(("½ØÈ¡µÄ×Ö·û´®Îª£º %s", TempErr.c_str()));
 			sprintf(title_array[3], "´íÎóÃèÊö: %s",TempErr.c_str());
 
+			if (MesLen ==  ERR_MES_MAX_LEN)
+			{
+				MesLen -= 1;
+				TempErr = pInvUpFailInfo[nPageIndex-1].m_ErrInfo.substr(LINE_ERR_MES_LEN - 1, MesLen - LINE_ERR_MES_LEN);
+			}
+
 			TempErr = pInvUpFailInfo[nPageIndex-1].m_ErrInfo.substr(LINE_ERR_MES_LEN - 1, MesLen - LINE_ERR_MES_LEN + 1);
+			
 			sprintf(title_array[4], "%s", TempErr.c_str());
 		}
 
