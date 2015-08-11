@@ -37,7 +37,7 @@ int CMaintenanceMenu::Create(int iX,int iY,int iW,int iH)
 	SetTitle(7,"G.主管密码");
 	SetTitle(8,"H.网络管理");
 	SetTitle(9,"I.删除缓存");
-	SetTitle(10,"J.设备清库");
+	SetTitle(0,"J.设备清库");
 	
 	return 1;
 }

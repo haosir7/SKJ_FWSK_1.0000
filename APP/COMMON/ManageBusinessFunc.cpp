@@ -1,5 +1,6 @@
 
 #include "ManageBusinessFunc.h"
+#include "ClearDepotFunc.h"
 
 
 #include "LOGCTRL.h"
@@ -161,3 +162,16 @@ INT32 CManageBusinessFunc::SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr)
 	return ret;
 }
 
+#if BUSINESS_TYPE_MODE == BUSINESS_XML_MODE
+
+INT32 CManageBusinessFunc::ClearMidDepot(string &strErr)
+{
+	INT32 ret = SUCCESS;
+
+	CClearDepotFunc clearfunc;
+    ret = clearfunc.ClearDepot(strErr);
+	
+	return ret;
+}
+
+#endif

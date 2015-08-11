@@ -573,7 +573,12 @@ INT32 CAPIskjProc::Hqlxsj_API(string &wscfpzs, string &wscfpsj, string &wscfpljj
 
 INT32 CAPIskjProc::LibClearDepot(string &strErr)
 {
-	return SUCCESS;
+	UINT8 ret = SUCCESS;
+	CManageBusinessFunc managBusFun;
+	
+	ret = managBusFun.ClearMidDepot(strErr);
+	
+	return ret;
 }
 
 

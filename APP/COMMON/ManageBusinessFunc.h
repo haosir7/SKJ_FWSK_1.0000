@@ -126,6 +126,17 @@ public:
 	*/
 	INT32 SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr);
 
+#if BUSINESS_TYPE_MODE == BUSINESS_XML_MODE
+
+	/*!
+	@brief 更新未上传发票信息
+	@param[in] 
+	@return  1 SUCCESS； 0  FAILURE
+	*/
+	INT32 ClearMidDepot(string &strErr);
+
+#endif
+
 };
 
 
