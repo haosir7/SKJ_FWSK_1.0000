@@ -293,8 +293,8 @@ INT8 CZhqBtlSetWin::ChangeBaudRate(string &RetErr)
 	DBG_PRINT(("SetBaudRate: nRet = %d",nRet));
 	if (nRet != SUCCESS)
 	{
-                DBG_PRINT(("strErr : %s", strErr.c_str()));
-		RetErr = "≤®Ãÿ¬ …Ë÷√ ß∞‹";
+        DBG_PRINT(("strErr : %s", strErr.c_str()));
+		RetErr = strErr;
 		return FAILURE;
 	}
 

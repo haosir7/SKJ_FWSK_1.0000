@@ -183,10 +183,14 @@ void CErrInvUpWin::DoActive()
 		m_pageIndex = 1;
 		m_pageNum = 0;
 		CaMsgBox::ShowMsg(StrErr);
+		ChangeWin(FISCAL_MAIN_MENU);
 	}
-	QueryShow(m_InvUpFailInfo, m_pageIndex);//组织屏幕显示信息
-	ChangeTitle();
-	ReFresh();	
+	else
+	{
+		QueryShow(m_InvUpFailInfo, m_pageIndex);//组织屏幕显示信息
+		ChangeTitle();
+		ReFresh();	
+	}	
 }
 
 UINT8 CErrInvUpWin::ChangeTitle()
