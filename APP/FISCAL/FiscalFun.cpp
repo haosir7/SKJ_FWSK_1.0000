@@ -484,6 +484,67 @@ UINT8 FSC_InfoUpdate(string &strErr)
 	return SUCCESS;
 }
 
+UINT8  FSC_OffLineDate(string &strErr)
+{
+
+	INT32 ret=SUCCESS;
+    INT8 tmpch[64];
+	string wscfpzs ="";
+	string wscfpsj="";
+	string wscfpljje="";
+	string sczs="";
+	string scsjjg="";
+	
+    ret = g_pAPIBase->Hqlxsj_API(wscfpzs, wscfpsj, wscfpljje, sczs, scsjjg, strErr);
+	DBG_PRINT(("ret= %d",ret));
+	if (ret !=SUCCESS)
+	{
+		return FAILURE;
+	}
+
+
+	UINT32 nWscfpzs = atoi(wscfpzs.c_str());
+	UINT32 nWscfpsj=atoi(wscfpsj.c_str());
+	INT64 nWscfpljje=atoi(wscfpljje.c_str());
+
+	DBG_PRINT(("nWscfpzs= %u",nWscfpzs));
+	DBG_PRINT(("nWscfpsj= %u",nWscfpsj));
+	DBG_PRINT(("nWscfpljje= %lld",nWscfpljje));
+
+    UINT32 tmpSJ=g_globalArg->m_invKind->m_Lxkjsj -nWscfpsj;
+	DBG_PRINT(("tmpSJ= %u",tmpSJ));
+
+	if (tmpSJ<=24)
+	{
+		memset((void *)tmpch,0x00,sizeof(tmpch));
+		sprintf(tmpch,"离线开具时间还剩%u小时,请执行'发票上传",tmpSJ);
+		strErr =tmpch;
+		return FAILURE;
+	}
+
+	INT64 tmpJE = g_globalArg->m_invKind->m_maxSum -nWscfpljje;
+	DBG_PRINT(("tmpJE= %lld",tmpJE));
+
+	if ((g_globalArg->m_invKind->m_maxSum*0.8 -nWscfpljje)<0)
+	{
+		memset((void *)tmpch,0x00,sizeof(tmpch));
+		sprintf(tmpch,"离线正数发票限额还剩%u,请执行'发票上传'",tmpJE);
+		strErr =tmpch;
+		return FAILURE;
+	}
+
+	DBG_PRINT(("nWscfpzs= %u",nWscfpzs));
+	if (nWscfpzs>=50)
+	{
+		memset((void *)tmpch,0x00,sizeof(tmpch));
+		sprintf(tmpch,"离线开具发票累计%u张,请执行'发票上传",nWscfpzs);
+		strErr =tmpch;
+		return FAILURE;
+	}
+	
+	return SUCCESS;
+}
+
 // UINT8 FSC_CheckDeclare(string &strErr)
 // {
 // 

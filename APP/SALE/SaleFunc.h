@@ -54,6 +54,7 @@ UINT8 SALE_GetCurInv(CInvVol *pInvVol,string &strErr);
 */
 UINT8 SALE_MakeInvHand(CInvHead *pInvHead,string &strErr);
 
+
 //----∑¢∆±¥Ú”°
 
 /*!

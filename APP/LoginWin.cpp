@@ -415,6 +415,12 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 				CaMsgBox::ShowMsg(strErr);
 				//return ;		
 			}
+
+		    ret=FSC_OffLineDate(strErr);
+			if (ret !=SUCCESS)
+			{
+				CaMsgBox::ShowMsg(strErr);	
+			}
 #endif				
 		}
 

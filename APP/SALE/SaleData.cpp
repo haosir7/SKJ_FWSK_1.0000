@@ -7,7 +7,7 @@
 
 
 #include "SaleData.h"
-//#include "SysMacDef.h"
+//#include "FiscalFun.h"
 #include "TDateTime.h"
 #include "VersionConfig.h"
 
@@ -690,6 +690,12 @@ UINT8 SaleData::PayByCash( UINT8 &IfInvSum )
 		DBG_PRINT(("ret= %u",ret));
 		DBG_RETURN(ret);
 	}
+
+//	ret=FSC_OffLineDate(strErr);
+//	if (ret !=SUCCESS)
+//	{
+//			CaMsgBox::ShowMsg(strErr);			
+//	}
 
 	//发票金额超下限
 	//	if (m_singleInvInfo->m_kphjje < g_globalArg->m_invKind->m_minSum) 

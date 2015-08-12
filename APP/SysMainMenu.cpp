@@ -5,6 +5,7 @@
 #include "MultiBtnCommonWin.h"
 #include "CGlobalArg.h"
 #include "TDateTime.h"
+#include "ReportFunc.h"
 #include "SaleData.h"
 
 //////////////////////////////////////////////////////
@@ -37,18 +38,27 @@ int CSysMainMenu::Create(int iX,int iY,int iW,int iH)
 
 void CSysMainMenu::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 {
- 	if (g_globalArg->m_operator->m_role!=DEMO_ROLE) 
- 	{
- 		//判断系统参数，是否进入下一级界面
- 		if ((g_globalArg->m_initFlag == 0)&&(g_globalArg->m_operator->m_role!=DEMO_ROLE))
- 		{
- 			DBG_PRINT(("机器未初始化"));
- 			CaMsgBox::ShowMsg("机器未初始化");
- 			return ;
- 		}
+	if (g_globalArg->m_operator->m_role!=DEMO_ROLE) 
+	{
+		//判断系统参数，是否进入下一级界面
+		if ((g_globalArg->m_initFlag == 0)&&(g_globalArg->m_operator->m_role!=DEMO_ROLE))
+		{
+			DBG_PRINT(("机器未初始化"));
+			CaMsgBox::ShowMsg("机器未初始化");
+			return ;
+		}
 		g_globalArg->m_curInvVol->ResetVol();
-	
- 	}
+		
+		string strErr("");
+		UINT32 nCurDate= TDateTime::CurrentDate().FormatInt(YYYYMMDD);
+		
+		UINT8 ret=CheckCurDate(nCurDate,strErr);
+		if (ret !=SUCCESS)
+		{
+			CaMsgBox::ShowMsg(strErr);
+			return ;		
+		}
+	}
  	DBG_PRINT(("---****m_remain = %u", g_globalArg->m_curInvVol->m_remain));
 
 	ChangeWin(PRODUCT_SALE_MAIN_MENU);	
