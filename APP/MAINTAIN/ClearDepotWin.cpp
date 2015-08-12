@@ -19,6 +19,7 @@
 #include "SysArgMac.h"
 #include "netdbWork.h"
 #include "LANConnection.h"
+#include "MaintenanceFunc.h"
 
 
 #include "LOGCTRL.h"
@@ -71,6 +72,26 @@ int CClearDepotWin::Create(int iX,int iY,int iW,int iH)
 	m_pInput1->m_InputType = m_pInput1->aINT; //该输入框只接受字符
 	m_pInput1->OnObject = S_OnInput1;
 
+	strcpy(title, "盘口令:");
+	titleLen = strlen(title) * CHAR_W;
+	curH += LINE_H;
+	m_pInput2=new CaInput(CaObject::ON_LEFT,titleLen);
+	m_pInput2->Create(0,curH,SCREEN_W,LINE_H);
+	m_pInput2->SetTitle(title,titleLen / CHAR_W);	
+	m_pInput2->SetMaxLen(JSP_PWD_LEN);
+	m_pInput2->m_InputType = m_pInput2->aINT; //该输入框只接受字符
+	m_pInput2->OnObject = S_OnInput2;
+
+	strcpy(title, "证书口令:");
+	titleLen = strlen(title) * CHAR_W;
+	curH += LINE_H;
+	m_pInput3=new CaInput(CaObject::ON_LEFT,titleLen);
+	m_pInput3->Create(0,curH,SCREEN_W,LINE_H);
+	m_pInput3->SetTitle(title,titleLen / CHAR_W);	
+	m_pInput3->SetMaxLen(CAZS_PWD_LEN);
+	m_pInput3->m_InputType = m_pInput3->aINT; //该输入框只接受字符
+	m_pInput3->OnObject = S_OnInput3;
+
 	m_iBtnW = (SCREEN_W - 40)/2 - 4; //Button的宽度
  	m_iColW = (SCREEN_W - 40)/2; //Button的列宽
 	INT32 left_offset = SCREEN_LEFT_OFFSET+8;
@@ -79,7 +100,7 @@ int CClearDepotWin::Create(int iX,int iY,int iW,int iH)
 	//创建一个Button  第五行
 	strcpy(title, "确认");
 	m_pBtn1 = new CaButton();
-	curH += 3*LINE_H;
+	curH += LINE_H;
 	m_pBtn1->Create(leftoffset_btn,curH,m_iBtnW,WORD_H); 
 	m_pBtn1->SetTitleAlign(CaObject::ALIGN_CENTER);
 	m_pBtn1->SetTitle(title, strlen(title));
@@ -158,6 +179,18 @@ void CClearDepotWin::S_OnInput1(CaObject *obj,int iEvent, unsigned char * pEvent
 	win->OnInput1(iEvent,pEventData,iDataLen);
 }
 
+void CClearDepotWin::S_OnInput2(CaObject *obj,int iEvent, unsigned char * pEventData, int iDataLen)
+{
+	CClearDepotWin *win=(CClearDepotWin *)obj->GetdWin();
+	win->OnInput1(iEvent,pEventData,iDataLen);
+}
+
+void CClearDepotWin::S_OnInput3(CaObject *obj,int iEvent, unsigned char * pEventData, int iDataLen)
+{
+	CClearDepotWin *win=(CClearDepotWin *)obj->GetdWin();
+	win->OnInput1(iEvent,pEventData,iDataLen);
+}
+
 
 void CClearDepotWin::S_OnButton1(CaObject *obj,int iEvent, unsigned char * pEventData, int iDataLen)
 {
@@ -179,11 +212,32 @@ void CClearDepotWin::OnInput1(int iEvent, unsigned char * pEventData, int iDataL
 	return;		
 }
 
+void CClearDepotWin::OnInput2(int iEvent, unsigned char * pEventData, int iDataLen)
+{
+	OnDownKey(); //切换焦点到下一个控件
+	return;		
+}
+
+void CClearDepotWin::OnInput3(int iEvent, unsigned char * pEventData, int iDataLen)
+{
+	OnDownKey(); //切换焦点到下一个控件
+	return;		
+}
+
 void CClearDepotWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 	UINT8 ret;
 	string strInfo;
 	m_workState = WORK_INCOMPLETE;
+
+	//若盘口令或证书口令有输入值
+	if((!m_pInput2->IsEmpty())||(!m_pInput3->IsEmpty()))
+	{
+		if(YesNoMsBox("是否按输入值修改口令?")==FAILURE)
+		{
+			return;
+		}
+	}
 	g_globalArg->m_threadIn = 0;//不允许进线程循环
 	ret = ClearDepot(strInfo);
 	if (ret==FAILURE)
@@ -212,7 +266,7 @@ void CClearDepotWin::OnButton2(int iEvent, unsigned char * pEventData, int iData
 UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 {
 	UINT8 ret = SUCCESS;
-	INT8 *content1;
+	INT8 *content1, *content2, *content3;
 	INT32 tmp, errorcode;
 	INT32 dhcpMode=0;
     string strMachineNo = "";
@@ -232,6 +286,8 @@ UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 
 
 	content1 = (char*)(m_pInput1->m_contentBuf); 
+	content2 = (char*)(m_pInput2->m_contentBuf); 
+	content3 = (char*)(m_pInput3->m_contentBuf); 
 	//机器编码有输入但不是12位则推出
 	//没有输入可继续进行
 	if (strlen(content1)!=0) 
@@ -239,12 +295,23 @@ UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 		if(strlen(content1)!=12)
 		{
 			m_workState = WORK_COMPLETE;
-			strInfo = "机器编码非法！";	
+			strInfo = "机器编码长度非法！";	
 			return(FAILURE);
 		}
 		strMachineNo = content1; //机器编码为12位
 	}
-	m_pInput1->Clear();
+
+	if ((strlen(content2)!=0)&&(strlen(content2)!=JSP_PWD_LEN)) 
+	{
+		strInfo = "盘口令长度非法！";	
+		return(FAILURE);
+	}
+
+	if ((strlen(content3)!=0)&&(strlen(content3)!=CAZS_PWD_LEN)) 
+	{
+		strInfo = "证书口令长度非法！";	
+		return(FAILURE);
+	}
 
 	CMachine machine;
 	machine.Requery();
@@ -290,36 +357,59 @@ UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 
 
 	memset((void *)sqlbuf,0x00,sizeof(sqlbuf));
-	sprintf(sqlbuf,  "where SA_ID = %d", SYS_CERTIF_PSW);
-	sysArg->m_filter.append(sqlbuf);
-	sysArg->Requery();
-	errorcode = sysArg->LoadOneRecord();
-	DBG_PRINT(("errorcode= %d",errorcode));
-	if (errorcode == SQLITE_OK)
+	if (strlen(content3)!=0)//证书口令有输入
 	{
-		memset((void *)sqlbuf,0x00,sizeof(sqlbuf));
 		sprintf(sqlbuf, "update SYSARG set V_TEXT = '%s' where SA_ID = %d;\n", 
-			sysArg->m_vText.c_str(), SYS_CERTIF_PSW);
+			content3, SYS_CERTIF_PSW);
 		//DBG_PRINT(("sqlbuf = %s", sqlbuf));		
 		sqlstr += sqlbuf;
 		DBG_PRINT(("sqlstr = %s", sqlstr.c_str()));
 	}
+	else
+	{	
+		sprintf(sqlbuf,  "where SA_ID = %d", SYS_CERTIF_PSW);
+		sysArg->m_filter.append(sqlbuf);
+		sysArg->Requery();
+		errorcode = sysArg->LoadOneRecord();
+		DBG_PRINT(("errorcode= %d",errorcode));
+		if (errorcode == SQLITE_OK)
+		{
+			memset((void *)sqlbuf,0x00,sizeof(sqlbuf));
+			sprintf(sqlbuf, "update SYSARG set V_TEXT = '%s' where SA_ID = %d;\n", 
+				sysArg->m_vText.c_str(), SYS_CERTIF_PSW);
+			//DBG_PRINT(("sqlbuf = %s", sqlbuf));		
+			sqlstr += sqlbuf;
+			DBG_PRINT(("sqlstr = %s", sqlstr.c_str()));
+		}
+	}
 
 	memset((void *)sqlbuf,0x00,sizeof(sqlbuf));
-	sprintf(sqlbuf,  "where SA_ID = %d", SYS_DISK_PSW);
-	sysArg->m_filter.append(sqlbuf);
-	sysArg->Requery();
-	errorcode = sysArg->LoadOneRecord();
-	DBG_PRINT(("errorcode= %d",errorcode));
-	if (errorcode == SQLITE_OK)
+	if (strlen(content2)!=0)//盘口令有输入
 	{
-		memset((void *)sqlbuf,0x00,sizeof(sqlbuf));
 		sprintf(sqlbuf, "update SYSARG set V_TEXT = '%s' where SA_ID = %d;\n", 
-			sysArg->m_vText.c_str(), SYS_DISK_PSW);
-	//	DBG_PRINT(("sqlbuf = %s", sqlbuf));		
+			content2, SYS_DISK_PSW);
+		//	DBG_PRINT(("sqlbuf = %s", sqlbuf));		
 		sqlstr += sqlbuf;
 		DBG_PRINT(("sqlstr = %s", sqlstr.c_str()));
 	}
+	else
+	{
+		sprintf(sqlbuf,  "where SA_ID = %d", SYS_DISK_PSW);
+		sysArg->m_filter.append(sqlbuf);
+		sysArg->Requery();
+		errorcode = sysArg->LoadOneRecord();
+		DBG_PRINT(("errorcode= %d",errorcode));
+		if (errorcode == SQLITE_OK)
+		{
+			memset((void *)sqlbuf,0x00,sizeof(sqlbuf));
+			sprintf(sqlbuf, "update SYSARG set V_TEXT = '%s' where SA_ID = %d;\n", 
+				sysArg->m_vText.c_str(), SYS_DISK_PSW);
+			//	DBG_PRINT(("sqlbuf = %s", sqlbuf));		
+			sqlstr += sqlbuf;
+			DBG_PRINT(("sqlstr = %s", sqlstr.c_str()));
+		}
+	}
+
 
 
 	string strMachine("");
@@ -414,6 +504,10 @@ UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 //		machine = NULL;
 //	    return FAILURE;
 //	}	
+
+	m_pInput1->Clear();
+	m_pInput2->Clear();
+	m_pInput3->Clear();
 
 	proBar.SetText("清库完成!请重新启动机器!");
 	proBar.ReFresh();

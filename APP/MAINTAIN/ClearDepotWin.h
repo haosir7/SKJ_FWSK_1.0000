@@ -39,7 +39,7 @@ class CClearDepotWin : public CaWindow
 public:
 	char title_array[5][OBJ_TITLE_MAX_LEN + 1];  /**< 标签的标题*/
 	
-	CaInput *m_pInput1;							/**< 指向输入栏的指针 */
+	CaInput *m_pInput1, *m_pInput2, *m_pInput3;							/**< 指向输入栏的指针 */
 	CaButton *m_pBtn1, *m_pBtn2;				/**< 指向按钮的指针 */
 	        	
 	int m_iBtnW;								/**< 两列时，控件的宽度 */  
@@ -76,6 +76,24 @@ private:
 	@param[in] iDataLen 事件内容长度
 	*/
 	static void S_OnInput1(CaObject *obj,int iEvent, unsigned char * pEventData, int iDataLen);
+
+		/*!
+	@brief 输入栏响应的静态函数
+	@param[in] obj 控件指针
+	@param[in] iEvent 事件编号
+	@param[in] pEventData 事件内容
+	@param[in] iDataLen 事件内容长度
+	*/
+	static void S_OnInput2(CaObject *obj,int iEvent, unsigned char * pEventData, int iDataLen);
+
+		/*!
+	@brief 输入栏响应的静态函数
+	@param[in] obj 控件指针
+	@param[in] iEvent 事件编号
+	@param[in] pEventData 事件内容
+	@param[in] iDataLen 事件内容长度
+	*/
+	static void S_OnInput3(CaObject *obj,int iEvent, unsigned char * pEventData, int iDataLen);
 
 public:
 
@@ -127,6 +145,22 @@ public:
 	@param[in] iDataLen 事件内容长度
 	*/
 	void OnInput1(int iEvent, unsigned char * pEventData, int iDataLen);
+
+	/*!
+	@brief 输入栏响应函数	
+	@param[in] iEvent 事件编号
+	@param[in] pEventData 事件内容
+	@param[in] iDataLen 事件内容长度
+	*/
+	void OnInput2(int iEvent, unsigned char * pEventData, int iDataLen);
+
+	/*!
+	@brief 输入栏响应函数	
+	@param[in] iEvent 事件编号
+	@param[in] pEventData 事件内容
+	@param[in] iDataLen 事件内容长度
+	*/
+	void OnInput3(int iEvent, unsigned char * pEventData, int iDataLen);
 
 	/*!
 	@brief 构造函数	

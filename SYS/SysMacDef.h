@@ -26,7 +26,7 @@
 #define OPERATOR_NAME_LEN				10		//操作员名称长度
 #define SOFT_VER_LEN					18		//软件版本长度
 #define HARD_VER_LEN					18		//硬件版本长度
-#define FCARD_NO_LEN					8		//税控卡编号(BCD)长度
+//#define FCARD_NO_LEN					8		//税控卡编号(BCD)长度
 #define FCARD_PWD_LEN					8		//税控卡口令(BCD)长度
 #define CORP_NO_LEN						8		//纳税人编码(BCD)长度
 #define MACHINE_NO_LEN					16		//机器编号(ASC)长度
@@ -47,6 +47,9 @@
 #define CORP_QYLX_LEN					16		//企业类型
 #define CORP_QYSJ_LEN					14		//启用时间
 #define CORP_ZFBZ_LEN					8		//主分机  
+
+#define JSP_PWD_LEN					    8		    //金税盘口令长度
+#define CAZS_PWD_LEN					8		//金税盘上CA证书口令长度
 
 //发票种类信息
 #define INV_KIND_CODE_LEN                20       //发票种类代码
