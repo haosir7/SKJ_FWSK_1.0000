@@ -245,8 +245,10 @@ void CSystemUpgradeWin::DoActive()
 	FOR_DELAY(0xFFFFF);
 	system("cp /mnt/awe.sql /usr/");
 	FOR_DELAY(0xFFFFF);
+#if TYPE_MODE ==  SKJ_MODE
 	system("cp /mnt/libawe.sql /usr/");//中间件数据库脚本
 	FOR_DELAY(0xFFFFF);
+#endif
 
 #else 
 	ShowMsg("系统升级进行中...");
@@ -284,8 +286,10 @@ void CSystemUpgradeWin::DoActive()
 	FOR_DELAY(0xFFFFFF);
 	system("cp /mnt/awe.sql ../");
 	FOR_DELAY(0xFFFFF);
+#if TYPE_MODE ==  SKJ_MODE
 	system("cp /mnt/libawe.sql ../"); //中间件数据库脚本
 	FOR_DELAY(0xFFFFF);
+#endif
 #endif
 	
  	UsbDiskUnMount();
