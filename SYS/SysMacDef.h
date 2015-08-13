@@ -109,7 +109,7 @@
 #define REPORT_LINE_SPACE2		5			//行间距2
 
 //#define GOODS_CODE_LEN					16		//商品编码长度
-#define MACHINE_NO_LEN					16		//机器编号(ASC)长度
+//#define MACHINE_NO_LEN					16		//机器编号(ASC)长度
 #define FKDW_NAME_LEN					PAYER_NAME_LEN		//付款单位名称长度
 #define INV_GOODS_MAX_COUNT				6        //MAX_NUM_LIST_SINGLE 发票商品行最大行数
 #define TAX_ITEM_MAX_COUNT				6		//当前使用的税种税目最大个数

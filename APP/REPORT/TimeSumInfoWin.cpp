@@ -234,8 +234,6 @@ UINT8 CTimeSumInfoWin::QueryShow(struct TDateSegSumPrnData *pSegSumPrnData)
 	memcpy((void *)pSegSumPrnData->TaxCode,
 		(void *)g_globalArg->m_corpInfo->m_Nsrsbh.c_str(), CORP_SBH_LEN);
 
-	DBG_PRINT(("****m_machineNo= %s", g_globalArg->m_machine->m_machineNo.c_str()));
-	DBG_PRINT(("****pSegSumPrnData->MachineCode= %s", (char*)(pSegSumPrnData->MachineCode)));
 	
 	pSegSumPrnData->StartDate	= m_StartDate;
 	pSegSumPrnData->EndDate	= m_EndDate;
