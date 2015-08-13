@@ -479,7 +479,7 @@ UINT8 ForwardPaper(void)
 	}
 	else
 	{
-		ForwardNPoint(5);
+		ForwardNPoint(32);
 	}
 
 	DBG_RETURN(SUCCESS);
@@ -492,7 +492,7 @@ UINT8 BackwardPaper(void)
 	{
 		DBG_RETURN(FAILURE);
 	}
-	BackwardNPoint(10);
+	BackwardNPoint(32);
 
 	DBG_RETURN(SUCCESS);
 }

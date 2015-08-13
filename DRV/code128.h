@@ -18,7 +18,7 @@ void CreateRightCodeArray(void);
 void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char PrintOffset);
 
 
-void PrintLineCode(const unsigned char *chBuf);
+void PrintLineCode(const unsigned char *chBuf, unsigned char prinset);
 
 void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned char Offset);
 

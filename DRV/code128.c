@@ -215,12 +215,14 @@ unsigned char  VerticalLineNum(void)//计算打印点数(包括黑条与空白)
 {
 	unsigned char i=0 ;
 	unsigned char sum=0;	
-	
+	/*
 	for(i=0;i<((((strlen(WillprintNum))/2)+2)*6+7);i++)
 	{
 		sum+=LineCodeTab[i];
 	
 	}
+	*/
+	sum = (strlen(WillprintNum))/2*11+35;
 											 
 	return sum;
 }
@@ -290,7 +292,7 @@ unsigned char CalculateCenter(unsigned char Offset)		//居中起始点计算 函数
 	}
 	else					  
 	{
-		Offset=(Offset+_1Dot)/2;
+		Offset=(Offset - _1Dot)/2;
 	}
 	
 	return Offset;
@@ -388,9 +390,7 @@ void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned c
 			Code128Return( 1,0x4A);
 			us_delay(1000);
 			Code128Return( 1,0x01);
-			us_delay(1000);	
-			
-			
+			us_delay(1000);		
 		}
 		
 		//		us_delay(1000);
@@ -403,13 +403,10 @@ void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned c
 		Code128Return( 1,0x4a);
 		us_delay(1000);
 		Code128Return( 1,0x0c);
-		us_delay(1000);	
-
-		
+		us_delay(1000);		
 	}	
 	
 }
-
 
 void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char PrintOffset)
 {
@@ -421,7 +418,7 @@ void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char P
 		while(GetPrinterStatus());
 		while(GetPrinterStatus());
 		//	PrintLineCodeImg(1,Printtimes,CalculateCenter(PrintOffset+(167-VerticalLineNum())/2));
-		PrintLineCodeImg(1,Printtimes,CalculateCenter(PrintOffset+(167-((strlen(WillprintNum)+2)*11+13)/2)/2));
+		PrintLineCodeImg(1,Printtimes,PrintOffset);
 		//	PrintLineCodeImg(1,Printtimes,0);
 		us_delay(20000);
 	
@@ -454,21 +451,46 @@ void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char P
 	us_delay(1000);	
 	
 }
-void PrintLineCode(const unsigned char *chBuf)
+void PrintLineCode(const unsigned char *chBuf, unsigned char prinset)
 {
-	CodeTwo(2, 0x1B,0x2E);
-	CommonSleep(1);
-	
-	WillprintNum= chBuf;
-	//"232324198702203012203012";
-	//	printf("\n");
-	Print_Con(3,2,_CenterDot);	   //打印高度，打印次数，偏移量
-	us_delay(5000);
-
-	PrintYwtm(chBuf);
-	us_delay(3000);
+	unsigned char printOff = 0;
+	unsigned char ywmOffset = 0;
+	if ( (prinset & 0x01)==0x01 )
+	{
+		CodeTwo(2, 0x1B,0x2E);
 		CommonSleep(1);
-	CodeTwo(2, 0x1B,0x2F);
+		WillprintNum= chBuf;
+
+		//打印一维条形码,根据模板计算偏移量
+		if ( ((prinset>>2) | 0x00)==0x00 )//居左打印
+		{
+			printOff = 10;
+			ywmOffset = 5;
+		}
+		else if (((prinset>>2) & 0x01)==0x01)//居中打印
+		{
+			printOff = CalculateCenter( _MAX_DOT - VerticalLineNum());
+			ywmOffset = CalculateCenter(46 - strlen(WillprintNum));//映美打印机一行最多打印42个西文字符
+		}
+		else if (((prinset>>2) & 0x02)==0x02)//居右打印
+		{
+			printOff = _MAX_DOT - VerticalLineNum() - 10;
+			ywmOffset = 46 - strlen(WillprintNum) - 3;
+		}
+		else{}
+		Print_Con(3,2,printOff);	   //打印高度，打印次数，偏移量
+
+		if ( ((prinset>>1) & 0x01)==0x01 )
+		{
+			us_delay(5000);
+			PrintYwtm(chBuf, ywmOffset);//打印数字校验码
+		}
+
+		us_delay(3000);
+		CommonSleep(1);
+		CodeTwo(2, 0x1B,0x2F);
+		ForwardNPoint(20);
+	}
 
 }
 
@@ -546,7 +568,7 @@ void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char P
 	unsigned char i=0;
 
 	CreateRightCode();
-	PrintOffset = PrintOffset-(VerticalLineNum()+15);
+	//PrintOffset = PrintOffset-(VerticalLineNum()+15);
 	
 	for(i=0;i<PrintHigh;i++)//打印高度
 	{
@@ -554,7 +576,7 @@ void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char P
 		//while(GetPrinterStatus());
 		//while(GetPrinterStatus());
 		//PrintLineCodeImg(1,Printtimes,CalculateCenter(PrintOffset+(167-((strlen(WillprintNum)+2)*11+13)/2)/2));
-		PrintLineCodeImg(1,Printtimes,CalculateCenter(PrintOffset));
+		PrintLineCodeImg(1,Printtimes,PrintOffset);
 
 		us_delay(2000);
 	}
@@ -574,23 +596,50 @@ void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char P
 	us_delay(1000);	
 	
 }
-void PrintLineCode(const unsigned char *chBuf)
+void PrintLineCode(const unsigned char *chBuf, unsigned char prinset)
 {
-	//CodeTwo(2, 0x1B,0x2E);
-	CommonSleep(1);
-	
-	WillprintNum= chBuf;
+	unsigned char printOff = 0;
+	unsigned char ywmOffset = 0;
 
-	//打印一维条形码
-	Print_Con(3,2,_MAX_DOT);	   //打印高度，打印次数，偏移量
+	if ( (prinset & 0x01)==0x01 )
+	{
+		CommonSleep(1);
+		
+		WillprintNum= chBuf;
 
-	us_delay(5000);
+		//打印一维条形码
 
-	PrintYwtm(chBuf);//打印数字校验码
-	us_delay(3000);
-	CommonSleep(1);
-	CarriageReturn();
-	LineFormard();
+		if ( ((prinset>>2) | 0x00)==0x00 )//居左打印
+		{
+			printOff = 10;
+			ywmOffset = 5;
+		}
+		else if (((prinset>>2) & 0x01)==0x01)//居中打印
+		{
+			printOff = CalculateCenter( _MAX_DOT - VerticalLineNum());
+			ywmOffset = CalculateCenter(42 - strlen(WillprintNum));//映美打印机一行最多打印42个西文字符
+		}
+		else if (((prinset>>2) & 0x02)==0x02)//居右打印
+		{
+			printOff = _MAX_DOT - VerticalLineNum() - 10;
+			ywmOffset = 42 - strlen(WillprintNum) - 3;
+		}
+		else{}
+		
+		Print_Con(3,2,printOff);	   //打印高度，打印次数，偏移量
+		
+		if ( ((prinset>>1) & 0x01)==0x01 )
+		{
+			us_delay(5000);
+			PrintYwtm(chBuf, ywmOffset);//打印数字校验码
+		}
+
+		us_delay(3000);
+		CommonSleep(1);
+		CarriageReturn();
+		LineFormard();	
+		ForwardNPoint(20);
+	}
 }
 
 #endif
