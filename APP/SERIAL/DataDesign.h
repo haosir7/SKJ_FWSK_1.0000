@@ -3,7 +3,9 @@
 
 #define SERAL_SEND_DATA_ERR "串口数据发送失败!"
 #define WAIT_NEXT_DATA_ERR	"转换器回应的NP包出错!"
-#define WAIT_TIMEOUT_ERR	"串口通讯超时!"
+#define RESPOND_TIMEOUT_ERR			"等待转换器响应超时!"
+#define WAIT_PACKHEAD_TIMEOUT_ERR	"接受包头超时!"
+#define WAIT_DATA_TIMEOUT_ERR		"接受数据超时!"
 #define CRC_ERR				"CRC校验错误!"
 #define HEAD_ERR			"包头数据格式错误!"
 #define HEAD_PARA_ERR		"包头数据参数错误!"

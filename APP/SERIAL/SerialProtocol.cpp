@@ -334,7 +334,7 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 	if (offset < 2)
 	{
 		//DBG_PRINT(("wait next package time out"));
-		strErr = WAIT_TIMEOUT_ERR;
+		strErr = RESPOND_TIMEOUT_ERR;
 		return SERCMD_OVERTIME_ERR;
 	}
 
@@ -376,7 +376,7 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 	if (offset < headLen)
 	{
 		//DBG_PRINT(("wait next package time out"));
-		strErr = WAIT_TIMEOUT_ERR;
+		strErr = WAIT_PACKHEAD_TIMEOUT_ERR;
 		return SERCMD_OVERTIME_ERR;
 	}
 
@@ -411,7 +411,7 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 	if (offset < packageLen+CRC_LEN)
 	{
 		//DBG_PRINT(("wait next package time out"));
-		strErr = WAIT_TIMEOUT_ERR;
+		strErr = WAIT_DATA_TIMEOUT_ERR;
 		return SERCMD_OVERTIME_ERR;
 	}
 
