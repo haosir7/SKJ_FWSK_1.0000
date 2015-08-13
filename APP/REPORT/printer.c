@@ -1693,25 +1693,16 @@ INT8 PrintRptTitle(INT8 *title)
 
 }
 
-char PrintYwtm(char *title)
+char PrintYwtm(char *title, unsigned char ywmoffset)
 {
 	unsigned char i;
-	unsigned char N;
 	
-	N = strlen(title);
-#if (POS_TYPE != POS_APE4000RG)
-	N = (46 - N) / 2;
-#else
-	N = (42 - N) / 2;//映美打印机一行最多打印42个西文字符
-#endif	
-	for(i=0; i<N; i++)	
-	{
-		
+	for(i=0; i<ywmoffset; i++)	
+	{	
 		pGeneralPrnBuff[i] = ' ';
-
 	}
 	
-	sprintf(&pGeneralPrnBuff[N],"%s", title);//注意ascii字符表中字符0对应的hex值是0x30
+	sprintf(&pGeneralPrnBuff[ywmoffset],"%s", title);//注意ascii字符表中字符0对应的hex值是0x30
 	
 	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 	

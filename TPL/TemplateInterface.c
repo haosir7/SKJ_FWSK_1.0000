@@ -106,7 +106,7 @@ UINT8  GetPtField(UINT8 **tempLineBuf,UINT8 *tempLineFieldBuf)
 		(*tempLineBuf)++;
 		len++;
 	}
-	(*tempLineBuf)++;
+	(*tempLineBuf)++;//使tempLineBuf指向'~'后的第一个字符
 	memcpy(tempLineFieldBuf,pHead,len);
 	
 	return 0;
@@ -299,9 +299,20 @@ UINT8  ParsePtLine1(UINT8 *tempLineBuf, TPrnTempLine1 *tempLine1)
 			{
 			    //如果模板行中有黑标的标签，则将MarkInTemplate置1
 				tempLine1->MarkFlag = atoi((INT8 *)++tempLineFieldBuf);
-				MarkInTemplate = 1;
-					
+				MarkInTemplate = 1;		
 			}
+        else if(memcmp(pMatchTemplateBuffer,"TYMHEAD",lengthOfField) == 0)
+		{
+			//条形码发票头部打印参数
+			tempLine1->Tymhead = atoi((INT8 *)++tempLineFieldBuf);	
+		}
+
+		else if(memcmp(pMatchTemplateBuffer,"TYMTAIL",lengthOfField) == 0)
+		{
+			//条形码发票尾部打印参数
+			tempLine1->Tymtail = atoi((INT8 *)++tempLineFieldBuf);		
+		}
+
 	   else	if (memcmp(pMatchTemplateBuffer,"BEGIN_FORWARDPOINT",lengthOfField) == 0)
 			{
 				tempLine1->BeginForwardPoint = atoi((INT8 *)++tempLineFieldBuf);
