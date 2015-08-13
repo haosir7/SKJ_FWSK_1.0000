@@ -229,21 +229,13 @@ UINT8 CTimeSumInfoWin::QueryShow(struct TDateSegSumPrnData *pSegSumPrnData)
 	
 	memcpy((void *)pSegSumPrnData->CorpName, 
 		(void *)g_globalArg->m_corpInfo->m_Nsrmc.c_str(), CORP_NAME_LEN);
+	
 	memcpy((void *)pSegSumPrnData->MachineCode,
-<<<<<<< HEAD
 		(void *)g_globalArg->m_machine->m_machineNo.c_str(),MACHINE_NO_LEN);
 	
 	memcpy((void *)pSegSumPrnData->TaxCode,
 		(void *)g_globalArg->m_corpInfo->m_Nsrsbh.c_str(),TAX_CODE_LEN );
 
-	DBG_PRINT(("g_globalArg->m_machine->m_machineNo= %s",g_globalArg->m_machine->m_machineNo.c_str()));
-	DBG_PRINT(("pSegSumPrnData->MachineCode= %s",pSegSumPrnData->MachineCode));
-=======
-		(void *)g_globalArg->m_machine->m_machineNo.c_str(), g_globalArg->m_machine->m_machineNo.length());
-	memcpy((void *)pSegSumPrnData->TaxCode,
-		(void *)g_globalArg->m_corpInfo->m_Nsrsbh.c_str(), CORP_SBH_LEN);
-
->>>>>>> 4903747611c6457d340ff8f803f962185bca09c7
 	
 	pSegSumPrnData->StartDate	= m_StartDate;
 	pSegSumPrnData->EndDate	= m_EndDate;
