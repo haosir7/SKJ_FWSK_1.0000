@@ -175,7 +175,6 @@ UINT8 CHqlxsjWin::PrintOffLineDate()
 // 	memset((void *)m_pCorpInfo, 0x00, sizeof(struct TCorpInfoPrnData));
 // 	
 // 	//从系统参数中获取数据, 完成数据映射
-// 	memcpy((void *)m_pCorpInfo->Nsrsbh, g_globalArg->m_corpInfo->m_Nsrsbh.c_str(), CORP_SBH_LEN);
 // 	memcpy((void *)m_pCorpInfo->Nsrmc, g_globalArg->m_corpInfo->m_Nsrmc.c_str(), CORP_NAME_LEN);
 // // 	memcpy((void *)m_pCorpInfo->Nsrhydm, g_globalArg->m_corpInfo->m_Hy_dm.c_str(), CORP_HYDM_LEN);
 // // 	memcpy((void *)m_pCorpInfo->Nsrhymc, g_globalArg->m_corpInfo->m_Hy_mc.c_str(), CORP_HYMC_LEN);

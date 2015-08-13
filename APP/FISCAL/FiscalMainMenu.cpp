@@ -19,12 +19,12 @@
 #include "YWXmlBase.h"
 
 #if (TYPE_MODE == ZHQ_MODE)
-CFiscalMenu::CFiscalMenu():CMultiBtnCommonWin(9, 2)
+CFiscalMenu::CFiscalMenu():CMultiBtnCommonWin(10, 2)
 {
 
 }
 #else
-CFiscalMenu::CFiscalMenu():CMultiBtnCommonWin(8,2)
+CFiscalMenu::CFiscalMenu():CMultiBtnCommonWin(9,2)
 {
 	
 }
@@ -38,16 +38,17 @@ int CFiscalMenu::Create(int iX,int iY,int iW,int iH)
 	CMultiBtnCommonWin::Adjustm_iH(1);
 	CMultiBtnCommonWin::Create(iX, iY, iW, iH);
 	
-	SetTitle(1,"A.初 始 化");
-	SetTitle(2,"B.权限更新");
-	SetTitle(3,"C.介质抄报");
-	SetTitle(4,"D.网络抄报");
-	SetTitle(5,"E.金税盘口令");
-	SetTitle(6,"F.发票上传");
+	SetTitle(1, "A.初 始 化");
+	SetTitle(2, "B.权限更新");
+	SetTitle(3, "C.介质抄报");
+	SetTitle(4, "D.网络抄报");
+	SetTitle(5, "E.金税盘口令");
+	SetTitle(6, "F.发票上传");
 	SetTitle(7, "G.发票补录");
 	SetTitle(8, "H.上传日志");
+	SetTitle(9, "I.发票补传");
 #if TYPE_MODE == ZHQ_MODE
-	SetTitle(9,  "I.离线数据");
+	SetTitle(10,  "J.离线数据");
 #endif
 
 	return 1;
@@ -214,9 +215,23 @@ void CFiscalMenu::OnButton8(int iEvent, unsigned char * pEventData, int iDataLen
 	ChangeWin(ERR_UP_INV_WIN);
 }
 
+//发票补传
+void CFiscalMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDataLen)
+{
+	if (g_globalArg->m_initFlag != 1)
+	{
+		CaMsgBox::ShowMsg("机器未初始化");
+		DBG_PRINT(("退出FiscalMainMenu::OnButton9函数"));
+		
+		return ;
+	}
+	
+	ChangeWin(ERR_UP_INV_WIN);
+}
+
 #if (TYPE_MODE == ZHQ_MODE)
 //离线数据
-void CFiscalMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDataLen)
+void CFiscalMenu::OnButton10(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 	if (g_globalArg->m_initFlag != 1)
 	{

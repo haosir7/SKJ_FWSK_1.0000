@@ -502,7 +502,6 @@ UINT8  FSC_OffLineDate(string &strErr)
 		return FAILURE;
 	}
 
-
 	UINT32 nWscfpzs = atoi(wscfpzs.c_str());
 	UINT32 nWscfpsj=atoi(wscfpsj.c_str());
 	INT64 nWscfpljje=atoi(wscfpljje.c_str());
@@ -524,11 +523,12 @@ UINT8  FSC_OffLineDate(string &strErr)
 
 	INT64 tmpJE = g_globalArg->m_invKind->m_maxSum -nWscfpljje;
 	DBG_PRINT(("tmpJE= %lld",tmpJE));
-
-	if ((g_globalArg->m_invKind->m_maxSum*0.8 -nWscfpljje)<0)
+    INT64  maxJE= g_globalArg->m_invKind->m_maxSum *0.2;
+    DBG_PRINT(("maxJE= %lld",maxJE));
+	if ( tmpJE<=maxJE)
 	{
 		memset((void *)tmpch,0x00,sizeof(tmpch));
-		sprintf(tmpch,"离线正数发票限额还剩%u,请执行'发票上传'",tmpJE);
+		sprintf(tmpch,"离线正数发票金额还剩%u,请执行'发票上传'",tmpJE);
 		strErr =tmpch;
 		return FAILURE;
 	}

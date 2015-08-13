@@ -171,7 +171,7 @@ UINT8 CCorpInfoWin::PrintCorpInfo()
 	memset((void *)m_pCorpInfo, 0x00, sizeof(struct TCorpInfoPrnData));
 	
 	//从系统参数中获取数据, 完成数据映射
-	memcpy((void *)m_pCorpInfo->Nsrsbh, g_globalArg->m_corpInfo->m_Nsrsbh.c_str(), CORP_SBH_LEN);
+	memcpy((void *)m_pCorpInfo->Nsrsbh, g_globalArg->m_corpInfo->m_Nsrsbh.c_str(), TAX_CODE_LEN);
 	memcpy((void *)m_pCorpInfo->Nsrmc, g_globalArg->m_corpInfo->m_Nsrmc.c_str(), CORP_NAME_LEN);
 	memcpy((void *)m_pCorpInfo->Jspsbh, g_globalArg->m_corpInfo->m_Jspsbh.c_str(), CORP_JSPBH_LEN);
 	memcpy((void *)m_pCorpInfo->Nsrswjgdm, g_globalArg->m_corpInfo->m_Swjgdm.c_str(), CORP_SWJGDM_LEN);

@@ -25,10 +25,10 @@ UINT8 INVM_InvWasteProc()
 	DBG_PRINT(("进入INVM_InvWasteProc函数"));
 	
 	UINT8 ret;
-
+	
 	CaProgressBar proBar("空白作废中.....");
     proBar.ReFresh();
-
+	
 	if (NULL==pSaleData)
 	{
 		pSaleData = new SaleData;
@@ -46,7 +46,7 @@ UINT8 INVM_InvWasteProc()
 	}
     
 	pSaleData=NULL;
-
+	
 	return  SUCCESS;	
 }
 
@@ -173,8 +173,8 @@ UINT8 INVM_CheckIsNoDB(string invCode,UINT32 invNo,CInvHead *pInvHead)
 	memset((void*)value, 0, sizeof(value));
 	INT32 errorcode=0;
 	sprintf(value,"where FPDM = '%s' and FPHM = %u",invCode.c_str(), invNo);
-//	errorcode = pInvHead->LoadOneRecordBySql(value);
-
+	//	errorcode = pInvHead->LoadOneRecordBySql(value);
+	
 	pInvHead->m_filter.append(value);
 	errorcode = pInvHead->Load();
 	
@@ -184,8 +184,8 @@ UINT8 INVM_CheckIsNoDB(string invCode,UINT32 invNo,CInvHead *pInvHead)
 	{
 		if (errorcode == SQLITE_DONE)
 		{
-		return NO_INV; 	
-	}
+			return NO_INV; 	
+		}
 		else
 		{
 			return QUERY_ERROR; 
@@ -206,7 +206,7 @@ UINT8 INVM_CheckIsNoRet(CInvHead *pInvHead)
 	//该票是否在本月内//debug
 	
 	DBG_PRINT(("pInvHead->m_kprq= %u",pInvHead->m_kprq));
-
+	
 	INT32 nReturn = CmpCurMonth(pInvHead->m_kprq, pInvHead->m_kpsj);
 	DBG_PRINT(("nReturn= %d",nReturn));
 	if (0 == nReturn) 
@@ -231,7 +231,7 @@ UINT8 INVM_CheckIsNoRet(CInvHead *pInvHead)
 		DBG_PRINT((" This invoice already has returned invoice!"));
 		DBG_RETURN(HAVE_RT_INV);	
 	}
-		
+	
 	//若为红票，返回
 	if ((pInvHead->m_kplx == RETURN_INV)||(pInvHead->m_kplx == RET_MANUAL_INV)||
 		(pInvHead->m_kplx == RET_SPECIAL_INV)) 
@@ -252,7 +252,7 @@ UINT8 INVM_CheckIsNoRet(CInvHead *pInvHead)
 		g_globalArg->m_strMsg =pInvHead->m_backup2;
 		DBG_RETURN(INV_LIB_ERR);
 	}
-		
+	
 	DBG_PRINT(("退出CheckInvReturn函数"));
 	DBG_RETURN(SUCCESS);
 }
@@ -284,37 +284,37 @@ UINT8 INVM_InvReturn(SaleData *pSale,CInvHead *pInvHead)
 	INT64 moneySum = pSale->m_singleInvInfo->m_kphjje;
 	
 	//单卷红票累计金额超限
-//	if ((g_globalArg->m_returnVolSum + moneySum)>MAX_MONEY)
-//	{
-//		DBG_PRINT((" Warning: m_returnVolSum exceed the limit!"));
-//		DBG_RETURN(RVM_SUM_EXCEED);
-// 	}
+	//	if ((g_globalArg->m_returnVolSum + moneySum)>MAX_MONEY)
+	//	{
+	//		DBG_PRINT((" Warning: m_returnVolSum exceed the limit!"));
+	//		DBG_RETURN(RVM_SUM_EXCEED);
+	// 	}
 	 	 
 	UINT8 nIfInvSum; //是否执行了卷汇总操作 1：是；0：否
 	UINT8 ret =pSale->PayByCash(nIfInvSum);
-
+	
 	DBG_PRINT(("ret= %u",ret));
-
+	
 	return ret; //开票
 }
 
 UINT8 INVM_InvRetProc(CInvHead *pInvHead)
 {
-
+	
     DBG_PRINT(("进入INVM_InvRetProc函数"));
 	
 	UINT8 ret;
-
+	
 	CaProgressBar proBar("红票打印中.....");
     proBar.ReFresh();
-
+	
 	if (NULL==pSaleData)//extern SaleData *pSaleData; /**< 销售数据类指针*/
-
+		
 	{
 		pSaleData = new SaleData;
 	}	
 	DBG_ASSERT_EXIT((pSaleData != NULL), (" pSaleData == NULL!"));
-
+	
 	ret = INVM_InvReturn(pSaleData,pInvHead); //退本机发票
 	
 	DBG_PRINT(("ret= %u",ret));
@@ -325,7 +325,7 @@ UINT8 INVM_InvRetProc(CInvHead *pInvHead)
 	}
     
 	pSaleData=NULL;
-
+	
 	return  SUCCESS;
 }
 
@@ -475,7 +475,7 @@ UINT8 INVM_GetInvNum(string nCode, UINT32 nStartNo, UINT32 nEndNo, UINT32 &nNum)
 //-----------------------------------------------------------
 UINT8 PrnInvStub(CInvHead *smallInvInfo, UINT8 IfPrnChar)
 {
-
+	
 	DBG_ASSERT_EXIT((smallInvInfo != NULL), (" smallInvInfo == NULL!"));
 	
 	//判断装入纸质发票	
@@ -608,8 +608,8 @@ UINT8 INVM_WstInv(CInvHead* pInvHead, string &strErr)
 		DBG_PRINT(("strErr = %s", strErr.c_str()));
 		return FAILURE;
 	}
-
-
+	
+	
 	POWOFF_DISABLE(); //屏蔽掉电中断
 	//更新INV_HEAD发票类型
 	
@@ -620,24 +620,24 @@ UINT8 INVM_WstInv(CInvHead* pInvHead, string &strErr)
 	pInvHead->m_kplx = waste_type;
 	pInvHead->m_kprq = pInvHead->m_zfrq;
 	pInvHead->m_kpsj = pInvHead->m_zfsj;
-
+	
 	ret = pInvHead->Update(strsql, &(pInvHead->m_kplx), &(pInvHead->m_kprq), &(pInvHead->m_kpsj), NULL);
-
+	
 	if ( ret!= SQLITE_OK)
 	{
 		strErr = "更新发票信息表错误";
 		return FAILURE;
 	}
-
+	
 	DBG_PRINT(("更新INV_HEAD发票类型strsql = %s", strsql.c_str()));
-
+	
 	//更新INV_DET发票类型
 	CInvDet pInvDet;
-
+	
 	pInvDet.m_kplx = waste_type;
 	pInvDet.m_kprq = pInvHead->m_zfrq;
 	pInvDet.m_kpsj = pInvHead->m_zfsj;
-
+	
 	ret = pInvDet.Update(strsql, &(pInvDet.m_kplx), &(pInvDet.m_kprq), &(pInvDet.m_kpsj), NULL);
 	
 	if ( ret!= SQLITE_OK)
@@ -645,7 +645,7 @@ UINT8 INVM_WstInv(CInvHead* pInvHead, string &strErr)
 		strErr = "更新发票信息表错误";
 		return FAILURE;
 	}
-
+	
 	DBG_PRINT(("更新INV_DET发票类型strsql = %s", strsql.c_str()));
 	
 	//删除RT_INV表中，红票对应的原发票代码和号码
@@ -667,21 +667,17 @@ UINT8 INVM_WstInv(CInvHead* pInvHead, string &strErr)
 	POWOFF_ENABLE(); //开掉电中断
 	
 	DBG_PRINT(("WstInv() SUCCESS"));
-		
+	
 	return SUCCESS;
 }	
-	
+
 //按发票号码查询发票明细
-UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO)
+UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr)
 {		
 	INT32 Ret=SUCCESS;
-	string strErr("");
 	string strsql("");
-
+	
 	INT32 ret=0;
-
-	CaProgressBar proBar("发票信息查询中.....");
-    proBar.ReFresh();
 	
 	//发票明细查询
 	CInvHead Invhead;
@@ -695,30 +691,30 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO)
 	cxtj.append(tmpChar); 
 	cxtj.append(tmpChar);
 	DBG_PRINT(("cxtj= %s",cxtj.c_str()));
-
+	
 	Ret=g_pAPIBase->GetInvHeadInfo_API(*g_YwXmlArg, cxfs, cxtj, invNum, &Invhead, strErr);
 	DBG_PRINT(("Ret= %d",Ret));
 	if (Ret !=SUCCESS)
 	{
-		CaMsgBox::ShowMsg(strErr);
 		return FAILURE;
 	}
-
+	
+	
 	//从盘上获取的明细编码为空，则置为 "0000000000000",便于报表统计
     CInvDet *p = Invhead.pHead;
 	while (p)
 	{
- 		DBG_PRINT(("p->m_spbm = %u", p->m_spbm.c_str()));
- 		if ("" == p->m_spbm)
- 		{
- 			p->m_spbm = "0000000000000";
- 		}	
+		DBG_PRINT(("p->m_spbm = %u", p->m_spbm.c_str()));
+		if ("" == p->m_spbm)
+		{
+			p->m_spbm = "0000000000000";
+		}	
 		p = p->pNext;
 		DBG_PRINT(("INV_DET AddNew()"));
 	}	
-
-
-
+	
+	
+	
 	//查看本地是否有该发票信息
 	CInvHead invheadtmp;
 	INT8 sqlbuf[128];
@@ -728,65 +724,60 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO)
 	invheadtmp.Requery();
 	if (invheadtmp.LoadOneRecord() == SQLITE_OK)
 	{
-		// 		DBG_PRINT(("本地已有该发票!"));
-		//CaMsgBox::ShowMsg("本地已有该发票!");
-	   //	return FAILURE; 
-      //判断本地数据库的数据类型是否与转换器一致
+		//判断本地数据库的数据类型是否与转换器一致
 		DBG_PRINT(("invheadtmp.m_kplx= %u",invheadtmp.m_kplx));
-	    DBG_PRINT(("Invhead.m_kplx= %u",Invhead.m_kplx));
-      if (invheadtmp.m_kplx != Invhead.m_kplx )
-      {
-		  strsql = sqlbuf;
-		  invheadtmp.m_kplx = Invhead.m_kplx;
-		  ret = invheadtmp.Update(strsql, &(invheadtmp.m_kplx), NULL);
-		  DBG_PRINT(("ret= %d",ret));
-		  if ( ret!= SQLITE_OK)
-		  {
-			  strErr = "更新发票头信息表错误";
-			  return FAILURE;
-		  }
-
-		  //更新INV_DET发票类型
-		  CInvDet invDet;
-		  invDet.m_kplx =invheadtmp.m_kplx;
-		  ret = invDet.Update(strsql, &(invDet.m_kplx), NULL);
-		  DBG_PRINT(("ret= %d",ret));
-		  if ( ret!= SQLITE_OK)
-		  {
-			  strErr = "更新发票明细信息表错误";
-			  return FAILURE;
-		  }
-
-      }
-
+		DBG_PRINT(("Invhead.m_kplx= %u",Invhead.m_kplx));
+		if (invheadtmp.m_kplx != Invhead.m_kplx )
+		{
+			strsql = sqlbuf;
+			invheadtmp.m_kplx = Invhead.m_kplx;
+			ret = invheadtmp.Update(strsql, &(invheadtmp.m_kplx), NULL);
+			DBG_PRINT(("ret= %d",ret));
+			if ( ret!= SQLITE_OK)
+			{
+				strErr = "更新发票头信息表错误";
+				return FAILURE;
+			}
+			
+			//更新INV_DET发票类型
+			CInvDet invDet;
+			invDet.m_kplx =invheadtmp.m_kplx;
+			ret = invDet.Update(strsql, &(invDet.m_kplx), NULL);
+			DBG_PRINT(("ret= %d",ret));
+			if ( ret!= SQLITE_OK)
+			{
+				strErr = "更新发票明细信息表错误";
+				return FAILURE;
+			}
+			
+		}
+		
 	}
 	else
 	{
 		//发票信息保存
 		if (SUCCESS != Invhead.Save())
 		{
-			CaMsgBox::ShowMsg("查询发票存储失败!");
-				 return FAILURE;
-		  }
+		    strErr = "查询发票存储失败!";
+			return FAILURE;
+		}
 		DBG_PRINT(("Invhead.m_kplx= %u",Invhead.m_kplx));
 		if(Invhead.m_kplx == RETURN_INV)
 		{
 			CRtInv rtInv;
-		     rtInv.m_fpdm =Invhead.m_yfpdm;
-			 rtInv.m_fphm =Invhead.m_yfphm;
-			 ret = rtInv.AddNew();				//写已退发票信息表
-			 DBG_PRINT(("ret= %d",ret));
-			 if ( ret!= SQLITE_OK)
-			 {
-				 strErr = "查询红票，存储蓝票信息表错误";
-				 return FAILURE;
-		  }
-		
+			rtInv.m_fpdm =Invhead.m_yfpdm;
+			rtInv.m_fphm =Invhead.m_yfphm;
+			ret = rtInv.AddNew();				//写已退发票信息表
+			DBG_PRINT(("ret= %d",ret));
+			if ( ret!= SQLITE_OK)
+			{
+				strErr = "查询红票，存储蓝票信息表错误";
+				return FAILURE;
+			}
+			
+		}
 	}
-	}
-
-	CaMsgBox::ShowMsg("查询发票成功");
-
+	
 	return SUCCESS;
 }
 
@@ -880,24 +871,24 @@ void INVM_ErrMsgBox(UINT8 ret)
 	   case DIF_PYCODE:
 		   pText = "正票与当前卷发票票样不同";
 		   break;
-	case WASTE_NUM_EXCEED:
-		pText = "超过剩余发票份数";
-		break;
-	case WASTE_NUM_ERROR:
-		pText = "作废份数不合理";
-		break;
-	case MUST_RE_LOGIN:
-		pText = "发票卷已用完，\n必须重登录";
-		break;
-	case PRE_INV_ERROR:
-		pText = "查询上笔交易失败";
-		break;
-	case NO_DIST_INV:
-		pText = "当前0卷发票未导入";
-		break;
-	case QUERY_ERROR:
-		pText = "数据库查询失败";
-		break;
+	   case WASTE_NUM_EXCEED:
+		   pText = "超过剩余发票份数";
+		   break;
+	   case WASTE_NUM_ERROR:
+		   pText = "作废份数不合理";
+		   break;
+	   case MUST_RE_LOGIN:
+		   pText = "发票卷已用完，\n必须重登录";
+		   break;
+	   case PRE_INV_ERROR:
+		   pText = "查询上笔交易失败";
+		   break;
+	   case NO_DIST_INV:
+		   pText = "当前0卷发票未导入";
+		   break;
+	   case QUERY_ERROR:
+		   pText = "数据库查询失败";
+		   break;
 	   default:
 		   pText="其他错误";
 		   break;

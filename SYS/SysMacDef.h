@@ -3,13 +3,9 @@
 
 #include "VersionConfig.h"
 
-#if (CORP_NAME_LEN_TPYE == 1)
-#define CORP_NAME_LEN					200		//企业名称长度
-#define PAYER_NAME_LEN					200		//付款单位名称长度
-#else
+
 #define CORP_NAME_LEN					80		
 #define PAYER_NAME_LEN					80		
-#endif
 
 #define TAX_ID_NUM						6		//税种税目总数
 #define MAX_INV_ITEM_NUM				32
@@ -33,7 +29,6 @@
 #define CORP_ADDR_LEN					100		//企业地址长度
 #define CORP_PHONE_LEN					24		//企业电话长度
 
-#define CORP_SBH_LEN					30		//纳税人识别号
 #define CORP_DZDAH_LEN					20		//纳税人电子档案号
 #define CORP_HYDM_LEN					6		//纳税人行业代码
 #define CORP_HYMC_LEN                   200      //纳税人行业名称

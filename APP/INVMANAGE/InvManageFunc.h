@@ -163,7 +163,7 @@ INT32 CmpCurMonth(UINT32 nDate, UINT32 nTime);
 @param[in] 发票代码，发票号码	
 @return  1: SUCCESS; 非1: 错误信息ID
 */
-UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO);
+UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr);
 
 /*!
 @brief 时间段发票查询

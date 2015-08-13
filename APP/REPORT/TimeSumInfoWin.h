@@ -50,7 +50,7 @@ public:
 	int m_iColW;								/**< 两列时，第二列的横坐标 */  
 
 //	UINT8 m_create;								/**< 工作状态*/
-
+private:
 	UINT32 m_StartDate;							/**< 查询的起始日期*/
 	UINT32 m_EndDate;							/**< 查询的截止日期*/
 	UINT32 m_StartTime;							/**< 查询的起始时间*/

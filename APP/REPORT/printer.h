@@ -131,7 +131,7 @@ PACK_PREFIX struct TVolSumPrnData
 ----------------------------------------------------------------------------*/
 PACK_PREFIX struct TDateSegSumPrnData
 {
-	UINT8        CorpName[CORP_NAME_LEN+1];     /*单位名称 40 ACS 最多20个汉字  */
+	UINT8        CorpName[CORP_NAME_LEN+1];     /*单位名称 80 ACS 最多40个汉字  */
 	UINT8        TaxCode[TAX_CODE_LEN+1];       /* 税号 20 ASC                  */ 
 	UINT8        MachineCode[MACHINE_NO_LEN+1]; /*开票机编号 16 ASC             */
 	UINT32       StartDate;                     /*开票起始日期   YYYYMMDD       */
@@ -262,7 +262,7 @@ PACK_PREFIX struct TInvLimitPrnData
 ---------------------------------------------------------------------------- */
 PACK_PREFIX struct TCorpInfoPrnData
 {
-	UINT8  Nsrsbh[CORP_SBH_LEN+1];				/**< 纳税人识别号 */
+	UINT8  Nsrsbh[TAX_CODE_LEN+1];				/**< 纳税人识别号 */
 	UINT8  Nsrmc[CORP_NAME_LEN+1];				/**< 纳税户名称 */
 	UINT8  Nsrswjgdm[CORP_SWJGDM_LEN+1];		/**< 主管税务机关代码 */
 	UINT8  Nsrswjgmc[CORP_JYXMZWMC_LEN+1];		/**< 主管税务机关名称 */

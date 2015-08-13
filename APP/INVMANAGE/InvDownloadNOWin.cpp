@@ -9,6 +9,7 @@
 #include "CaMsgBox.h"
 #include "CGlobalArg.h"
 #include "InvManageFunc.h"
+#include "CaProgressBar.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -198,12 +199,18 @@ void CInvDownloadNOWin::OnButton1(int iEvent, unsigned char * pEventData, int iD
 		return;
 	}
 
-	ret = INVM_InvDetailNOQuery(m_code, m_invStartNo);
+	CaProgressBar proBar("发票信息查询中.....");
+    proBar.ReFresh();
+
+
+	ret = INVM_InvDetailNOQuery(m_code, m_invStartNo,strErr);
 	if (ret != SUCCESS)
 	{
-	return;
+	   CaMsgBox::ShowMsg(strErr);
+	   return;
 	}
-//	ChangeWin(INV_DOWNLOAD_MENU);	 //返回发票管理界面		
+
+	CaMsgBox::ShowMsg("查询发票成功");
 	
 }
 
