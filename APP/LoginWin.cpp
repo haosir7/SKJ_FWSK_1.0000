@@ -10,8 +10,9 @@
 #include "CMainFrame.h"
 #include "CGlobalArg.h"
 #include "LoginWin.h"
-#include "FiscalFun.h" //20150510_linzihao
-//#include "YWXMLGY.h"//20150517_linzihao
+#include "FiscalFun.h" 
+#include "SaleFunc.h"
+
 
 
 #include "LOGCTRL.h"
@@ -400,7 +401,7 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 				CaMsgBox::ShowMsg(value);
 			}
 			*/
-#if 0
+#if 1
 			//信息更新		
 			if (FSC_InfoUpdate(strErr) != SUCCESS)
 			{
@@ -416,7 +417,7 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 				//return ;		
 			}
 
-		    ret=FSC_OffLineDate(strErr);
+		    ret=SALE_OffLineDate(strErr);
 			if (ret !=SUCCESS)
 			{
 				CaMsgBox::ShowMsg(strErr);	

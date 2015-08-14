@@ -11,6 +11,7 @@
 #include "CaProgressBar.h"
 #include "CaMsgBox.h"
 #include "InvVolFunc.h"
+#include "InvDownloadNOWin.h"
 
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
@@ -225,8 +226,10 @@ void CFiscalMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDataLen
 		
 		return ;
 	}
-	
-	ChangeWin(ERR_UP_INV_WIN);
+
+	((CInvDownloadNOWin *)m_pFrame->GetWin(INV_DOWNLOAD_NO_WIN))->m_nFlag = 1;
+
+	ChangeWin(INV_DOWNLOAD_NO_WIN);	
 }
 
 #if (TYPE_MODE == ZHQ_MODE)

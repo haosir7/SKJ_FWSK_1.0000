@@ -55,6 +55,13 @@ UINT8 SALE_GetCurInv(CInvVol *pInvVol,string &strErr);
 UINT8 SALE_MakeInvHand(CInvHead *pInvHead,string &strErr);
 
 
+/*!
+@brief 提醒用户上传发票
+@param[out] string &strErr 错误信息
+@return  1： 成功； 其它：失败
+*/
+UINT8 SALE_OffLineDate(string &strErr);
+
 //----发票打印
 
 /*!

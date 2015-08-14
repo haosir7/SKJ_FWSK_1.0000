@@ -3,6 +3,7 @@
 #include "CaMsgBox.h"
 #include "CaProgressBar.h"
 #include "CGlobalArg.h"
+#include "InvDownloadNOWin.h"
 
 CInvDownloadMenu::CInvDownloadMenu():CMultiBtnCommonWin(1)
 {
@@ -35,6 +36,7 @@ void CInvDownloadMenu::OnButton1(int iEvent, unsigned char * pEventData, int iDa
 	//	return ;
 	}
 	
+	((CInvDownloadNOWin *)m_pFrame->GetWin(INV_DOWNLOAD_NO_WIN))->m_nFlag = 0;
 	ChangeWin(INV_DOWNLOAD_NO_WIN);	
 }
 
