@@ -1176,11 +1176,15 @@ UINT8 CheckKey(UINT8 &nKeyTime)
 UINT8 LibClearDepotFunc(string &strErr)
 {
 	UINT8 ret = SUCCESS;
+	CaProgressBar proBar("");	
 	
 	ret = g_pAPIBase->LibClearDepot(strErr);
 	if (ret == SUCCESS)
 	{
-		strErr = "设备清库成功";
+	//	strErr = "设备清库成功";
+		proBar.SetText("设备清库成功,请重启!");
+		proBar.Show();
+		while(1);
 	}
 
 	return ret;
