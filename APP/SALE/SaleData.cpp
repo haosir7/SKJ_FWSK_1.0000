@@ -770,16 +770,18 @@ UINT8 SaleData::PayByCash( UINT8 &IfInvSum )
 // 		
 //	}
 	
-	m_smallInvInfo = NULL;
-	ret=SALE_OffLineDate(g_globalArg->m_strMsg);
-	if (ret !=SUCCESS)
-	{
-		DBG_RETURN(INV_LIB_ERR);
-	}
-
-	ret = SUCCEED;
-	DBG_PRINT(("退出PayByCash函数。成功。"));
-	DBG_RETURN(ret);	
+		m_smallInvInfo = NULL;
+		if (g_globalArg->m_operator->m_role !=DEMO_ROLE) 
+		{
+			ret=SALE_OffLineDate(g_globalArg->m_strMsg);
+			if (ret !=SUCCESS)
+			{
+				DBG_RETURN(INV_LIB_ERR);
+			}
+		}
+		ret = SUCCEED;
+		DBG_PRINT(("退出PayByCash函数。成功。"));
+		DBG_RETURN(ret);	
 }
 
 

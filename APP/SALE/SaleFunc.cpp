@@ -84,7 +84,7 @@ UINT8  SALE_OffLineDate(string &strErr)
 	DBG_PRINT(("ret= %d",ret));
 	if (ret !=SUCCESS)
 	{
-		return FAILURE;
+		return SUCCESS;
 	}
 	
 	UINT32 nWscfpzs = atoi(wscfpzs.c_str());
