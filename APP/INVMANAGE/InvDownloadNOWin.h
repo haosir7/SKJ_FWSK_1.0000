@@ -28,7 +28,7 @@ public:
 	string m_code;							/**< 查询的发票代码*/
 	UINT32 m_invStartNo;						/**< 查询的起始发票号码*/
 	UINT32 m_invEndNo;							/**< 查询的截止发票号码*/
-
+    UINT8  m_nFlag;                             /**< 0:发票查询；1:发票补传*/
 public:
 	CInvDownloadNOWin();
 	~CInvDownloadNOWin();

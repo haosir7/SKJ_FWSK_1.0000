@@ -672,11 +672,12 @@ UINT8 INVM_WstInv(CInvHead* pInvHead, string &strErr)
 }	
 
 //按发票号码查询发票明细
-UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr)
+UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,UINT8 uFlag)
 {		
 	INT32 Ret=SUCCESS;
 	string strsql("");
-	
+	string strErr="";
+	string strBar="";
 	INT32 ret=0;
 	
 	//发票明细查询
@@ -692,13 +693,31 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr)
 	cxtj.append(tmpChar);
 	DBG_PRINT(("cxtj= %s",cxtj.c_str()));
 	
+	if (uFlag ==0)
+	{
+		strBar="发票信息查询中.....";
+	}
+	else
+	{
+		strBar="发票信息补传中.....";
+	}
+	
+	CaProgressBar proBar(strBar.c_str());
+	proBar.ReFresh();
+
 	Ret=g_pAPIBase->GetInvHeadInfo_API(*g_YwXmlArg, cxfs, cxtj, invNum, &Invhead, strErr);
 	DBG_PRINT(("Ret= %d",Ret));
 	if (Ret !=SUCCESS)
 	{
+		CaMsgBox::ShowMsg(strErr);
 		return FAILURE;
 	}
 	
+	if (uFlag ==1)
+	{
+		CaMsgBox::ShowMsg("补传发票成功");
+		return SUCCESS;
+	}
 	
 	//从盘上获取的明细编码为空，则置为 "0000000000000",便于报表统计
     CInvDet *p = Invhead.pHead;
@@ -712,8 +731,6 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr)
 		p = p->pNext;
 		DBG_PRINT(("INV_DET AddNew()"));
 	}	
-	
-	
 	
 	//查看本地是否有该发票信息
 	CInvHead invheadtmp;
@@ -735,7 +752,7 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr)
 			DBG_PRINT(("ret= %d",ret));
 			if ( ret!= SQLITE_OK)
 			{
-				strErr = "更新发票头信息表错误";
+				CaMsgBox::ShowMsg("更新发票头信息表错误");
 				return FAILURE;
 			}
 			
@@ -746,7 +763,7 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr)
 			DBG_PRINT(("ret= %d",ret));
 			if ( ret!= SQLITE_OK)
 			{
-				strErr = "更新发票明细信息表错误";
+				CaMsgBox::ShowMsg("更新发票明细信息表错误");
 				return FAILURE;
 			}
 			
@@ -758,7 +775,7 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr)
 		//发票信息保存
 		if (SUCCESS != Invhead.Save())
 		{
-		    strErr = "查询发票存储失败!";
+		   	CaMsgBox::ShowMsg("查询发票存储失败!");
 			return FAILURE;
 		}
 		DBG_PRINT(("Invhead.m_kplx= %u",Invhead.m_kplx));
@@ -771,13 +788,15 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr)
 			DBG_PRINT(("ret= %d",ret));
 			if ( ret!= SQLITE_OK)
 			{
-				strErr = "查询红票，存储蓝票信息表错误";
+				CaMsgBox::ShowMsg("查询红票，存储蓝票信息表错误");
 				return FAILURE;
 			}
 			
 		}
 	}
-	
+
+	CaMsgBox::ShowMsg("查询发票成功");
+
 	return SUCCESS;
 }
 

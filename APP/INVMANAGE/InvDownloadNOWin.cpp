@@ -9,7 +9,6 @@
 #include "CaMsgBox.h"
 #include "CGlobalArg.h"
 #include "InvManageFunc.h"
-#include "CaProgressBar.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -17,12 +16,12 @@
 
 CInvDownloadNOWin::CInvDownloadNOWin() : CaWindow()
 {
-
+	m_nFlag=0;
 }
 
 CInvDownloadNOWin::~CInvDownloadNOWin()
 {
-
+	
 }
 
 int CInvDownloadNOWin::Create(int iX,int iY,int iW,int iH)
@@ -60,16 +59,17 @@ int CInvDownloadNOWin::Create(int iX,int iY,int iW,int iH)
 	m_pInput2->SetMaxLen(8);
 	m_pInput2->m_InputType = m_pInput2->aINT; //该输入框只接受整型值
 	m_pInput2->OnObject = S_OnInput2;
-
-//	curH += LINE_H;
+	
+	//	curH += LINE_H;
 	
 	m_iBtnW = (SCREEN_W - 40)/2 - 4; //Button的宽度
 	m_iColW = (SCREEN_W - 40)/2; //Button的列宽
 	INT32 left_offset = SCREEN_LEFT_OFFSET+8;
 	INT32 leftoffset_btn = left_offset + 14;
 	
+
 	//创建一个Button  第五行
-	strcpy(title, "查询");
+	strcpy(title, "确定");
 	m_pBtn1 = new CaButton();
 	curH += 2*LINE_H;
 	m_pBtn1->Create(leftoffset_btn,curH,m_iBtnW,WORD_H); 
@@ -100,8 +100,18 @@ int CInvDownloadNOWin::ProcEvent(int iEvent,unsigned char *pEventData, int iData
 	switch(iEvent)
 	{	   
 	case RETURN_MAIN_MENU:  //return to SYSTEMMENU
-		ChangeWin(INV_DOWNLOAD_MENU);					
-		return SUCCESS;
+		{	
+			DBG_PRINT(("m_nFlag= %u",m_nFlag));
+			if (m_nFlag ==0)
+			{
+				ChangeWin(INV_DOWNLOAD_MENU);	 //返回发票管理界面	
+			}
+			else
+			{
+				ChangeWin(FISCAL_MAIN_MENU);
+			}					
+			return SUCCESS;
+		}
 		break;
 		
 	default: break;		
@@ -135,6 +145,7 @@ void CInvDownloadNOWin::DoActive()
 	m_pInput1->Clear();
 	m_pInput2->Clear();
 	m_pInput1->SetContentBuf((UINT8*)g_globalArg->m_curInvVol->m_code.c_str(), g_globalArg->m_curInvVol->m_code.length());
+	DBG_PRINT(("m_nFlag= %u",m_nFlag));
 	ReFresh();	
 }
 
@@ -183,41 +194,40 @@ void CInvDownloadNOWin::OnInput2(int iEvent, unsigned char * pEventData, int iDa
 void CInvDownloadNOWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 	UINT8 ret = 0;
-	string strErr(""), strtmp("");
-	char buf[16];
-
-	CInvHead invhead;		
-	CInvHead invheadtmp;
-	char sqlbuf[256];
+	string strErr("");
+	
 	//发票查询方式
 	UINT8 cxfs = 0;//0为号码段查询,1为时间段查询
-
+	
 	ret = CheckInput(strErr);	
 	if (ret != SUCCESS)
 	{
 		CaMsgBox::ShowMsg(strErr);
 		return;
 	}
-
-	CaProgressBar proBar("发票信息查询中.....");
-    proBar.ReFresh();
-
-
-	ret = INVM_InvDetailNOQuery(m_code, m_invStartNo,strErr);
+	
+    DBG_PRINT(("m_nFlag= %u",m_nFlag));
+	ret = INVM_InvDetailNOQuery(m_code, m_invStartNo,m_nFlag);
 	if (ret != SUCCESS)
 	{
-	   CaMsgBox::ShowMsg(strErr);
-	   return;
+		return;
 	}
-
-	CaMsgBox::ShowMsg("查询发票成功");
 	
 }
 
 
 void CInvDownloadNOWin::OnButton2(int iEvent, unsigned char * pEventData, int iDataLen)
 {
-	ChangeWin(INV_DOWNLOAD_MENU);	 //返回发票管理界面		
+	DBG_PRINT(("m_nFlag= %u",m_nFlag));
+	if (m_nFlag ==0)
+	{
+		ChangeWin(INV_DOWNLOAD_MENU);	 //返回发票管理界面	
+	}
+	else
+	{
+		ChangeWin(FISCAL_MAIN_MENU);
+	}
+	
 }
 
 
@@ -226,9 +236,9 @@ UINT8 CInvDownloadNOWin::CheckInput(string& strErr)
 {
 	if (m_pInput1->IsEmpty())
 	{
-			m_pInput1->SetFocus();
-			strErr = "请输入发票代码!";
-			return FAILURE;	
+		m_pInput1->SetFocus();
+		strErr = "请输入发票代码!";
+		return FAILURE;	
 	}
 	else
 	{
@@ -237,12 +247,12 @@ UINT8 CInvDownloadNOWin::CheckInput(string& strErr)
 	
 	if (m_pInput2->IsEmpty())
 	{
-	    m_pInput2->SetFocus();
+		m_pInput2->SetFocus();
 		strErr = "请输入发票号码!";
 		return FAILURE;
 	}
 	m_invhead.m_fphm = atoi( (char *)m_pInput2->m_contentBuf );
-
+	
 	m_code = m_invhead.m_fpdm;
 	m_invStartNo = m_invhead.m_fphm;
 	m_invEndNo = m_invhead.m_fphm;

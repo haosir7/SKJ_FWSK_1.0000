@@ -179,6 +179,7 @@ void CInvManageMenu::OnButton6(int iEvent, unsigned char * pEventData, int iData
 		CaMsgBox::ShowMsg("»úÆ÷Î´³õÊ¼»¯");
 		return ;
 	}
+
 	ChangeWin(INV_STUB_WIN);
 	
 }

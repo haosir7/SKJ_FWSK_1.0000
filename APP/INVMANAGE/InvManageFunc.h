@@ -160,10 +160,11 @@ INT32 CmpCurMonth(UINT32 nDate, UINT32 nTime);
 
 /*!
 @brief 按号码段查询发票明细
-@param[in] 发票代码，发票号码	
+@param[in] 发票代码，发票号码
+@param[in] nFlag 0,发票查询 1,发票补传	
 @return  1: SUCCESS; 非1: 错误信息ID
 */
-UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,string &strErr);
+UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,UINT8 uFlag);
 
 /*!
 @brief 时间段发票查询

@@ -691,12 +691,6 @@ UINT8 SaleData::PayByCash( UINT8 &IfInvSum )
 		DBG_RETURN(ret);
 	}
 
-//	ret=FSC_OffLineDate(strErr);
-//	if (ret !=SUCCESS)
-//	{
-//			CaMsgBox::ShowMsg(strErr);			
-//	}
-
 	//发票金额超下限
 	//	if (m_singleInvInfo->m_kphjje < g_globalArg->m_invKind->m_minSum) 
 	//	{	
@@ -776,11 +770,18 @@ UINT8 SaleData::PayByCash( UINT8 &IfInvSum )
 // 		
 //	}
 	
-	m_smallInvInfo = NULL;
-	ret = SUCCEED;
-	
-	DBG_PRINT(("退出PayByCash函数。成功。"));
-	DBG_RETURN(ret);	
+		m_smallInvInfo = NULL;
+		if (g_globalArg->m_operator->m_role !=DEMO_ROLE) 
+		{
+			ret=SALE_OffLineDate(g_globalArg->m_strMsg);
+			if (ret !=SUCCESS)
+			{
+				DBG_RETURN(INV_LIB_ERR);
+			}
+		}
+		ret = SUCCEED;
+		DBG_PRINT(("退出PayByCash函数。成功。"));
+		DBG_RETURN(ret);	
 }
 
 
