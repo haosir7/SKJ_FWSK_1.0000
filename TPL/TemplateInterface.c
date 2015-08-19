@@ -488,7 +488,7 @@ UINT8  ParsePtLine2(UINT8 *tempLineBuf, TPrnTempRow *tempLine2,TPrnLineInfo *prn
 		
 		//prn_log2("pMatchTemplateBuff = %s",pMatchTemplateBuffer);
 		//prn_log2("lengthOfField = %u",lengthOfField);
-		if(memcmp(pMatchTemplateBuffer,"LN",lengthOfField) == 0)
+		if(memcmp(pMatchTemplateBuffer,"LN",lengthOfField) == 0)		
 		{	
 			tempLine2->Index = atoi((INT8 *)++tempLineFieldBuf);	
 		}
