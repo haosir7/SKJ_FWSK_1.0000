@@ -95,8 +95,8 @@ typedef struct
 	UINT8  InvFlag76;              //判断是否打76/57mm	
 /**********for 57mm***********/
 	
-	UINT8  Tymhead;           //条形码于发票头部的打印参数,bit0(1:打印条形码,0:不打印),bit1(1:打印防伪码,0:不打印),bit3-bit2(00:居左打印,01:居中打印,10:居右打印)
-	UINT8  Tymtail;           //条形码于发票尾部的打印参数,bit0(1:打印条形码,0:不打印),bit1(1:打印防伪码,0:不打印),bit3-bit2(00:居左打印,01:居中打印,10:居右打印)
+	//UINT8  Tymhead;           //条形码于发票头部的打印参数,bit0(1:打印条形码,0:不打印),bit1(1:打印防伪码,0:不打印),bit3-bit2(00:居左打印,01:居中打印,10:居右打印)
+	//UINT8  Tymtail;           //条形码于发票尾部的打印参数,bit0(1:打印条形码,0:不打印),bit1(1:打印防伪码,0:不打印),bit3-bit2(00:居左打印,01:居中打印,10:居右打印)
 
 	UINT16  QRCodeLeftMargin;		//二维码左边距
 
@@ -144,8 +144,9 @@ typedef struct
   INT16 BackwardPoint;                 // 2010打印结束后退纸距离
  
   INT8  MarkFlag;                      //是否找黑标
-  UINT8 Tymhead;						//条形码于发票头部打印参数
-  UINT8 Tymtail;						//条形码于发票尾部打印参数
+ // UINT8 Tymhead;						//条形码于发票头部打印参数
+ //UINT8 Tymtail;						//条形码于发票尾部打印参数
+  INT32 Txmoffset;						//一维条形码图形打印时的左侧偏移量
 
   INT16 FontW;						   //字体宽度
   INT16 FontH;                         //字体高度
@@ -268,8 +269,8 @@ typedef struct
 typedef struct 
 {
 	UINT8	markFlag;                 //1 黑标 ， 0 定长
-	UINT8	Tymhead;				  //条形码于发票头部打印参数
-	UINT8	Tymtail;				  //条形码于发票尾部打印参数
+	//UINT8	Tymhead;				  //条形码于发票头部打印参数
+	//UINT8	Tymtail;				  //条形码于发票尾部打印参数
 
 	INT8	TempVersion[32];           
 	UINT8   MaxSPMCCharacter;        //发票打印行商品名称每行最大字符数

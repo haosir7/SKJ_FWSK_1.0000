@@ -65,11 +65,7 @@ void CZhqParaSetMenu::OnButton2(int iEvent, unsigned char * pEventData, int iDat
 
 void CZhqParaSetMenu::OnButton3(int iEvent, unsigned char * pEventData, int iDataLen)
 {
-	if (TYPE_MODE != ZHQ_MODE)
-	{
-		CaMsgBox::ShowMsg("非转换器运行模式");
-		return;
-	}
+
 	INT32 errorcode = 0;
 	m_ComNetpara->Requery();
 	errorcode = m_ComNetpara->LoadOneRecord();
@@ -104,16 +100,6 @@ void CZhqParaSetMenu::OnButton4(int iEvent, unsigned char * pEventData, int iDat
 	}
 }
 
-
-// void CZhqParaSetMenu::OnButton4(int iEvent, unsigned char * pEventData, int iDataLen)
-// {
-// 	if (API_TYPE_MODE != ZHQ_MODE)
-// 	{
-// 		CaMsgBox::ShowMsg("非转换器运行模式");
-// 		return;
-// 	}
-// 	ChangeWin(ZHQ_FTP_SET_WIN);
-// }
 
 int CZhqParaSetMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 {

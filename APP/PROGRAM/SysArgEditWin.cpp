@@ -510,12 +510,12 @@ UINT8 CSysArgEditWin::CheckInputValid(string &strErr)
 	
 				if (sysValue != g_globalArg->m_zhqcomBaudRate)
 				{
-					CaMsgBox msgBox("与转换器波特率不一致，是否仍要更改?",CaMsgBox::MB_YESNO);
+					CaMsgBox msgBox("与转换器波特率不一致,是否继续更改?",CaMsgBox::MB_YESNO);
 					msgBox.ShowBox();
 					if (msgBox.m_iStatus != OK_PRESSED)
 					{
 						this->ReFresh();
-						strErr = "放弃更改波特率";
+						strErr = "取消更改波特率";
 					}
 
 				}

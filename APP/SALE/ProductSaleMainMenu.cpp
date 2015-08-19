@@ -873,11 +873,11 @@ UINT8 CProductSaleMainMenu::PriceInputProc(void)
 	 		return FAILURE;
  	}	
 	dotNum = CheckFloatBit(ii);
-	if (dotNum>3) 
+	if (dotNum>2) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));
-		CaMsgBox::ShowMsg("小数位数不得超过三位");
+		CaMsgBox::ShowMsg("小数位数不得超过二位");
 		return FAILURE;
 	}
 	m_pInput2->Clear();

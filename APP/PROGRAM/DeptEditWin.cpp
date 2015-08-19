@@ -341,7 +341,14 @@ UINT8 CDeptEditWin::CheckInputValid(string &strErr)
 		m_pInputList->SetFocusToObj(m_pInput3);
 		return FAILURE;		
 	}
-
+	else if (CheckFloatBit(dPrice)>2) 
+	{
+		CaMsgBox::ShowMsg("小数位数不得超过二位");
+		m_pInputList->SetFocusToObj(m_pInput3);
+		return FAILURE;
+	}
+    
+	
 	//税率输入是否正确
 	if (m_pInput4->IsEmpty())
 	{	

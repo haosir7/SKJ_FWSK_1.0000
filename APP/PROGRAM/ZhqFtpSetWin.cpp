@@ -34,10 +34,10 @@ int CZhqFtpSetWin::Create(int iX,int iY,int iW,int iH)
 	m_pFrame->RegsiterWin(this, ZHQ_FTP_SET_WIN);    
 	CMultiInputCommonWin::Create(iX,iY,iW,iH); 
 
-	SetObjPara(1, "FTP地址：",	CaInput::aCHAR,15);
+	SetObjPara(1, "FTP 地址：",	CaInput::aCHAR,15);
 	SetObjPara(2, "端 口 号：",	CaInput::aCHAR,6);
 	SetObjPara(3, "用 户 名：",	CaInput::aCHAR,16);
-	SetObjPara(4, "密    码：",		CaInput::aPASSWORD,16);
+	SetObjPara(4, "密    码：",	CaInput::aPASSWORD,16);
 
 	SetObjPara(10," 确认 ");
 	SetObjPara(11," 上一步 ");
@@ -54,7 +54,7 @@ int CZhqFtpSetWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 	{	   
 	case RETURN_MAIN_MENU: 
 		{
-			CaMsgBox msgBox("确定放弃转换器网络设置?",CaMsgBox::MB_YESNO);
+			CaMsgBox msgBox("是否取消转换器网络设置?",CaMsgBox::MB_YESNO);
 			msgBox.ShowBox();
 			if (msgBox.m_iStatus == OK_PRESSED)
 			{
@@ -127,7 +127,7 @@ void CZhqFtpSetWin::OnBtn1(int iEvent, unsigned char * pEventData, int iDataLen)
 //	CaMsgBox::ShowMsg("设置FTP服务器成功");
 	
 		//调用转换器接口，更改转换器网络设置
-#if TYPE_MODE == ZHQ_MODE
+
 
 	CaProgressBar proBar("网络设置中...");	
 	proBar.Show();
@@ -140,7 +140,6 @@ void CZhqFtpSetWin::OnBtn1(int iEvent, unsigned char * pEventData, int iDataLen)
 		CaMsgBox::ShowMsg(strErr);
 		return;
 	}
-#endif
 
 	DBG_PRINT(("m_netpara: m_IDDHCP = %u", m_netpara->m_IsDhcp));
 	DBG_PRINT(("m_netpara: m_LocalIP = %s", m_netpara->m_LocalIP.c_str()));

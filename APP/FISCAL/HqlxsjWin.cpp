@@ -46,8 +46,8 @@ int CHqlxsjWin::Create(int iX, int iY, int iW, int iH)
 
 	m_pFrame->RegsiterWin(this, HQLXSJ_WIN);    
 	CMultiLabelCommonWin::Create(iX,iY,iW,iH); // creat a window
-	sprintf(title, "确定");
-	SetTitle(9, title);
+   sprintf(title, "确定");
+  	SetTitle(9, title);
 	sprintf(title, "返回");
 	SetTitle(10, title);
 
@@ -88,10 +88,10 @@ void CHqlxsjWin::OnButton1(int iEvent,unsigned char *pEventData, int iDataLen)
 	ChangeWin(FISCAL_MAIN_MENU);	
 }
 
-void CHqlxsjWin::OnButton2(int iEvent,unsigned char *pEventData, int iDataLen)
-{
-	ChangeWin(FISCAL_MAIN_MENU);
-}
+ void CHqlxsjWin::OnButton2(int iEvent,unsigned char *pEventData, int iDataLen)
+ {
+ 	ChangeWin(FISCAL_MAIN_MENU);
+ }
 
 
 UINT8 CHqlxsjWin::NormalShow()
@@ -102,11 +102,11 @@ UINT8 CHqlxsjWin::NormalShow()
 	DBG_PRINT(("未上传发票张数= %s", title))
 	SetTitle(1, title);
 
-	sprintf(title, "未上传发票时间:%s ", m_wscfpsj.c_str());
+	sprintf(title, "未上传发票时间:%s", m_wscfpsj.c_str());
 	DBG_PRINT(("未上传发票时间= %s", title))
 	SetTitle(2, title);
 
-	sprintf(title, "未上传发票累计金额:%s ", m_wscfpljje.c_str());
+	sprintf(title, "未上传金额:%s", m_wscfpljje.c_str());
 	DBG_PRINT(("未上传发票累计金额= %s", title))
 	SetTitle(3, title);
 
@@ -131,7 +131,7 @@ void CHqlxsjWin::DoActive()
 {
 	DBG_PRINT(("CHqlxsjWin::DoActive()"));
 	
-
+	ReFresh();
 	CaProgressBar proBar("获取离线数据中...");
 	proBar.Show();
 	INT32 ret = GetOffLineDate();
@@ -139,6 +139,9 @@ void CHqlxsjWin::DoActive()
  	{
 		Reset();
 		CaMsgBox::ShowMsg("获取离线数据失败");
+		ReFresh();
+		SetBtnFocus();
+		return;
 	}
 	NormalShow();
 	SetBtnFocus();
@@ -149,7 +152,7 @@ UINT8 CHqlxsjWin::GetOffLineDate()
 {
 	string strErr = "";
 	INT32 ret = g_pAPIBase->Hqlxsj_API(m_wscfpzs, m_wscfpsj, m_wscfpljje, m_sczs, m_scsjjg, strErr);
-
+	
 	return ret;
 }
 

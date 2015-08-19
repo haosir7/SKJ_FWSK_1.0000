@@ -30,7 +30,7 @@ int CZhqIpaddrSetWin::Create(int iX,int iY,int iW,int iH)
 	m_pFrame->RegsiterWin(this, ZHQ_IPADDR_SET_WIN);    
 	CMultiInputCommonWin::Create(iX,iY,iW,iH); 
 
-	SetObjPara(1, "本机 IP：",	CaInput::aCHAR,15);
+	SetObjPara(1, "转换器IP：",	CaInput::aCHAR,15);
 	SetObjPara(2, "子网掩码：",	CaInput::aCHAR,15);
 	SetObjPara(3, "默认网关：",	CaInput::aCHAR,15);
 	SetObjPara(4, "DNS 地址：",	CaInput::aCHAR,15);
@@ -50,7 +50,7 @@ int CZhqIpaddrSetWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataL
 	{	   
 	case RETURN_MAIN_MENU: 
 		{
-			CaMsgBox msgBox("确定放弃转换器网络设置?",CaMsgBox::MB_YESNO);
+			CaMsgBox msgBox("是否取消转换器网络设置?",CaMsgBox::MB_YESNO);
 			msgBox.ShowBox();
 			if (msgBox.m_iStatus == OK_PRESSED)
 			{
@@ -238,21 +238,22 @@ void CZhqIpaddrSetWin::S_OnActive(CaWindow *obj)
 
 void CZhqIpaddrSetWin::DoActive()
 {
-
+     ReFresh();
 	m_netpara =  ((CZhqParaSetMenu *)m_pFrame->GetWin(ZHQ_MANAGE_MENU))->m_ComNetpara;
 
-	CaMsgBox msgBox("是否动态获取本机IP地址?",CaMsgBox::MB_YESNO);
+	CaMsgBox msgBox("是否获取转换器动态IP地址?",CaMsgBox::MB_YESNO);
 	msgBox.ShowBox();
 	if (msgBox.m_iStatus == OK_PRESSED)
 	{
-		m_pInput1->m_bReadOnly = true;
-		m_pInput2->m_bReadOnly = true;
-		m_pInput3->m_bReadOnly = true;
-		m_pInput4->m_bReadOnly = true;
+// 		m_pInput1->m_bReadOnly = true;
+// 		m_pInput2->m_bReadOnly = true;
+// 		m_pInput3->m_bReadOnly = true;
+// 		m_pInput4->m_bReadOnly = true;
 		m_netpara->m_IsDhcp = 1;
 		ClearIpAddrWin();
 		ChangeWin(ZHQ_SERVERIP_SET_WIN);
-		this->ReFresh();
+	//	this->ReFresh();
+		return;
 	}
 	else
 	{
@@ -262,7 +263,7 @@ void CZhqIpaddrSetWin::DoActive()
 		m_pInput4->m_bReadOnly = false;
 		m_netpara->m_IsDhcp = 0;
 		DispIpAddrInfo();
-		this->ReFresh();
+		ReFresh();
 	}
 	return;
 }

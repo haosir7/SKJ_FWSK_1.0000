@@ -31,9 +31,9 @@ int CZhqServeripSetWin::Create(int iX,int iY,int iW,int iH)
 	m_pFrame->RegsiterWin(this, ZHQ_IPADDR_SET_WIN);    
 	CMultiInputCommonWin::Create(iX,iY,iW,iH); 
 
-	SetObjPara(1, "服务器IP：",	CaInput::aCHAR,15);
-	SetObjPara(2, "服务器端口：",	CaInput::aCHAR,6);
-	SetObjPara(3, "部署路径：",	CaInput::aCHAR,50);
+	SetObjPara(1, "服务器IP:",CaInput::aCHAR,15);
+	SetObjPara(2, "服务器端口:",CaInput::aCHAR,6);
+	SetObjPara(3, "部署路径:",CaInput::aCHAR,50);
 
 	SetObjPara(10," 下一步 ");
 	SetObjPara(11," 上一步 ");
@@ -50,7 +50,7 @@ int CZhqServeripSetWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDat
 	{	   
 	case RETURN_MAIN_MENU: 
 		{
-			CaMsgBox msgBox("确定放弃转换器网络设置?",CaMsgBox::MB_YESNO);
+			CaMsgBox msgBox("是否取消转换器网络设置?",CaMsgBox::MB_YESNO);
 			msgBox.ShowBox();
 			if (msgBox.m_iStatus == OK_PRESSED)
 			{

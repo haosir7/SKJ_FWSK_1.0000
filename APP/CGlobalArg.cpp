@@ -446,8 +446,13 @@ UINT8 CGlobalArg::InitSysArg()
  	m_bidirection = sysArg->m_vInt;
  	DBG_PRINT(("m_bidirection : %lu", m_bidirection)); 
 	bidirection = m_bidirection;
-
 PrinterIni(bidirection);
+
+	//初始化打印机主要参数
+#if (POS_TYPE == POS_APE4000RG)
+	YMPrinterIni();
+#endif
+
 
 	//证书口令
 	sprintf(tmpChar,  "where SA_ID = %d", SYS_CERTIF_PSW);

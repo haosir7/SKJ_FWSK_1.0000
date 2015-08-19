@@ -337,16 +337,18 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 	//至此，moneySum里存入了折扣后的该商品行的金额。80元。
 	
 	//单张金额超上限
-	if ((moneySum > g_globalArg->m_invKind->m_maxSign)||
-		((m_tmpMoneySum+moneySum) > g_globalArg->m_invKind->m_maxSign)) 
-	{	
-		ret = NM_EXCEED;
-        DBG_PRINT((" g_globalArg->m_invKind->m_maxSign = %u!", g_globalArg->m_invKind->m_maxSign));
-		DBG_PRINT((" Warning: sigal invoice money exceed the limit!"));
-		InitSaleData(0);  //销售信息初始化
-		DBG_RETURN(ret);	
+	if (g_globalArg->m_operator->m_role != DEMO_ROLE) //非学习模式
+	{
+		if ((moneySum > g_globalArg->m_invKind->m_maxSign)||
+			((m_tmpMoneySum+moneySum) > g_globalArg->m_invKind->m_maxSign)) 
+		{	
+			ret = NM_EXCEED;
+			DBG_PRINT((" g_globalArg->m_invKind->m_maxSign = %u!", g_globalArg->m_invKind->m_maxSign));
+			DBG_PRINT((" Warning: sigal invoice money exceed the limit!"));
+			InitSaleData(0);  //销售信息初始化
+			DBG_RETURN(ret);	
+		}
 	}
-	
 	//金额不足
 	DBG_PRINT(("moneySum==%lld ", moneySum));
 	if (moneySum <= 0)
@@ -2560,7 +2562,7 @@ UINT8 SaleData::IsOffLineOk(INT64 nSum, string& strErr)
 	
 	
 	TDateTime fDate(invServ.m_issueDate, invServ.m_issueTime);
-	//fDate = fDate.HourAdd(fDate, g_globalArg->m_invKind->m_nTime);
+	fDate = fDate.HourAdd(fDate, g_globalArg->m_invKind->m_nTime);
 	DBG_PRINT(("离线截止时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
 	// 	UINT32 nfHour = fDate.Hour();
 	// 	DBG_PRINT(("nfHour = %u", nfHour));
