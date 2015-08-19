@@ -301,6 +301,7 @@ UINT8  ParsePtLine1(UINT8 *tempLineBuf, TPrnTempLine1 *tempLine1)
 				tempLine1->MarkFlag = atoi((INT8 *)++tempLineFieldBuf);
 				MarkInTemplate = 1;		
 			}
+		/*
         else if(memcmp(pMatchTemplateBuffer,"TYMHEAD",lengthOfField) == 0)
 		{
 			//条形码发票头部打印参数
@@ -312,7 +313,7 @@ UINT8  ParsePtLine1(UINT8 *tempLineBuf, TPrnTempLine1 *tempLine1)
 			//条形码发票尾部打印参数
 			tempLine1->Tymtail = atoi((INT8 *)++tempLineFieldBuf);		
 		}
-
+		*/
 	   else	if (memcmp(pMatchTemplateBuffer,"BEGIN_FORWARDPOINT",lengthOfField) == 0)
 			{
 				tempLine1->BeginForwardPoint = atoi((INT8 *)++tempLineFieldBuf);
@@ -480,18 +481,16 @@ UINT8  ParsePtLine2(UINT8 *tempLineBuf, TPrnTempRow *tempLine2,TPrnLineInfo *prn
 			tempLineFieldBuf++;
 			lengthOfField++;
 		}
-		memcpy(pMatchTemplateBuffer,pTempLineField,lengthOfField);
+		memcpy(pMatchTemplateBuffer,pTempLineField,lengthOfField);//取两个~之间的标签内容，即#前的内容
 		
 		//对每一个field进行处理
 		
 		
 		//prn_log2("pMatchTemplateBuff = %s",pMatchTemplateBuffer);
 		//prn_log2("lengthOfField = %u",lengthOfField);
-		if(memcmp(pMatchTemplateBuffer,"LN",lengthOfField) == 0)
-			
+		if(memcmp(pMatchTemplateBuffer,"LN",lengthOfField) == 0)		
 		{	
-			tempLine2->Index = atoi((INT8 *)++tempLineFieldBuf);
-			
+			tempLine2->Index = atoi((INT8 *)++tempLineFieldBuf);	
 		}
 		
 		if(memcmp(pMatchTemplateBuffer,"HEAD",lengthOfField) == 0)
@@ -616,7 +615,7 @@ UINT8  ParsePtLine2(UINT8 *tempLineBuf, TPrnTempRow *tempLine2,TPrnLineInfo *prn
 					
 				}
 				
-				//以如LB#0#发票代码：#2为例
+				//以如"LB#0#发票代码:#2"为例
 								
 				//当前指针指向'0',将指针指到'发'
 				tempLineFieldBuf += 2;
@@ -637,7 +636,7 @@ UINT8  ParsePtLine2(UINT8 *tempLineBuf, TPrnTempRow *tempLine2,TPrnLineInfo *prn
 				//表示属性为标签				
 				tempLine2->Items[nCount-1].Type = 1;
 				
-				//将pSaveDataBuf指向'发票代码：'后的位置
+				//将pSaveDataBuf指向'发票代码:'后的位置
 				pSaveDataBuf +=  strlen((INT8 *)tempLineFieldBuf);
 				
 				pLB = NULL;					
@@ -741,6 +740,7 @@ UINT8 GetPrnLineData(TPrnTempRow *tempLine2, TPrnLineInfo *conWriteBuffer, TPrnT
 		{
             //prn_log2("dataPtr=%s",tempLine2->Items[i].dataPtr);
             //prn_log2("dataLen=%u",tempLine2->Items[i].DataLen);
+
 			//发票代码
 			if (memcmp(tempLine2->Items[i].dataPtr,"FPDM",
 				tempLine2->Items[i].DataLen) == 0)
@@ -1471,6 +1471,16 @@ UINT8 GetPrnLineData(TPrnTempRow *tempLine2, TPrnLineInfo *conWriteBuffer, TPrnT
 // 				sprintf(&(prnLineInfo->chContent[location-1]),
 // 					"%s", pInv->chTaxCtrCode);	
 			}
+			//防伪码,与税控码相同,为打印一维条形码添加
+			else if (memcmp(tempLine2->Items[i].dataPtr,"FWM",
+				tempLine2->Items[i].DataLen) == 0)
+			{
+				memcpy(&(prnLineInfo->chContent[0]), &(pInv->chYWTM[0]), strlen(pInv->chYWTM));
+				prnLineInfo->Property = YWTXM_TEMPLATE_LINE;
+				prnLineInfo->Txmoffset = location;//一维条形码图形打印时的左侧偏移量
+			}
+
+
 			else if (memcmp(tempLine2->Items[i].dataPtr,"JZLSH",
 				tempLine2->Items[i].DataLen) == 0)
 			{

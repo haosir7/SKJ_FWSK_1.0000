@@ -95,40 +95,6 @@ INT8 print_invoice_head( TPrnInvoiceInfo *invData)
 			break;
 		}
 
-		if(pPrnLineInfo->Property == NEED_SAVE_TEMPLATE_LINE)
-		{
-			while(GetUsedLines());
-			nTotalLineCount += 1;
-			prn_log2("nTotalLineCount = %u",nTotalLineCount);
-			prn_log("命令是ForwardNPoint");		
-			
-			if(nTotalLineCount > nLineCount)//掉电保护功能去掉,该条件永远成立
-			{
-				prn_log(".......Forward N point!!!!");
-				ForwardNPoint(pPrnLineInfo->BeginForwardPoint);
-			}
-			
-			prn_log2("ForwardNPoint::nGetPrintLine = %u",nGetPrintLine);
-			
-			
-			//打印模板第一行解析后,根据pPrnLineInfo->Tymhead选择是否打印条形码及防伪码数字
-			
-			///////////////////////////////////////////////////////////////////////////
-			
-			//打印一维条码
-			//PrintLineCode(invData->chYWTM, pPrnLineInfo->Tymhead); 
-			
-			///////////////////////////////////////////////////////////////////////////
-			
-			POWOFF_DISABLE();
-#if POWER_OFF == 1
-			if( set_power_count(nTotalLineCount - 1) == FAILURE )
-				return FAILURE;
-			prn_log2("m_RemainLineCount = %u", *m_RemainLineCount);
-#endif
-			POWOFF_ENABLE();	
-	}
-
 
 		if(print_invoice_content(pPrnLineInfo) != SUCCESS)
 		{
@@ -330,12 +296,13 @@ INT8 print_invoice_tail(TPrnInvoiceInfo *invData)
 
 	ResetTempBuf();
 
+	/*
 	//在发票尾部根据pSaveTemplateInfo->Tymtail选择是否打印条形码及防伪码数字
 	///////////////////////////////////////////////////////////////////////////
 	//打印一维条码
-	//PrintLineCode(invData->chYWTM, pSaveTemplateInfo->Tymtail); 
+	PrintLineCode(invData->chYWTM, pSaveTemplateInfo->Tymtail); 
 	///////////////////////////////////////////////////////////////////////////
-
+	*/
 	if (invData->PrintType == STUB_PRINT)
 	{
 		ForwardNLine(PRINT_INV_FORWARD_LINES);
@@ -392,7 +359,7 @@ INT8 print_invoice_content(TPrnLineInfo *pPrnLineInfo)
 	UINT16 N;
 
 	prn_log("进入真正的打印行");	
-	/*
+	/**/
 	if(pPrnLineInfo->Property == NEED_SAVE_TEMPLATE_LINE)
 	{
 		while(GetUsedLines());
@@ -408,18 +375,6 @@ INT8 print_invoice_content(TPrnLineInfo *pPrnLineInfo)
 
 		prn_log2("ForwardNPoint::nGetPrintLine = %u",nGetPrintLine);
 
-
-		//打印模板第一行解析后,根据pPrnLineInfo->markFlag选择是否打印条形码及防伪码数字
-
-		///////////////////////////////////////////////////////////////////////////
-		
-		//打印一维条码
-		// 	ForwardNPoint(3);
-		// 	PrintLineCode(invData->chYWTM); 
-		// 	ForwardNPoint(50);
-		
-		///////////////////////////////////////////////////////////////////////////
-
 		POWOFF_DISABLE();
 #if POWER_OFF == 1
 		if( set_power_count(nTotalLineCount - 1) == FAILURE )
@@ -428,7 +383,7 @@ INT8 print_invoice_content(TPrnLineInfo *pPrnLineInfo)
 #endif
 		POWOFF_ENABLE();	
 	}
-	*/
+	
 
 	if(pPrnLineInfo->Property == END_INVOICE_DATA_LINE)
 	{
@@ -454,6 +409,12 @@ INT8 print_invoice_content(TPrnLineInfo *pPrnLineInfo)
 		}
 	}
 	prn_log2("pPrnLineInfo->chContent = \"%s\"", pPrnLineInfo->chContent);
+	//打印一维条码
+	if(pPrnLineInfo->Property == YWTXM_TEMPLATE_LINE)
+	{
+		PrintLineCode((UINT8 *)pPrnLineInfo->chContent, pPrnLineInfo->Txmoffset); 
+	}
+
 	if (pPrnLineInfo->Property == NORMAL_TEMPLATE_LINE)
 	{
 		if (pPrnLineInfo->FontH != 8)

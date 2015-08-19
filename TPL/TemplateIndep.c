@@ -453,8 +453,8 @@ UINT8  ParseTempLine(TPrnInvoiceInfo *pInv,TPrnLineInfo **pPrnLine)
 			pPrnLineInfo->BeginForwardPoint = (INT16)prnTempLine1.BeginForwardPoint;
 			pPrnLineInfo->EndForwardPoint = (INT16)prnTempLine1.EndForwardPoint;
 			pPrnLineInfo->MarkFlag = prnTempLine1.MarkFlag;
-			pPrnLineInfo->Tymhead = prnTempLine1.Tymhead;
-			pPrnLineInfo->Tymtail = prnTempLine1.Tymtail;
+			//pPrnLineInfo->Tymhead = prnTempLine1.Tymhead;
+			//pPrnLineInfo->Tymtail = prnTempLine1.Tymtail;
 
 			pPrnLineInfo->FontW = prnTempLine1.FontW;
 			pPrnLineInfo->FontH = prnTempLine1.FontH;
@@ -508,8 +508,8 @@ TSaveTemplateInfo * SaveTemplate(void)
 {
     memset(pSaveTemplateInfo,0,sizeof(TSaveTemplateInfo));
 	pSaveTemplateInfo->markFlag = prnTempLine1.MarkFlag;
-	pSaveTemplateInfo->Tymhead = prnTempLine1.Tymhead;
-	pSaveTemplateInfo->Tymtail = prnTempLine1.Tymtail;
+	//pSaveTemplateInfo->Tymhead = prnTempLine1.Tymhead;
+	//pSaveTemplateInfo->Tymtail = prnTempLine1.Tymtail;
 
 	pSaveTemplateInfo->MaxSPMCCharacter = prnTempLine1.MaxSPMCCharacter;
 	pSaveTemplateInfo->EndBackwardFlag = prnTempLine1.EndBackwardFlag;

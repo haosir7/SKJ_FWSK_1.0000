@@ -226,7 +226,7 @@ unsigned char  VerticalLineNum(void)//计算打印点数(包括黑条与空白)
 											 
 	return sum;
 }
-void SetPrintLocation(unsigned char RightOffset)   //打印区域向右偏移RightOffset 个dot。
+void SetPrintLocation(int RightOffset)   //打印区域向右偏移RightOffset 个dot。
 {
 	unsigned char i=0;
 	Code128Return( 1,0x1b);								
@@ -314,7 +314,7 @@ unsigned char CalculateCharLocation(void)		//居中点计算 函数
 	
 }
 #if (POS_TYPE != POS_APE4000RG)
-void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned char Offset)
+void PrintLineCodeImg(unsigned int LineHigh, unsigned int PrintTimes, int Offset)
 {
 	unsigned int i,j,n,m;
 	unsigned int print_times,line_high,printwild;			
@@ -408,7 +408,7 @@ void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned c
 	
 }
 
-void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char PrintOffset)
+void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, int PrintOffset)
 {
 	unsigned char i;
 	
@@ -451,17 +451,20 @@ void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char P
 	us_delay(1000);	
 	
 }
-void PrintLineCode(const unsigned char *chBuf, unsigned char prinset)
+void PrintLineCode(const unsigned char *chBuf, int prinset)
 {
-	unsigned char printOff = 0;
-	unsigned char ywmOffset = 0;
+	//unsigned char printOff = 0;
+	//unsigned char ywmOffset = 0;
+	/*
 	if ( (prinset & 0x01)==0x01 )
-	{
+	{}
+	*/
 		CodeTwo(2, 0x1B,0x2E);
 		CommonSleep(1);
 		WillprintNum= chBuf;
 
 		//打印一维条形码,根据模板计算偏移量
+		/*
 		if ( ((prinset>>2) | 0x00)==0x00 )//居左打印
 		{
 			printOff = 10;
@@ -478,25 +481,24 @@ void PrintLineCode(const unsigned char *chBuf, unsigned char prinset)
 			ywmOffset = 46 - strlen(WillprintNum) - 3;
 		}
 		else{}
-		Print_Con(3,2,printOff);	   //打印高度，打印次数，偏移量
-
+		*/
+		Print_Con(3,2,prinset);	   //打印高度，打印次数，偏移量
+		/*
 		if ( ((prinset>>1) & 0x01)==0x01 )
 		{
 			us_delay(5000);
 			PrintYwtm(chBuf, ywmOffset);//打印数字校验码
 		}
-
+		*/
 		us_delay(3000);
 		CommonSleep(1);
 		CodeTwo(2, 0x1B,0x2F);
-		ForwardNPoint(20);
-	}
-
+		//ForwardNPoint(20);
 }
 
 #else
 
-void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned char Offset)
+void PrintLineCodeImg(unsigned int LineHigh, unsigned int PrintTimes, int Offset)
 {
 	unsigned int i,j,n,m;
 	unsigned int print_times,line_high,printwild;			
@@ -563,7 +565,7 @@ void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned c
 	}		
 }
 
-void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char PrintOffset)
+void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, int PrintOffset)
 {
 	unsigned char i=0;
 
@@ -596,50 +598,52 @@ void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char P
 	us_delay(1000);	
 	
 }
-void PrintLineCode(const unsigned char *chBuf, unsigned char prinset)
+void PrintLineCode(const unsigned char *chBuf, int prinset)
 {
-	unsigned char printOff = 0;
-	unsigned char ywmOffset = 0;
-
+	//unsigned char printOff = 0;
+	//unsigned char ywmOffset = 0;
+	/*
 	if ( (prinset & 0x01)==0x01 )
-	{
+	{}
+	*/
 		CommonSleep(1);
 		
 		WillprintNum= chBuf;
 
 		//打印一维条形码
-
+		/*
 		if ( ((prinset>>2) | 0x00)==0x00 )//居左打印
 		{
-			printOff = 10;
-			ywmOffset = 5;
+			//printOff = 10;
+			//ywmOffset = 5;
 		}
 		else if (((prinset>>2) & 0x01)==0x01)//居中打印
 		{
-			printOff = CalculateCenter( _MAX_DOT - VerticalLineNum());
-			ywmOffset = CalculateCenter(42 - strlen(WillprintNum));//映美打印机一行最多打印42个西文字符
+			//printOff = CalculateCenter( _MAX_DOT - VerticalLineNum());
+			//ywmOffset = CalculateCenter(42 - strlen(WillprintNum));//映美打印机一行最多打印42个西文字符
 		}
 		else if (((prinset>>2) & 0x02)==0x02)//居右打印
 		{
-			printOff = _MAX_DOT - VerticalLineNum() - 10;
-			ywmOffset = 42 - strlen(WillprintNum) - 3;
+			//printOff = _MAX_DOT - VerticalLineNum() - 10;
+			//ywmOffset = 42 - strlen(WillprintNum) - 3;
 		}
 		else{}
+		*/
 		
-		Print_Con(3,2,printOff);	   //打印高度，打印次数，偏移量
-		
+		Print_Con(3,2,prinset);	   //打印高度，打印次数，偏移量
+		/*
 		if ( ((prinset>>1) & 0x01)==0x01 )
 		{
 			us_delay(5000);
 			PrintYwtm(chBuf, ywmOffset);//打印数字校验码
 		}
-
+		*/
 		us_delay(3000);
 		CommonSleep(1);
 		CarriageReturn();
 		LineFormard();	
-		ForwardNPoint(20);
-	}
+		//ForwardNPoint(20);
+
 }
 
 #endif

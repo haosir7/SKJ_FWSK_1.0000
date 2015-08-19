@@ -15,15 +15,15 @@ void CreateRightCode(void);
 void CreateRightCodeArray(void);
 
 
-void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, unsigned char PrintOffset);
+void Print_Con(unsigned char PrintHigh,unsigned char Printtimes, int PrintOffset);
 
 
-void PrintLineCode(const unsigned char *chBuf, unsigned char prinset);
+void PrintLineCode(const unsigned char *chBuf, int prinset);
 
-void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes,unsigned char Offset);
+void PrintLineCodeImg(unsigned int LineHigh , unsigned int PrintTimes, int Offset);
 
 void SetPrintCharLocation(unsigned char RightOffset);
-void SetPrintLocation(unsigned char RightOffset) ;
+void SetPrintLocation(int RightOffset) ;
 unsigned char  VerticalLineNum(void);
 void us_delay(unsigned int us);
 

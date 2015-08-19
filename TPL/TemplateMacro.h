@@ -34,6 +34,7 @@
 #define NEED_SAVE_TEMPLATE_LINE           3     //需要存储数据的模板行
 #define END_INVOICE_HEAD_LINE             4     //发票头部模板结束行 
 #define END_INVOICE_DATA_LINE             5     //发票数据模板结束行
+#define YWTXM_TEMPLATE_LINE             6     //一维条形码打印行
 
 #define MAX_DETAIL_COUNT                 64
 /*商品明细行性质*/
