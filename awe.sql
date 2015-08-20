@@ -693,6 +693,7 @@ insert into sysarg values(3,'',9600,'',0);
 insert into sysarg values(4,'',0,'',0);
 insert into sysarg values(5,'',1,'',0);
 insert into sysarg values(6,'',3,'',0);
+insert into sysarg values(7,'',0,'',0);
 insert into sysarg values(11,'',9600,'',0);
 
 insert into sysarg values(50,'',0,'',0);

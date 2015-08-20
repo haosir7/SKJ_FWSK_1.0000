@@ -105,7 +105,7 @@ void OpenPrinterDEV()
 
 void PrinterIni(UINT8 bidirectionalPrint)
 {
-	printf("\n*****************************4000RG_PrinterIni_Begin********************\n");
+	//printf("\n*****************************4000RG_PrinterIni_Begin********************\n");
 
 	return;
 }
@@ -119,7 +119,7 @@ void YMPrinterIni(void)
 	SendCmd(2, 0x1B, 0x40);//设置初始化命令,该命令不会改变双向打印参数的设置,以及下面两项
 
 	UINT8 str_Blackmarkset[]= {0x1b, 0x10, 0x23, 0x00, 0x07, 0x01, 0x56};//黑标检测设置为有效
-	UINT8 str_Printerinitset[]= {0x1b, 0x10, 0x18, 0x00, 0x08, 0x00, 0xaa, 0xf5};//打印初始位置相对于黑标的偏移量,检测到黑标后,继续进纸30mm,约170步
+	UINT8 str_Printerinitset[]= {0x1b, 0x10, 0x18, 0x00, 0x08, 0x00, 0x8c, 0xd7};//打印初始位置相对于黑标的偏移量,检测到黑标后,继续进纸25mm,约140步
 	UINT8 str_Jinzhimodeset[]= {0x1b, 0x10, 0x2a, 0x00, 0x07, 0x00, 0x5c};//进纸模式设置,在缺纸下重新上纸打印机将自动卷纸到打印位,在黑标模式下,进纸时检测黑标
 
 	write(fd_uart1, str_Blackmarkset, sizeof(str_Blackmarkset));

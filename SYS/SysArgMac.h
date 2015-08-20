@@ -20,6 +20,8 @@
 #define SYS_HW_TYPE						5	
 /*! 系统参数ID号-双向打印参数 @3*/
 #define SYS_BIDIRECTION_PRINT			6
+/*! 系统参数ID号-映美打印机是否已初始化参数 0:未初始化 1:已初始化*/
+#define SYS_INITIALIZED_YMPRINT			7
 
 //单张发票限额-  @1000000分
 #define SYS_INV_SUM_LIMIT				10
