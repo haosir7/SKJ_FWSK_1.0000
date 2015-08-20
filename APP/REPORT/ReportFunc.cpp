@@ -908,36 +908,46 @@ UINT8 PrnIssueSumBody(UINT32 nInvNo, UINT8 nInvType, INT64 nInvMoney)
 	return SUCCESS;
 }
 
-UINT8 PrnIssueSumEnd(UINT32 nNormalNum, UINT32 nReturnNum, UINT32 nWasteNum, INT64 norMoney, INT64 retMoney)
+UINT8 PrnIssueSumEnd(UINT8 nInvType,UINT32 nNormalNum, UINT32 nReturnNum, UINT32 nWasteNum, INT64 norMoney, INT64 retMoney)
 {
 	INT64 leftMoney = norMoney - retMoney;//净金额
-
+	
 	PrintReportLine("========================================", 
-					sizeof("========================================")); 
+		sizeof("========================================")); 
 	
 	SetLineSpace(REPORT_LINE_SPACE2);	
-//	PrintSeparateLine();	
-	sprintf(pGeneralPrnBuff, "正票份数 : %11lu", nNormalNum);
-	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
-	sprintf(pGeneralPrnBuff, "红票份数 : %11lu", nReturnNum);
-	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
-	sprintf(pGeneralPrnBuff, "废票份数 : %11lu", nWasteNum);
-	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
-
-
-	sprintf(pGeneralPrnBuff, "正票金额 : %11.2f", ((double)norMoney) / SUM_EXTENSION);
-	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+	//	PrintSeparateLine();
+	if (nInvType ==NORMAL_INV)
+	{
+		sprintf(pGeneralPrnBuff, "正票份数 : %11lu", nNormalNum);
+		PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+		
+		sprintf(pGeneralPrnBuff, "正票金额 : %11.2f", ((double)norMoney) / SUM_EXTENSION);
+		PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+		
+	}
+	else if	(nInvType ==RETURN_INV)
+	{
+		sprintf(pGeneralPrnBuff, "红票份数 : %11lu", nReturnNum);
+		PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+		
+		sprintf(pGeneralPrnBuff, "红票金额 : %11.2f", ((double)retMoney) / SUM_EXTENSION);
+		PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+	}
+	else
+	{
+		sprintf(pGeneralPrnBuff, "废票份数 : %11lu", nWasteNum);
+		PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+		
+	}
 	
-	sprintf(pGeneralPrnBuff, "红票金额 : %11.2f", ((double)retMoney) / SUM_EXTENSION);
-	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
+	//	sprintf(pGeneralPrnBuff, "净  金额 : %11.2f", ((double)leftMoney) / SUM_EXTENSION);
+	//PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
 	
-	sprintf(pGeneralPrnBuff, "净  金额 : %11.2f", ((double)leftMoney) / SUM_EXTENSION);
-	PrintReportLine(pGeneralPrnBuff, strlen(pGeneralPrnBuff));
-
 	ForwardNLine(FORWARD_LINES);
-
+	
 	return SUCCESS;
-
+	
 }
 
 UINT8 PrnInvCheckOldHead(string nsrmc, string swdjzh,TCheckOld* checkoldHead)

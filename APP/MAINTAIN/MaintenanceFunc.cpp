@@ -447,7 +447,7 @@ UINT8 USBEvent2(UINT8 IfForward)
 {
 	LCDClearDisplay();//清屏
 	CaProgressBar proBar("");
-	if (USBTest2()==SUCCESS)
+	if (USBTest()==SUCCESS)
 	{
 		DBG_PRINT(("USB self test success"));
 		proBar.SetText("USB状态：正常");		
@@ -1177,14 +1177,25 @@ UINT8 LibClearDepotFunc(string &strErr)
 {
 	UINT8 ret = SUCCESS;
 	CaProgressBar proBar("");	
+	proBar.SetText("设备清库中....");
+	proBar.Show();
 	
 	ret = g_pAPIBase->LibClearDepot(strErr);
 	if (ret == SUCCESS)
 	{
-	//	strErr = "设备清库成功";
-		proBar.SetText("设备清库成功,请重启!");
-		proBar.Show();
-		while(1);
+#if (TYPE_MODE == SKJ_MODE)
+		{
+			proBar.SetText(" 设备清库成功，请重启收款机！");
+			proBar.Show();
+			while(1);
+		}
+#else
+		{	
+		  CaMsgBox::ShowMsg(" 设备清库成功，请重启转换器！");	
+		}
+
+#endif
+	
 	}
 
 	return ret;

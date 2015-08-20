@@ -231,7 +231,6 @@ void CFiscalMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDataLen
 
 	ChangeWin(INV_DOWNLOAD_NO_WIN);	
 }
-
 #if (TYPE_MODE == ZHQ_MODE)
 //ÀëÏßÊý¾Ý
 void CFiscalMenu::OnButton10(int iEvent, unsigned char * pEventData, int iDataLen)
@@ -246,6 +245,7 @@ void CFiscalMenu::OnButton10(int iEvent, unsigned char * pEventData, int iDataLe
 
 	ChangeWin(HQLXSJ_WIN);
 }
+
 #endif
 
 int CFiscalMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)

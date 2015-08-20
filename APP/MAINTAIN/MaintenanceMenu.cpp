@@ -30,10 +30,6 @@ int CMaintenanceMenu::Create(int iX,int iY,int iW,int iH)
 	SetTitle(4,"D.编码下载");
 	SetTitle(5,"E.软件升级");
 	SetTitle(6,"F.修改密码");
-	//SetTitle(7,"G.更新当前号");
-//	SetTitle(8,"H.主管密码");
-//	SetTitle(9,"I.网络管理");
-// 	SetTitle(10,"J.删除缓存");
 	SetTitle(7,"G.主管密码");
 	SetTitle(8,"H.网络管理");
 	SetTitle(9,"I.删除缓存");
@@ -360,10 +356,14 @@ void CMaintenanceMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDa
 void CMaintenanceMenu::OnButton10(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 	string strErr("");
+UINT8 ret =SUCCESS;
+	ret= LibClearDepotFunc(strErr);
 
-	LibClearDepotFunc(strErr);
+	if (ret != SUCCESS)
+	{
+		CaMsgBox::ShowMsg(strErr);
 
-	CaMsgBox::ShowMsg(strErr);
+	}
 	return;
 }
 

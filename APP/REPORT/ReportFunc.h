@@ -321,6 +321,7 @@ UINT8 PrnIssueSumBody(UINT32 nInvNo, UINT8 nInvType, INT64 nInvMoney);
 
 /*!
 @brief 打印某时间段开票统计报表尾部
+@param[in] nInvType 发票类型
 @param[in] nNormalNum 正票份数
 @param[in] nReturnNum 红票份数
 @param[in] nWasteNum  废票份数
@@ -328,7 +329,7 @@ UINT8 PrnIssueSumBody(UINT32 nInvNo, UINT8 nInvType, INT64 nInvMoney);
 @param[in] nReturnNum 红票金额
 @return  1: SUCCESS; 0: FAILURE
 */
-UINT8 PrnIssueSumEnd(UINT32 nNormalNum, UINT32 nReturnNum, UINT32 nWasteNum, INT64 norMoney, INT64 retMoney);
+UINT8 PrnIssueSumEnd(UINT8 nInvType,UINT32 nNormalNum, UINT32 nReturnNum, UINT32 nWasteNum, INT64 norMoney, INT64 retMoney);
 
 /*!
 @brief 打印累计金额报表

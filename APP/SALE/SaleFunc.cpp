@@ -20,8 +20,9 @@
 #include "pos_debug.h"
 
 
-#define  MAX_OFF_TIME  24     
-#define  MAX_OFF_MONEY 0.01
+#define  MAX_OFF_TIME_1  24   
+#define  MAX_OFF_TIME_2  12  
+#define  MAX_OFF_MONEY 0.08
 #define  MAX_OFF_NUM   50
 
 
@@ -94,62 +95,64 @@ UINT8  SALE_OffLineDate(string &strErr)
 	DBG_PRINT(("nWscfpljje= %lld",nWscfpljje));
 	
 	DBG_PRINT(("wscfpsj= %s",wscfpsj.c_str()));
-	string strTmp = wscfpsj.erase(8);
-    UINT32 nDate = atoi(strTmp.c_str());
-	DBG_PRINT(("nDate= %u",nDate));
-
-	DBG_PRINT(("wscfpsj= %s",wscfpsj.c_str()));
-	strTmp= wscfpsj.erase(0,8);
-    UINT32 nTime = atoi(strTmp.c_str());
-	DBG_PRINT(("nTime= %u",nTime));
-
-	TDateTime fDate(nDate, nTime);
-	DBG_PRINT(("第一张离线发票时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
-	DBG_PRINT(("离线开票时间 %u 小时", g_globalArg->m_invKind->m_Lxkjsj));
-	fDate = fDate.HourAdd(fDate, (g_globalArg->m_invKind->m_Lxkjsj-MAX_OFF_TIME));
-	DBG_PRINT(("离线截止时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
-	DBG_PRINT(("离线截止时间 = %d", fDate.FormatInt(YYYYMMDD)));
-	
-	TDateTime curDate = TDateTime::CurrentDateTime();
-
-	if (curDate > fDate) 
+	if ((wscfpsj != "")&&(g_globalArg->m_invKind->m_Lxkjsj >MAX_OFF_TIME_1))
 	{
-		memset((void *)tmpch,0x00,sizeof(tmpch));
-		sprintf(tmpch,"离线开具时间不足24小时,请执行'发票上传");
-		strErr =tmpch;
-		return FAILURE;
+		string  stmp = wscfpsj;
+		string strTmp = stmp.erase(8);
+		UINT32 nDate = atoi(strTmp.c_str());
+		DBG_PRINT(("nDate= %u",nDate));
+		
+		DBG_PRINT(("wscfpsj= %s",wscfpsj.c_str()));
+		strTmp= wscfpsj.substr(8);
+		UINT32 nTime = atoi(strTmp.c_str());
+		DBG_PRINT(("nTime= %u",nTime));
+		TDateTime fDate(nDate, nTime);
+		DBG_PRINT(("第一张离线发票时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
+		DBG_PRINT(("离线开票时间 %u 小时", g_globalArg->m_invKind->m_Lxkjsj));
+
+		fDate = fDate.HourAdd(fDate, (g_globalArg->m_invKind->m_Lxkjsj-MAX_OFF_TIME_1));
+		DBG_PRINT(("离线截止时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
+
+		TDateTime curDate = TDateTime::CurrentDateTime();
+		DBG_PRINT(("当前时间 = %s", curDate.FormatString(YYYYMMDDHHMMSS).c_str()));
+
+		if (curDate > fDate) 
+		{
+			memset((void *)tmpch,0x00,sizeof(tmpch));
+			sprintf(tmpch,"离线截止时间不足%u小时请执行'发票上传'",MAX_OFF_TIME_1);
+	    	strErr =tmpch;
+			
+			fDate = fDate.HourAdd(fDate, (g_globalArg->m_invKind->m_Lxkjsj-MAX_OFF_TIME_2));
+		    DBG_PRINT(("离线截止时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
+			if (curDate > fDate)
+			{
+				memset((void *)tmpch,0x00,sizeof(tmpch));
+				sprintf(tmpch,"离线截止时间不足%u小时请执行'发票上传'",MAX_OFF_TIME_2);
+	    	    strErr =tmpch;
+				return FAILURE;
+			}
+			return FAILURE;
+		}
 	}
 
-	/*
-	TDateTime curDate = TDateTime::CurrentDateTime();
-	if (curDate > fDate) 
-	{
-		DBG_PRINT(("超过离线开票时间"));		
-	} 
-	
-/*
 	DBG_PRINT(("g_globalArg->m_invKind->m_maxSum= %lld",g_globalArg->m_invKind->m_maxSum));
 	DBG_PRINT(("nWscfpljje= %lld",nWscfpljje));
 
-	INT64 tmpJE = g_globalArg->m_invKind->m_maxSum -nWscfpljje;
-	DBG_PRINT(("tmpJE= %lld",tmpJE));
-
     INT64  maxJE= g_globalArg->m_invKind->m_maxSum *MAX_OFF_MONEY;
     DBG_PRINT(("maxJE= %lld",maxJE));
-	if ( tmpJE<=maxJE)
+
+	if ( nWscfpljje>=maxJE)
 	{
-		memset((void *)tmpch,0x00,sizeof(tmpch));
-		sprintf(tmpch,"离线正票金额还剩%f,请执行'发票上传'",((double)(tmpJE))/SUM_EXTENSION);
-		strErr =tmpch;
+		strErr ="离线累计金额即将超限,请执行'发票上传'";
 		return FAILURE;
 	}
-	*/
+	
 
 	DBG_PRINT(("nWscfpzs= %u",nWscfpzs));
 	if (nWscfpzs>=MAX_OFF_NUM)
 	{
 		memset((void *)tmpch,0x00,sizeof(tmpch));
-		sprintf(tmpch,"离线开具发票累计%u张,请执行'发票上传",nWscfpzs);
+		sprintf(tmpch,"离线开具发票累计%u张,请执行'发票上传'",nWscfpzs);
 		strErr =tmpch;
 		return FAILURE;
 	}

@@ -64,7 +64,7 @@ int CClearDepotWin::Create(int iX,int iY,int iW,int iH)
 	strcpy(title, "机器编码:");
 	titleLen = strlen(title) * CHAR_W;
 	curH = SCREEN_TOP_OFFSET;
-	curH += LINE_H;
+	//curH += LINE_H;
 	m_pInput1=new CaInput(CaObject::ON_LEFT,titleLen);
 	m_pInput1->Create(0,curH,SCREEN_W,LINE_H);
 	m_pInput1->SetTitle(title,titleLen / CHAR_W);	
@@ -72,23 +72,23 @@ int CClearDepotWin::Create(int iX,int iY,int iW,int iH)
 	m_pInput1->m_InputType = m_pInput1->aINT; //该输入框只接受字符
 	m_pInput1->OnObject = S_OnInput1;
 
-	strcpy(title, "盘口令:");
+	strcpy(title, "证书口令:");
 	titleLen = strlen(title) * CHAR_W;
 	curH += LINE_H;
 	m_pInput2=new CaInput(CaObject::ON_LEFT,titleLen);
 	m_pInput2->Create(0,curH,SCREEN_W,LINE_H);
 	m_pInput2->SetTitle(title,titleLen / CHAR_W);	
-	m_pInput2->SetMaxLen(JSP_PWD_LEN);
+	m_pInput2->SetMaxLen(CAZS_PWD_LEN );
 	m_pInput2->m_InputType = m_pInput2->aINT; //该输入框只接受字符
 	m_pInput2->OnObject = S_OnInput2;
 
-	strcpy(title, "证书口令:");
+	strcpy(title, "金税盘口令:");
 	titleLen = strlen(title) * CHAR_W;
 	curH += LINE_H;
 	m_pInput3=new CaInput(CaObject::ON_LEFT,titleLen);
 	m_pInput3->Create(0,curH,SCREEN_W,LINE_H);
 	m_pInput3->SetTitle(title,titleLen / CHAR_W);	
-	m_pInput3->SetMaxLen(CAZS_PWD_LEN);
+	m_pInput3->SetMaxLen(JSP_PWD_LEN);
 	m_pInput3->m_InputType = m_pInput3->aINT; //该输入框只接受字符
 	m_pInput3->OnObject = S_OnInput3;
 
@@ -100,7 +100,7 @@ int CClearDepotWin::Create(int iX,int iY,int iW,int iH)
 	//创建一个Button  第五行
 	strcpy(title, "确认");
 	m_pBtn1 = new CaButton();
-	curH += LINE_H;
+	curH += 2*LINE_H;
 	m_pBtn1->Create(leftoffset_btn,curH,m_iBtnW,WORD_H); 
 	m_pBtn1->SetTitleAlign(CaObject::ALIGN_CENTER);
 	m_pBtn1->SetTitle(title, strlen(title));
@@ -301,17 +301,18 @@ UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 		strMachineNo = content1; //机器编码为12位
 	}
 
-	if ((strlen(content2)!=0)&&(strlen(content2)!=JSP_PWD_LEN)) 
-	{
-		strInfo = "盘口令长度非法！";	
-		return(FAILURE);
-	}
-
-	if ((strlen(content3)!=0)&&(strlen(content3)!=CAZS_PWD_LEN)) 
+	if ((strlen(content2)!=0)&&(strlen(content2)!=CAZS_PWD_LEN)) 
 	{
 		strInfo = "证书口令长度非法！";	
 		return(FAILURE);
 	}
+
+	if ((strlen(content3)!=0)&&(strlen(content3)!=JSP_PWD_LEN)) 
+	{
+		strInfo = "金税盘口令长度非法！";	
+		return(FAILURE);
+	}
+
 
 	CMachine machine;
 	machine.Requery();
@@ -357,10 +358,10 @@ UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 
 
 	memset((void *)sqlbuf,0x00,sizeof(sqlbuf));
-	if (strlen(content3)!=0)//证书口令有输入
+	if (strlen(content2)!=0)//证书口令有输入
 	{
 		sprintf(sqlbuf, "update SYSARG set V_TEXT = '%s' where SA_ID = %d;\n", 
-			content3, SYS_CERTIF_PSW);
+			content2, SYS_CERTIF_PSW);
 		//DBG_PRINT(("sqlbuf = %s", sqlbuf));		
 		sqlstr += sqlbuf;
 		DBG_PRINT(("sqlstr = %s", sqlstr.c_str()));
@@ -384,10 +385,10 @@ UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 	}
 
 	memset((void *)sqlbuf,0x00,sizeof(sqlbuf));
-	if (strlen(content2)!=0)//盘口令有输入
+	if (strlen(content3)!=0)//盘口令有输入
 	{
 		sprintf(sqlbuf, "update SYSARG set V_TEXT = '%s' where SA_ID = %d;\n", 
-			content2, SYS_DISK_PSW);
+			content3, SYS_DISK_PSW);
 		//	DBG_PRINT(("sqlbuf = %s", sqlbuf));		
 		sqlstr += sqlbuf;
 		DBG_PRINT(("sqlstr = %s", sqlstr.c_str()));
@@ -409,7 +410,6 @@ UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 			DBG_PRINT(("sqlstr = %s", sqlstr.c_str()));
 		}
 	}
-
 
 
 	string strMachine("");

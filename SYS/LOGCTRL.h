@@ -32,7 +32,7 @@
 #endif
 //-----------------------------------------
 //以下宏定义可以修改
-//#define NO_POS_DEBUG //关闭整个工程的log信息
+#define NO_POS_DEBUG //关闭整个工程的log信息
 
 //#define POS_ENTER_ON
 #define POS_DBGPRN_ON

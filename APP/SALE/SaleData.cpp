@@ -1199,26 +1199,29 @@ UINT8 SaleData::ScanGoodsLine(UINT8 flagMakeInv)
 				DBG_PRINT(("折让后税额为%d",realTaxSum));
 			}
 			
-			//如果超单张限额
-			if ( (invSum+realSum) > g_globalArg->m_invKind->m_maxSign)
+			if (g_globalArg->m_operator->m_role!=DEMO_ROLE) //不是学习角色
 			{
-				DBG_PRINT(("此时商品行累加金额=====%d",invSum));
-				DBG_PRINT(("本商品行金额=====%d",realSum));
-				DBG_PRINT(("g_globalArg->m_invKind->m_maxSign=%u",g_globalArg->m_invKind->m_maxSign));
-				
-				m_detailCount -= GoodLineNum;
-				//头指针指向下次打印的起始节点
-				m_pHead = p;
-				
-				//修改商品行数
-				if (flagMakeInv == 1)
+				//如果超单张限额
+				if ( (invSum+realSum) > g_globalArg->m_invKind->m_maxSign)
 				{
-					m_singleInvInfo->pHead = m_pHead;//m_singleInvInfo中链表包含剩余明细节点
-					m_smallInvInfo->m_kphjje = invSum;
-					m_smallInvInfo->m_kpse =invTaxSum;
-					m_smallInvInfo->m_sphsl = GoodLineNum; 
+					DBG_PRINT(("此时商品行累加金额=====%d",invSum));
+					DBG_PRINT(("本商品行金额=====%d",realSum));
+					DBG_PRINT(("g_globalArg->m_invKind->m_maxSign=%u",g_globalArg->m_invKind->m_maxSign));
+					
+					m_detailCount -= GoodLineNum;
+					//头指针指向下次打印的起始节点
+					m_pHead = p;
+					
+					//修改商品行数
+					if (flagMakeInv == 1)
+					{
+						m_singleInvInfo->pHead = m_pHead;//m_singleInvInfo中链表包含剩余明细节点
+						m_smallInvInfo->m_kphjje = invSum;
+						m_smallInvInfo->m_kpse =invTaxSum;
+						m_smallInvInfo->m_sphsl = GoodLineNum; 
+					}
+					DBG_RETURN(FAILURE);
 				}
-				DBG_RETURN(FAILURE);
 			}
 		}
 		

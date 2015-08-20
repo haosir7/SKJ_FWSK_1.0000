@@ -376,7 +376,7 @@ UINT8 FSC_GetInvKindInfo(string &strErr)
 	// 	DBG_PRINT(("pInvKind.m_maxSign : %lld", pInvKind.m_maxSign));
 	// 	DBG_PRINT(("pInvKind.m_Lxssr  : %u", pInvKind.m_Lxssr));
 	// 	DBG_PRINT(("pInvKind.m_Lxkjsj  : %u", pInvKind.m_Lxkjsj));
-	// 	DBG_PRINT(("pInvKind.m_maxSum  : %lld", pInvKind.m_maxSum));
+	 	DBG_PRINT(("pInvKind.m_maxSum  : %lld", pInvKind.m_maxSum));
 	
 	//将离线控制信息存入数据库invkind表中
 	DBG_PRINT(("离线控制信息存储中..."));

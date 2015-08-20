@@ -588,7 +588,8 @@ UINT8 CIssueSumDateWin::IssueSumHandle(UINT8 nIfSameDay)
 			return FAILURE;
 		}
 	}
-	PrnIssueSumEnd(nNorInvNum, nRetInvNum, nWasteInvNum, norMoney, retMoney);
+
+	PrnIssueSumEnd(m_iPrnType,nNorInvNum, nRetInvNum, nWasteInvNum, norMoney, retMoney);
 
 	DBG_PRINT(("开票统计成功"));
 
