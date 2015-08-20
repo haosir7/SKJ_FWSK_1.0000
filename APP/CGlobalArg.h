@@ -132,6 +132,7 @@ public:
 
 	UINT8  m_decMedium;			/**< 申报介质 */
 	UINT8  m_bidirection;		/**< 双向打印参数 */
+	UINT8  m_ymprinterinitial;	/**< 映美打印机是否已初始化参数,0:未初始化,1:已初始化 */
 	UINT8  m_saleMode;			/**< 默认销售模式 */
 	UINT8  m_decAlarm;			/**< 申报报警天数 */
 	UINT8  m_curTemplateNo;		/**< 当前打印模板号 */

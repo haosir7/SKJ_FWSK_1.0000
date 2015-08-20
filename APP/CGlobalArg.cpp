@@ -323,9 +323,13 @@ UINT8 CGlobalArg::InitSysArg()
 {
 	DBG_PRINT(("进入CGlobalArg::InitSysArg函数"));
 	char tmpChar[32];
+	INT8 sqlbuf[128];
 	CSysArg cSysArg, *sysArg;
 	sysArg = &cSysArg;
 	int ret=0;
+	string sqlstr("");
+	memset(tmpChar, 0, sizeof(tmpChar));
+	memset(sqlbuf, 0, sizeof(sqlbuf));
 
 	sprintf(tmpChar,  "where SA_ID = %d", SYS_MACHINE_INIT_FLAG);
 	sysArg->m_filter.append(tmpChar);
@@ -450,7 +454,30 @@ PrinterIni(bidirection);
 
 	//初始化打印机主要参数
 #if (POS_TYPE == POS_APE4000RG)
+	sprintf(tmpChar,  "where SA_ID = %d", SYS_INITIALIZED_YMPRINT);
+	sysArg->m_filter.append(tmpChar);
+	sysArg->Requery();
+	sysArg->LoadOneRecord();
+	m_ymprinterinitial = sysArg->m_vInt;
+ 	DBG_PRINT(("m_ymprinterinitial : %lu", m_ymprinterinitial)); 
+
+	if (0 == m_ymprinterinitial)
+	{
 	YMPrinterIni();
+		m_ymprinterinitial = 1;
+		sprintf(sqlbuf, "update SYSARG set V_INT = %u where SA_ID = %d", 
+			m_ymprinterinitial, SYS_INITIALIZED_YMPRINT);
+		DBG_PRINT(("sqlbuf = %s", sqlbuf));
+		sqlstr=sqlbuf;
+		sysArg->SetSQL(sqlstr);
+		ret = sysArg->ExecuteSQL();
+		DBG_PRINT(("ymprinterinitial_ret : %d", ret));
+// 		if (ret != SQLITE_OK)
+// 		{
+// 			ShowMsg("系统参数修改错误!");			
+// 		}
+	}
+	
 #endif
 
 
