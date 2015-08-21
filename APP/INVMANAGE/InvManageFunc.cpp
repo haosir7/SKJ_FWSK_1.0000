@@ -715,7 +715,7 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,UINT8 uFlag)
 	
 	if (uFlag ==1)
 	{
-		CaMsgBox::ShowMsg("发票开始补传中....");
+		CaMsgBox::ShowMsg("发票信息等待补传！");
 		return SUCCESS;
 	}
 	

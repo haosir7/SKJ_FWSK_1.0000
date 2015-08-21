@@ -98,15 +98,34 @@ UINT8 CHqlxsjWin::NormalShow()
 {
 	char title[OBJ_TITLE_MAX_LEN + 1];
 
-	sprintf(title, "未上传发票张数:%s", m_wscfpzs.c_str());
+	sprintf(title, "累计张数:%s", m_wscfpzs.c_str());
 	DBG_PRINT(("未上传发票张数= %s", title))
 	SetTitle(1, title);
 
-	sprintf(title, "未上传发票时间:%s", m_wscfpsj.c_str());
+    string  stmp = m_wscfpsj;
+   DBG_PRINT(("stmplen= %d",stmp.length()))
+	if (stmp.length() == 14)
+	{
+		string strTmp = stmp.erase(8);
+		UINT32 nDate = atoi(strTmp.c_str());
+		DBG_PRINT(("nDate= %u",nDate));
+		
+		DBG_PRINT(("m_wscfpsj= %s",m_wscfpsj.c_str()));
+		strTmp= m_wscfpsj.substr(8);
+		UINT32 nTime = atoi(strTmp.c_str());
+		DBG_PRINT(("nTime= %u",nTime));
+		TDateTime fDate(nDate, nTime);
+
+		stmp =fDate.FormatString(YYYYMMDDHHMMSS);
+
+		DBG_PRINT(("第一张离线发票时间 = %s", stmp.c_str()));
+	}
+
+	sprintf(title, "开具时间:%s", stmp.c_str());
 	DBG_PRINT(("未上传发票时间= %s", title))
 	SetTitle(2, title);
 
-	sprintf(title, "未上传金额:%s", m_wscfpljje.c_str());
+	sprintf(title, "累计金额:%s", m_wscfpljje.c_str());
 	DBG_PRINT(("未上传发票累计金额= %s", title))
 	SetTitle(3, title);
 

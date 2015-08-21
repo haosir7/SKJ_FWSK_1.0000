@@ -123,7 +123,7 @@ int CSysMainMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 	memset((void *)chValue,0x00,sizeof(chValue));
 	UINT32 uServNum;
 	string strErr("");
-
+  
 	if (ESC_KEY == iEvent || LOCKED_KEY == iEvent )
 	{
 		CaMsgBox msgBox("退出当前操作员?",CaMsgBox::MB_YESNO);

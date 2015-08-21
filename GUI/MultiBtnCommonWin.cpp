@@ -243,7 +243,7 @@ int CMultiBtnCommonWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDat
 			return 1;
 			break;
 		case LETTER_J:
-			iEvent = '0';
+			iEvent = 0x3A;
 			ProcShortcut(iEvent,pEventData,iDataLen);
 			return 1;
 			break;
@@ -299,7 +299,7 @@ int CMultiBtnCommonWin::ProcShortcut(int iEvent,unsigned char *pEventData, int i
 		{
 			m_pBtnList->SetFocusToObj(m_pBtn9, nBtnNumOfCol);			
 		}
-		else if (iEvent == '0')
+		else if (iEvent == 0X3A)
 		{
 			m_pBtnList->SetFocusToObj(m_pBtn10, nBtnNumOfCol);			
 		}

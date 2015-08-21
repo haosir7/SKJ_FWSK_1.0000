@@ -80,12 +80,10 @@ private:
 	*/
 	void OnButton9(int iEvent, unsigned char * pEventData, int iDataLen); 
 
-#if TYPE_MODE == ZHQ_MODE
 	/*!
 	@brief 离线数据按钮
 	*/
 	void OnButton10(int iEvent, unsigned char * pEventData, int iDataLen); 
-#endif
 
 };
 
