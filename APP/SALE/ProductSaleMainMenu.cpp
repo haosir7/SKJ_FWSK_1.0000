@@ -877,7 +877,7 @@ UINT8 CProductSaleMainMenu::PriceInputProc(void)
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));
-		CaMsgBox::ShowMsg("小数位数不得超过二位");
+		CaMsgBox::ShowMsg("小数位数不得超过两位");
 		return FAILURE;
 	}
 	m_pInput2->Clear();

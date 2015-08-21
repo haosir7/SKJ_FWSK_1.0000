@@ -1129,7 +1129,7 @@ UINT8 CProductSaleWin::PriceInputProc(void)
 	 	return FAILURE;
 	}
  		dotNum = CheckFloatBit(ii);
-	if (dotNum>3) 
+	if (dotNum>2) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));

@@ -10,6 +10,7 @@
 #include "CaMsgBox.h"
 #include "CaProgressBar.h"
 #include "MultiBtnCommonWin.h"
+#include "InvDownloadNOWin.h"
 #include "CGlobalArg.h"
 #include "InvVolFunc.h" 
 
@@ -196,8 +197,10 @@ void CInvManageMenu::OnButton7(int iEvent, unsigned char * pEventData, int iData
 		return ;
 	}
 	
-	ChangeWin(INV_DOWNLOAD_MENU);	
+	//ChangeWin(INV_DOWNLOAD_MENU);	
 	
+	((CInvDownloadNOWin *)m_pFrame->GetWin(INV_DOWNLOAD_NO_WIN))->m_nFlag = 0;
+	ChangeWin(INV_DOWNLOAD_NO_WIN);	
 }
 //------------------------------------------------------------------------------------
 //∆±∂Œπ‹¿Ì

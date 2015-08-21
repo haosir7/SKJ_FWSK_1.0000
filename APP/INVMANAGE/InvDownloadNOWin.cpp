@@ -104,7 +104,7 @@ int CInvDownloadNOWin::ProcEvent(int iEvent,unsigned char *pEventData, int iData
 			DBG_PRINT(("m_nFlag= %u",m_nFlag));
 			if (m_nFlag ==0)
 			{
-				ChangeWin(INV_DOWNLOAD_MENU);	 //返回发票管理界面	
+				ChangeWin(INV_MANAGE_MENU);	 //返回发票管理界面	
 			}
 			else
 			{
@@ -221,7 +221,7 @@ void CInvDownloadNOWin::OnButton2(int iEvent, unsigned char * pEventData, int iD
 	DBG_PRINT(("m_nFlag= %u",m_nFlag));
 	if (m_nFlag ==0)
 	{
-		ChangeWin(INV_DOWNLOAD_MENU);	 //返回发票管理界面	
+		ChangeWin(INV_MANAGE_MENU);	 //返回发票管理界面	
 	}
 	else
 	{

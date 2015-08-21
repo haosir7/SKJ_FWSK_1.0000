@@ -343,7 +343,7 @@ UINT8 CDeptEditWin::CheckInputValid(string &strErr)
 	}
 	else if (CheckFloatBit(dPrice)>2) 
 	{
-		CaMsgBox::ShowMsg("小数位数不得超过二位");
+		strErr ="单价不得超过两位小数";
 		m_pInputList->SetFocusToObj(m_pInput3);
 		return FAILURE;
 	}
