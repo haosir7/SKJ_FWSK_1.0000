@@ -177,6 +177,8 @@ void CInvRetQueryWin::NormalShow()
 	UINT8 uFlag=0;
  	if (0 == g_globalArg->m_curInvVol->m_curInvNo) //避免反复读盘
  	{
+		BAR_DEF();
+		BAR_SHOW("获取开具发票号码中...");
  		ret = SALE_GetCurInv(g_globalArg->m_curInvVol,strErr);
  		if (ret ==FAILURE)
  		{

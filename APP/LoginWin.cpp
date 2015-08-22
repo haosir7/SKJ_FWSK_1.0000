@@ -407,15 +407,6 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 			{
 				CaMsgBox::ShowMsg(strErr);
 			}
-			DBG_PRINT(("g_globalArg->m_invKind->m_bsqsrq= %s",g_globalArg->m_invKind->m_bsqsrq.c_str()));
-			UINT32 nCurDate= TDateTime::CurrentDate().FormatInt(YYYYMMDD);
-			
-			UINT8 ret=CheckCurDate(nCurDate,strErr);
-			if (ret !=SUCCESS)
-			{
-				CaMsgBox::ShowMsg(strErr);
-				//return ;		
-			}
 			else
 			{
 				ret=SALE_OffLineDate(strErr);
@@ -425,6 +416,16 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 				}
 			}
 
+			DBG_PRINT(("g_globalArg->m_invKind->m_bsqsrq= %s",g_globalArg->m_invKind->m_bsqsrq.c_str()));
+			UINT32 nCurDate= TDateTime::CurrentDate().FormatInt(YYYYMMDD);
+			
+			UINT8 ret=CheckCurDate(nCurDate,strErr);
+			if (ret !=SUCCESS)
+			{
+				CaMsgBox::ShowMsg(strErr);
+				//return ;		
+			}
+		
 #endif				
 		}
 

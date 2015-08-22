@@ -10,6 +10,7 @@
 #include "beep.h"
 #include "CClient.h"
 #include "Scanner.h"
+#include "CaProgressBar.h"
 
 #include "LOGCTRL.h"
 #define NO_POS_DEBUG
@@ -676,15 +677,19 @@ UINT8 CProductSaleMainMenu::NormalShow()
 	}
 	else
 	{
- 		if (0 == g_globalArg->m_curInvVol->m_curInvNo) //避免反复读盘
-		 {
-		 	ret = SALE_GetCurInv(g_globalArg->m_curInvVol,strErr);
-		 	DBG_PRINT(("strErr= %s",strErr.c_str()));
-		 	if (ret ==FAILURE)
-		 	{
-		 		sprintf(title_array[1], strErr.c_str()); //错误
-		 	} 	
-		 }	
+		if (0 == g_globalArg->m_curInvVol->m_curInvNo) //避免反复读盘
+		{
+			
+			BAR_DEF();
+		    BAR_SHOW("获取开具发票号码中...");
+			
+			ret = SALE_GetCurInv(g_globalArg->m_curInvVol,strErr);
+			DBG_PRINT(("strErr= %s",strErr.c_str()));
+			if (ret ==FAILURE)
+			{
+				sprintf(title_array[1], strErr.c_str()); //错误
+			} 	
+		}	
 	}
 
 	//第一行

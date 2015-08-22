@@ -1051,6 +1051,9 @@ UINT8 SaleData::MakeInvoiceHandle(UINT8 nIfPrn, UINT8 nId)
 	DBG_PRINT(("m_nInvCount= %u",m_nInvCount));
 	if (m_nInvCount >1)
 	{
+		BAR_DEF();
+		 BAR_SHOW("获取开具发票号码中...");
+				
 		ret = SALE_GetCurInv(g_globalArg->m_curInvVol,g_globalArg->m_strMsg);
 		DBG_PRINT(("ret= %u",ret))
 		if (ret ==FAILURE)
