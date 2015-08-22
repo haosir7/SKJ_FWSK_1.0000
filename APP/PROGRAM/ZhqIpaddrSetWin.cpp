@@ -1,6 +1,6 @@
 /**
- @file  NetworkingSetWin.cpp
- @brief 界面文件，IP信息设置
+@file  NetworkingSetWin.cpp
+@brief 界面文件，IP信息设置
 */
 #include "CMainFrame.h"
 #include "CaLabel.h"
@@ -29,18 +29,18 @@ int CZhqIpaddrSetWin::Create(int iX,int iY,int iW,int iH)
 {
 	m_pFrame->RegsiterWin(this, ZHQ_IPADDR_SET_WIN);    
 	CMultiInputCommonWin::Create(iX,iY,iW,iH); 
-
+	
 	SetObjPara(1, "转换器IP：",	CaInput::aCHAR,15);
 	SetObjPara(2, "子网掩码：",	CaInput::aCHAR,15);
 	SetObjPara(3, "默认网关：",	CaInput::aCHAR,15);
 	SetObjPara(4, "DNS 地址：",	CaInput::aCHAR,15);
-
+	
 	SetObjPara(10," 下一步 ");
 	SetObjPara(11," 返回 ");
-
+	
 	OnActive = S_OnActive;
 	this->ReFresh();
-
+	
 	return 0;
 }
 
@@ -50,20 +50,20 @@ int CZhqIpaddrSetWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataL
 	{	   
 	case RETURN_MAIN_MENU: 
 		{
-			CaMsgBox msgBox("是否取消转换器网络设置?",CaMsgBox::MB_YESNO);
+			CaMsgBox msgBox("是否取消转换器网络\n设置？",CaMsgBox::MB_YESNO);
 			msgBox.ShowBox();
 			if (msgBox.m_iStatus == OK_PRESSED)
 			{
-		ClearIpAddrWin();
-		ChangeWin(ZHQ_MANAGE_MENU);						
-		return SUCCESS;
+				ClearIpAddrWin();
+				ChangeWin(ZHQ_MANAGE_MENU);						
+				return SUCCESS;
 			}					
 		}
 		break;		
 	default: 
 		break;		
 	}
-   return CMultiInputCommonWin::ProcEvent(iEvent,pEventData,iDataLen);
+	return CMultiInputCommonWin::ProcEvent(iEvent,pEventData,iDataLen);
 }
 
 void CZhqIpaddrSetWin::OnInput1(int iEvent, unsigned char * pEventData, int iDataLen)
@@ -96,10 +96,10 @@ int CZhqIpaddrSetWin::ReFresh()
 	CaGroup::ReFresh();
 	if(m_pCurObj != NULL )
 	{
- 		m_pCurObj->SetFocusIn();
+		m_pCurObj->SetFocusIn();
 	}
 	LCDRedraw();
-
+	
 	return 1;
 }
 
@@ -116,14 +116,14 @@ void CZhqIpaddrSetWin::OnBtn1(int iEvent, unsigned char * pEventData, int iDataL
 			return ;
 		}
 	}
-
+	
 	if (changeIpAddrProc(strErr) != SUCCESS)
 	{
 		CaMsgBox::ShowMsg(strErr);
 		return ;
 	}
-
-//	CaMsgBox::ShowMsg("设置本机IP信息成功");
+	
+	//	CaMsgBox::ShowMsg("设置本机IP信息成功");
 	
 	ChangeWin(ZHQ_SERVERIP_SET_WIN);
 }
@@ -148,7 +148,7 @@ UINT8 CZhqIpaddrSetWin::CheckInputValid(string &strErr)
 		m_pInputList->SetFocusToObj(m_pInput1);
 		return FAILURE;
 	}
-
+	
 	if (m_pInput2->IsEmpty())
 	{	
 		strErr = "未输入子网掩码";
@@ -161,7 +161,7 @@ UINT8 CZhqIpaddrSetWin::CheckInputValid(string &strErr)
 		m_pInputList->SetFocusToObj(m_pInput2);
 		return FAILURE;
 	}
-
+	
 	if (m_pInput3->IsEmpty())
 	{	
 		strErr = "未输入默认网关";
@@ -174,7 +174,7 @@ UINT8 CZhqIpaddrSetWin::CheckInputValid(string &strErr)
 		m_pInputList->SetFocusToObj(m_pInput3);
 		return FAILURE;
 	}
-
+	
 	if (m_pInput4->IsEmpty())
 	{	
 		strErr = "未输入DNS地址";
@@ -187,7 +187,7 @@ UINT8 CZhqIpaddrSetWin::CheckInputValid(string &strErr)
 		m_pInputList->SetFocusToObj(m_pInput4);
 		return FAILURE;
 	}
-
+	
 	return SUCCESS;
 }
 
@@ -197,7 +197,7 @@ void CZhqIpaddrSetWin::DispIpAddrInfo()
 	m_pInput2->SetContentBuf((UINT8 *)m_netpara->m_LocalMask.c_str(), m_netpara->m_LocalMask.length());
 	m_pInput3->SetContentBuf((UINT8 *)m_netpara->m_LocalGate.c_str(), m_netpara->m_LocalGate.length());
 	m_pInput4->SetContentBuf((UINT8 *)m_netpara->m_LocalDNS.c_str(), m_netpara->m_LocalDNS.length());
-
+	
 	DBG_PRINT(("m_netpara: m_IDDHCP = %u", m_netpara->m_IsDhcp));
 	DBG_PRINT(("m_netpara: m_LocalIP = %s", m_netpara->m_LocalIP.c_str()));
 	DBG_PRINT(("m_netpara: m_LocalMask = %s", m_netpara->m_LocalMask.c_str()));
@@ -220,14 +220,14 @@ int CZhqIpaddrSetWin::changeIpAddrProc(string &strErr)
 	m_netpara->m_LocalMask = (INT8 *)m_pInput2->m_contentBuf;
 	m_netpara->m_LocalGate = (INT8 *)m_pInput3->m_contentBuf;
 	m_netpara->m_LocalDNS = (INT8 *)m_pInput4->m_contentBuf;
-
+	
 	DBG_PRINT(("m_netpara: m_IDDHCP = %u", m_netpara->m_IsDhcp));
 	DBG_PRINT(("m_netpara: m_LocalIP = %s", m_netpara->m_LocalIP.c_str()));
 	DBG_PRINT(("m_netpara: m_LocalMask = %s", m_netpara->m_LocalMask.c_str()));
 	DBG_PRINT(("m_netpara: m_LocalGate = %s", m_netpara->m_LocalGate.c_str()));
 	DBG_PRINT(("m_netpara: m_LocalDNS = %s", m_netpara->m_LocalDNS.c_str()));
 	//更新数据库
-
+	
 	return ret;
 }
 
@@ -238,32 +238,72 @@ void CZhqIpaddrSetWin::S_OnActive(CaWindow *obj)
 
 void CZhqIpaddrSetWin::DoActive()
 {
-     ReFresh();
+	ReFresh();
 	m_netpara =  ((CZhqParaSetMenu *)m_pFrame->GetWin(ZHQ_MANAGE_MENU))->m_ComNetpara;
-
-	CaMsgBox msgBox("是否获取转换器动态IP地址?",CaMsgBox::MB_YESNO);
-	msgBox.ShowBox();
-	if (msgBox.m_iStatus == OK_PRESSED)
+    
+	string str1n, str2n;
+	DBG_PRINT(("m_netpara->m_IsDhcp = %u",m_netpara->m_IsDhcp ));  /**< 是否自动分配IP 模式 0:手工 1:自动 */
+	if (m_netpara->m_IsDhcp == 1)
 	{
-// 		m_pInput1->m_bReadOnly = true;
-// 		m_pInput2->m_bReadOnly = true;
-// 		m_pInput3->m_bReadOnly = true;
-// 		m_pInput4->m_bReadOnly = true;
-		m_netpara->m_IsDhcp = 1;
-		ClearIpAddrWin();
-		ChangeWin(ZHQ_SERVERIP_SET_WIN);
-	//	this->ReFresh();
-		return;
+		str1n = "自动";
+		str2n = "手工";
 	}
 	else
 	{
-		m_pInput1->m_bReadOnly = false;
-		m_pInput2->m_bReadOnly = false;
-		m_pInput3->m_bReadOnly = false;
-		m_pInput4->m_bReadOnly = false;
-		m_netpara->m_IsDhcp = 0;
-		DispIpAddrInfo();
-		ReFresh();
+		str1n = "手工";
+		str2n = "自动";
+	}
+	
+	char tmp[128];
+    memset((void *)tmp,0x00,sizeof(tmp));
+	
+	sprintf(tmp,"转换器IP模式：%s \n是否修改IP模式：%s?", str1n.c_str(),str2n.c_str());
+	
+	CaMsgBox msgBox(tmp,CaMsgBox::MB_YESNO);
+	msgBox.ShowBox();
+	if (msgBox.m_iStatus == OK_PRESSED)
+	{
+		if (m_netpara->m_IsDhcp == 0)
+		{
+			m_netpara->m_IsDhcp = 1;
+			ClearIpAddrWin();
+			ChangeWin(ZHQ_SERVERIP_SET_WIN);
+			//	this->ReFresh();
+			return;
+		}
+		else
+		{
+			
+			m_pInput1->m_bReadOnly = false;
+			m_pInput2->m_bReadOnly = false;
+			m_pInput3->m_bReadOnly = false;
+			m_pInput4->m_bReadOnly = false;
+			m_netpara->m_IsDhcp = 0;
+			DispIpAddrInfo();
+			ReFresh();
+		}
+		
+	}
+	else
+	{
+		if (m_netpara->m_IsDhcp ==0)
+		{
+			m_pInput1->m_bReadOnly = false;
+			m_pInput2->m_bReadOnly = false;
+			m_pInput3->m_bReadOnly = false;
+			m_pInput4->m_bReadOnly = false;
+			m_netpara->m_IsDhcp = 0;
+			DispIpAddrInfo();
+			ReFresh();
+		}
+		else
+		{
+			m_netpara->m_IsDhcp = 1;
+			ClearIpAddrWin();
+			ChangeWin(ZHQ_SERVERIP_SET_WIN);
+			//	this->ReFresh();
+			return;
+		}
 	}
 	return;
 }

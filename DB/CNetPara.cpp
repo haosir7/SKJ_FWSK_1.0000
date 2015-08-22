@@ -31,7 +31,7 @@ CNetPara::~CNetPara()
 
 void CNetPara::ResetMember(void)
 {
-	m_IsDhcp = 0;			/**< 是否自动分配IP */
+	m_IsDhcp = 0;			/**< 是否自动分配IP 模式 0:手工 1:自动 */
 	m_LocalIP = "";			/**< 本机IP */
 	m_LocalGate = "";		/**< 本机网关 */
 	m_LocalMask = "";		/**< 子网掩码 */

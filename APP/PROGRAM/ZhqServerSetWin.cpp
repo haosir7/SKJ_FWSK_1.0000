@@ -50,7 +50,7 @@ int CZhqServeripSetWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDat
 	{	   
 	case RETURN_MAIN_MENU: 
 		{
-			CaMsgBox msgBox("是否取消转换器网络设置?",CaMsgBox::MB_YESNO);
+			CaMsgBox msgBox("是否取消转换器网络\n设置？",CaMsgBox::MB_YESNO);
 			msgBox.ShowBox();
 			if (msgBox.m_iStatus == OK_PRESSED)
 			{
