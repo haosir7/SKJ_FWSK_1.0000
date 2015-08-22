@@ -10,6 +10,7 @@
 #include "commonFunc.h"
 #include "CGlobalArg.h"
 #include "DataDesign.h"
+#include "CaProgressBar.h"
 using namespace std;
 
 
@@ -52,6 +53,8 @@ void SerialProtocol::resetAll() {
 	packageLen = 0;
 
 	newCmd = true;
+
+	m_NetBusinessFlag = 0;
 }
 
 /*!
@@ -306,19 +309,52 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 	int readLen = 0;
 	UINT32 times=0;
 	int tmpLen =0;
+	UINT8 WaitCount = 0;
 
 	tmpLen = 0;
 	memset(m_revBuf, 0x00, sizeof(m_revBuf));
+
+	CaProgressBar info("");
+	INT8 StrBuf[64];
+	
 	//款机放读取响应数据超时为30s
 	while(times < WAIT_TIME) 
 	{
 		tmpLen = pSerial->GetReceiveCount(pSerial);
 		//DBG_PRINT(("获取串口缓存的字节数 tmpLen = %d", tmpLen));
-		
 		if (tmpLen < 2)
 		{
 			CommonSleep(100);
-			times++;
+			times++;	
+
+			//若为网络相关的操作，则设定超时时间为3分钟
+			if ((1==m_NetBusinessFlag) && (WAIT_TIME == times))
+			{
+				times = 0;
+				WaitCount++;
+				UINT8 temNum = NET_WAIT_COUNT;
+				if (NET_WAIT_COUNT == WaitCount)
+				{
+					break;
+				}
+
+				memset(StrBuf, 0, sizeof(StrBuf));
+				sprintf(StrBuf, "操作正在进行中... %u\/%u", WaitCount, temNum);
+				info.SetText(StrBuf);
+ 				info.Show();
+// 				if (0 == WaitCount%2)
+// 				{	
+// 					info.SetText("操作正在进行中...");
+// 					info.Show();
+// 				}
+// 				else
+// 				{
+// 					info.SetText("操作尚未完成,请等待... ");
+// 					info.Show();
+// 				}
+				
+			}
+			
 		}
 		else
 		{

@@ -351,9 +351,9 @@ INT32  CAPIzhqProc::NetDeclareProc_API(CYWXML_GY &ywxml_gy, string &strErr)
 	UINT8 ret = SUCCESS;
 	UINT32 jzlx = 1; //1：网络（税控盘与金税盘）
 	//	2：税控设备（金税盘专用）
+	UINT8 NetBusinessFlag = 1;
 	
-	
-	ret = m_SerialProc.sjcb_Serial(ywxml_gy, jzlx, strErr);
+	ret = m_SerialProc.sjcb_Serial(ywxml_gy, jzlx, NetBusinessFlag, strErr);
 	return ret;
 }
 
@@ -371,7 +371,8 @@ INT32  CAPIzhqProc::DeclareProc_API(CYWXML_GY &ywxml_gy, UINT8 jzlx, string &str
 	DBG_PRINT(("ywxml_gy.m_jqbh : %s", ywxml_gy.m_jqbh.c_str()));
 	if (jzlx ==2)
 	{
-		ret = m_SerialProc.sjcb_Serial(ywxml_gy, jzlx, strErr);  //金税盘
+		UINT8 NetBusinessFlag = 0;
+		ret = m_SerialProc.sjcb_Serial(ywxml_gy, jzlx, NetBusinessFlag, strErr);  //金税盘
 	}
 	else if(jzlx == 1)
 	{

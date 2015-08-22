@@ -1626,9 +1626,23 @@ UINT8 CBusinessSerialProc::fphs_Serial(CYWXML_GY &ywxml_gy, CInvVol *pInvVol, UI
 }
 
 //数据抄报
-UINT8 CBusinessSerialProc::sjcb_Serial(CYWXML_GY &ywxml_gy, UINT8 jzlx, string &strErr)
+UINT8 CBusinessSerialProc::sjcb_Serial(CYWXML_GY &ywxml_gy, UINT8 jzlx, UINT8 NetFlag, string &strErr)
 {
 	DBG_PRINT(("----------数据抄报----------"));
+
+	if (1 == NetFlag)
+	{
+		NetFlag = 0;
+		if (onLine_Serial(strErr) != SUCCESS)
+		{
+			strErr = "串口异常!请检查!";
+			
+			return FAILURE;
+		}
+		
+		m_serialProtocol->m_NetBusinessFlag = 1;	//网络相关的操作
+	}
+
 
 	INT8 tempbuf[BUF_LEN];
 	
@@ -1690,6 +1704,15 @@ UINT8 CBusinessSerialProc::sjcb_Serial(CYWXML_GY &ywxml_gy, UINT8 jzlx, string &
 UINT8 CBusinessSerialProc::wljkhc_Serial(CYWXML_GY &ywxml_gy, string &strErr)
 {
 	DBG_PRINT(("----------网络监控回传----------"));
+
+	if (onLine_Serial(strErr) != SUCCESS)
+	{
+		strErr = "串口异常!请检查!";
+		
+		return FAILURE;
+	}
+	
+	m_serialProtocol->m_NetBusinessFlag = 1;	//网络相关的操作
 
 	UINT8 cmdNo = SERIAL_WLJKHC_CMD;	//命令号赋值
 	enum ProtocolType cmdType = ZC_PROTOCOL;
@@ -1982,6 +2005,16 @@ UINT8 CBusinessSerialProc::qyxxgx_Serial(CYWXML_GY &ywxml_gy, string &strErr)
 UINT8 CBusinessSerialProc::lxqxgx_Serial(CYWXML_GY &ywxml_gy, string &strErr)
 {
 	DBG_PRINT(("----------离线权限更新----------"));
+
+	if (onLine_Serial(strErr) != SUCCESS)
+	{
+		strErr = "串口异常!请检查!";
+		
+		return FAILURE;
+	}
+	
+	m_serialProtocol->m_NetBusinessFlag = 1;	//网络相关的操作
+
 	
 	UINT8 cmdNo = SERIAL_LXQXGX_CMD;	//命令号赋值
 	enum ProtocolType cmdType = ZC_PROTOCOL;
@@ -2313,6 +2346,15 @@ UINT8 CBusinessSerialProc::wlgp_Serial(CYWXML_GY &ywxml_gy, CInvVol *pInvVol, st
 {
 	DBG_PRINT(("----------网络购票----------"));
 
+	if (onLine_Serial(strErr) != SUCCESS)
+	{
+		strErr = "串口异常!请检查!";
+
+		return FAILURE;
+	}
+
+	m_serialProtocol->m_NetBusinessFlag = 1;	//网络相关的操作
+	
 	INT8 tempbuf[BUF_LEN];
 	UINT8 cmdNo = SERIAL_WLGP_CMD;	//命令号赋值
 	enum ProtocolType cmdType = ZC_PROTOCOL;
@@ -2321,7 +2363,6 @@ UINT8 CBusinessSerialProc::wlgp_Serial(CYWXML_GY &ywxml_gy, CInvVol *pInvVol, st
 	m_serialProtocol->FillParament(ywxml_gy.m_sksbbh, SBBH_LEN);
 	m_serialProtocol->FillParament(ywxml_gy.m_sksbkl, KOULING_LEN);
 	m_serialProtocol->FillParament(ywxml_gy.m_fplxdm, FPLXDM_S_LEN);
-
 	m_serialProtocol->FillParament(pInvVol->m_code, FPDM_LEN);
 
 	memset(tempbuf, 0x00, sizeof(tempbuf));
