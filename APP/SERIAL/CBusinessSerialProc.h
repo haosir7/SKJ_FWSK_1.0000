@@ -197,7 +197,7 @@ UINT8 fphs_Serial(CYWXML_GY &ywxml_gy, CInvVol *pInvVol, UINT8 strJzlx, string &
 @param[in] jzlx	介质类型
 @param[out] strErr	错误信息
 */
-UINT8 sjcb_Serial(CYWXML_GY &ywxml_gy, UINT8 jzlx, string &strErr);
+UINT8 sjcb_Serial(CYWXML_GY &ywxml_gy, UINT8 jzlx, UINT8 NetFlag, string &strErr);
 
 
 /*!

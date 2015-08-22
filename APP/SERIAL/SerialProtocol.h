@@ -54,6 +54,8 @@ public:
 	send_cmdStruct *m_sendCmd, m_cSendCmd;
 	rsp_cmdStruct *m_rspCmd, m_cRspCmd;
 
+	UINT8 m_NetBusinessFlag;	//与网络相关的业务标志 0: 不是网络业务 1: 网络业务
+
 	//为单例模式设计
 	static SerialProtocol* getInstance(){
 		static SerialProtocol instance;   //局部静态变量  
