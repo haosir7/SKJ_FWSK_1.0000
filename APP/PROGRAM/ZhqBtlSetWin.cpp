@@ -49,13 +49,12 @@ int CZhqBtlSetWin::Create(int iX,int iY,int iW,int iH)
 
 	//创建一个Lable  第一行
 	curH = SCREEN_TOP_OFFSET;
-	strcpy(title, "转换器原值: ");
 	m_pLbl1 = new CaLabel(false,CaObject::ALIGN_LEFT);
 	m_pLbl1->Create(left_offset,curH, SCREEN_W, CHAR_H);
 	m_pLbl1->SetTitle(title, strlen(title));
 
 	//创建一个Input  第二行
-	strcpy(title, "新 值: ");
+	strcpy(title, "转换器新值:");
 	titleLen = strlen(title) * CHAR_W;
 	curH += LINE_H;
 	m_pInput1=new CaInput(CaObject::ON_LEFT,titleLen);
@@ -65,7 +64,7 @@ int CZhqBtlSetWin::Create(int iX,int iY,int iW,int iH)
 	m_pInput1->m_InputType = m_pInput1->aINT; //该输入框只接受数字
 	m_pInput1->OnObject = S_OnInput1;
 
-	strcpy(title, "1:9600  2:19200  3:38400");
+	strcpy(title, "1:9600   2:19200   3:38400");
 	m_pLbl2 = new CaLabel(false,CaObject::ALIGN_LEFT);
 	curH += LINE_H;
 	m_pLbl2->Create(left_offset,curH, SCREEN_W, CHAR_H);
@@ -244,7 +243,7 @@ void CZhqBtlSetWin::DispCurInfo()
 	}
 
 	memset(chValue, 0, sizeof(chValue));
-	sprintf(chValue, "转换器原值: %u, 款机原值: %u", m_zhqbaudrate,m_com2baudrate);
+	sprintf(chValue, "转换器原值:%u  款机原值:%u", m_zhqbaudrate,m_com2baudrate);
 	DBG_ASSERT_EXIT((strlen(chValue)<=OBJ_TITLE_MAX_LEN),("Label_length over length!"));
 	m_pLbl1->SetTitle(chValue, strlen(chValue));
 

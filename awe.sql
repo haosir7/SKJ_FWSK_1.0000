@@ -742,6 +742,9 @@ insert into sysarg values(231,'',0,'192.168.0.104',0);
 insert into sysarg values(232,'',0,'8002',0);
 insert into sysarg values(233,'',0,'',0);
 
+
+insert into NETPARA values(0,'192.168.2.134','192.168.2.1','255.255.255.0','','192.168.0.104','8008','','','','','');
+
 --
 -- init Operator
 --
@@ -764,4 +767,3 @@ INSERT INTO machine values('222222222222', '20110101', 'hver1.0', 'sver1.0');
 -- init Client
 --
 --INSERT INTO client values('9', '航天信息股份有限公司航天信息股份有限公司航天信息股份有限公司航天信息股份有限公司航天信息股份有限公司航天信息股份有限公司航天信息股份有限公司航天信息股份有限公司航天信息股份有限公司1234567890!@#sefeted');
-insert into NETPARA values(1,'192.168.2.134','192.168.2.1','255.255.255.0','','192.168.0.104','8008','','','','','');

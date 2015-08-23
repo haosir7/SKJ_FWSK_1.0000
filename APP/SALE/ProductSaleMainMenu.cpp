@@ -701,10 +701,6 @@ UINT8 CProductSaleMainMenu::NormalShow()
 	DBG_PRINT((" g_globalArg->m_curInvVol->m_ieno = %u !", g_globalArg->m_curInvVol->m_ieno));
 	DBG_PRINT((" g_globalArg->m_curInvVol->m_remain = %u !", g_globalArg->m_curInvVol->m_remain));
 	
-
-	
-	
-	
 	//µÚ¶þÐÐ
 	strcpy(title_array[2], "");
 	
