@@ -35,6 +35,7 @@
 #include "YWXML_BGZSKL.h"
 #include "YWXML_FPBL.h"
 #include "YWXML_ERRUPINV.h"
+#include "YWXML_HQLXSJ.h"
 
 #include "NETXML_FPSC.h"
 #include "NETXML_FPSCJGHQ.h"
@@ -44,6 +45,7 @@
 #include "NETXML_LXXXSC.h"
 #include "NETXML_WLLQFP.h"
 #include "NETXML_WLLQFPJGQR.h"
+
 
 
 CBusinessXmlProc::CBusinessXmlProc()
@@ -533,6 +535,20 @@ INT32 CBusinessXmlProc::SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr)
 	return ret;
 }
 
+
+//获取离线相关数据
+INT32 CBusinessXmlProc::OffInvInfo_Business(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr)
+{
+	INT32 ret = XML_SUCCESS;
+	ywxml_gy.m_strID = BUSINESS_YWID_HQLXSJ;
+	
+	 CGetOffLineData GetOffLineData(ywxml_gy, wscfpzs, wscfpsj, wscfpljje);
+	
+	ret = GetOffLineData.YWXml_Proc(strErr);
+
+	return ret;
+}
+
 //2.29.获取上传出错发票信息
 INT32 CBusinessXmlProc::GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
 {
@@ -546,11 +562,23 @@ INT32 CBusinessXmlProc::GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pData
 	
 	DBG_PRINT(("ErrInvInfo num = %u", ErrInvInfo.m_ErrUpNum));
 	nCount = ErrInvInfo.m_ErrUpNum;
+	if (0 == nCount)
+	{
+		strErr = "无上传错误发票信息";
+
+		return XML_FAILURE;
+	}
+	
 	for(int i=0; i<nCount; i++)
 	{
 		pDataInvServ[i].m_fpdm = ErrInvInfo.InvUpFailInfo[i].m_fpdm;
-		pDataInvServ[i].m_fpdm = ErrInvInfo.InvUpFailInfo[i].m_fphm;
+		DBG_PRINT(("pDataInvServ[%d].m_fpdm : %s",  i, pDataInvServ[i].m_fpdm.c_str()));
+
+		pDataInvServ[i].m_fphm = ErrInvInfo.InvUpFailInfo[i].m_fphm;
+		DBG_PRINT(("pDataInvServ[%d].m_fphm : %u", i, pDataInvServ[i].m_fphm));
+
 		pDataInvServ[i].m_errMsg = ErrInvInfo.InvUpFailInfo[i].m_errMsg;
+		DBG_PRINT(("pDataInvServ[%d].m_errMsg : %s", i, pDataInvServ[i].m_errMsg.c_str()));
 	}
 	
 	return ret;

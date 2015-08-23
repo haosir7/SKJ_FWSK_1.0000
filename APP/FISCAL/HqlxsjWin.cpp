@@ -170,7 +170,7 @@ void CHqlxsjWin::DoActive()
 UINT8 CHqlxsjWin::GetOffLineDate()
 {
 	string strErr = "";
-	INT32 ret = g_pAPIBase->Hqlxsj_API(m_wscfpzs, m_wscfpsj, m_wscfpljje, m_sczs, m_scsjjg, strErr);
+	INT32 ret = g_pAPIBase->Hqlxsj_API(*g_YwXmlArg, m_wscfpzs, m_wscfpsj, m_wscfpljje, m_sczs, m_scsjjg, strErr);
 	
 	return ret;
 }

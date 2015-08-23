@@ -42,9 +42,8 @@ int CFiscalMenu::Create(int iX,int iY,int iW,int iH)
 	SetTitle(7, "G.发票补录");
 	SetTitle(8, "H.上传日志");
 	SetTitle(9, "I.发票补传");
-#if (TYPE_MODE == ZHQ_MODE)
 	SetTitle(0, "J.离线数据");
-#endif
+
 
 	return 1;
 }

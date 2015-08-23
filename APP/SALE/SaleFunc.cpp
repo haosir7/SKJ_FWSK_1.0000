@@ -81,7 +81,7 @@ UINT8  SALE_OffLineDate(string &strErr)
 	string sczs="";
 	string scsjjg="";
 	
-    ret = g_pAPIBase->Hqlxsj_API(wscfpzs, wscfpsj, wscfpljje, sczs, scsjjg, strErr);
+    ret = g_pAPIBase->Hqlxsj_API(*g_YwXmlArg, wscfpzs, wscfpsj, wscfpljje, sczs, scsjjg, strErr);
 	DBG_PRINT(("ret= %d",ret));
 	if (ret !=SUCCESS)
 	{

@@ -276,7 +276,7 @@ public:
 	@param[out] scsjjg		上传时间间隔
 	@param[out] strErr		错误信息
 	*/
-	INT32 Hqlxsj_API(string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr);
+	INT32 Hqlxsj_API(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr);
 
 	/*!
 	@brief 转换器清库

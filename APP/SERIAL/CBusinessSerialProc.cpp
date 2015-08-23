@@ -2522,7 +2522,7 @@ UINT8 CBusinessSerialProc::fpbl_Serial(CYWXML_GY &ywxml_gy, UINT32 bsqsrq, UINT3
 	return SUCCESS;
 }
 
-UINT8 CBusinessSerialProc::hqlxsj_Serial(string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr)
+UINT8 CBusinessSerialProc::hqlxsj_Serial(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr)
 {
 	DBG_PRINT(("----------获取离线数据----------"));
 	

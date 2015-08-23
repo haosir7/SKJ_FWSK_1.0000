@@ -312,7 +312,7 @@ UINT8 fpbl_Serial(CYWXML_GY &ywxml_gy, UINT32 bsqsrq, UINT32 bszzrq, string &str
 @param[out] scsjjg		上传时间间隔
 @param[out] strErr		错误信息
 */
-UINT8 hqlxsj_Serial(string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr);
+UINT8 hqlxsj_Serial(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr);
 
 /*!
 @brief  转换器清库函数

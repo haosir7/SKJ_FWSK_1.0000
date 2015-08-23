@@ -1,32 +1,22 @@
-/*! \file    YWXML_ERRUPINV.h
-   \brief    款机调用的中间件接口 业务 获取上传出错的发票信息
+/*! \file    YWXML_HQLXSJ.h
+   \brief    款机调用的中间件接口 业务 2.28.获取离线相关数据
    \author   myf
    \version  1.0
    \date     2015 
 */
 
-#include "YWXML_ERRUPINV.h"
+#include "YWXML_HQLXSJ.h"
 
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
 #include "pos_debug.h"
 #include "base64.h"
 
-CErrInvInfo::CErrInvInfo()
-{
-	m_ErrUpNum = 0;	
-}
-
-CErrInvInfo::~CErrInvInfo()
-{
-	
-}
-
 
 //-------------------------------------------------------------------------------------------
 //构造函数
 //-------------------------------------------------------------------------------------------
-CErrUpInv::CErrUpInv(CYWXML_GY &ywxml_gy, CErrInvInfo &ErrInvInfo):CYWXmlBase(ywxml_gy), m_ErrInvInfo(ErrInvInfo)
+CGetOffLineData::CGetOffLineData(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje):CYWXmlBase(ywxml_gy), m_wscfpzs(wscfpzs), m_wscfpsj(wscfpsj), m_wscfpljje(wscfpljje)
 {
 	
 }
@@ -34,12 +24,12 @@ CErrUpInv::CErrUpInv(CYWXML_GY &ywxml_gy, CErrInvInfo &ErrInvInfo):CYWXmlBase(yw
 //-------------------------------------------------------------------------------------------
 //析构函数
 //-------------------------------------------------------------------------------------------
-CErrUpInv::~CErrUpInv()
+CGetOffLineData::~CGetOffLineData()
 {
 
 }
 
-INT32 CErrUpInv::XmlBuild( )
+INT32 CGetOffLineData::XmlBuild( )
 {
 	//添加body节点
 	m_pXmlConstruct.AddNode(m_pXmlConstruct.m_RootElement, "body");
@@ -64,10 +54,14 @@ INT32 CErrUpInv::XmlBuild( )
 	m_pXmlConstruct.AddText(m_ywxml_gy.m_sksbkl);	//税控设备口令
 	DBG_PRINT(("SKJ_ERRUPINV: sksbkl : %s", m_ywxml_gy.m_sksbkl.c_str()));
 
+	m_pXmlConstruct.AddNode(m_pXmlConstruct.m_parentElement[2], "fplxdm");
+	m_pXmlConstruct.AddText(m_ywxml_gy.m_fplxdm);	//发票类型代码
+	DBG_PRINT(("SKJ_LXXXXP: fplxdm : %s", m_ywxml_gy.m_fplxdm.c_str()));
+
 	return XML_SUCCESS;
 }
 
-INT32 CErrUpInv::XmlParse( )
+INT32 CGetOffLineData::XmlParse( )
 {
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_RootElement, "body");
 	m_pXmlParse.m_parentElement[1] = m_pXmlParse.m_Child;
@@ -75,35 +69,25 @@ INT32 CErrUpInv::XmlParse( )
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[1], "output");
 	m_pXmlParse.m_parentElement[2] = m_pXmlParse.m_Child;
 
-	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "fpzs");
-	m_ErrInvInfo.m_ErrUpNum = atoi(m_pXmlParse.GetText().c_str());//出错发票张数
-	DBG_PRINT(("SKJ_ERRUPINV: m_ErrInvInfo.m_ErrUpNum = %u", m_ErrInvInfo.m_ErrUpNum));
+	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "wscfpzs");
+	m_wscfpzs = m_pXmlParse.GetText();//未上传发票张数
+	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpzs = %s", m_wscfpzs.c_str()));
 
-	for (INT32 temp_i=0; temp_i<m_ErrInvInfo.m_ErrUpNum; temp_i++)
-	{
-		m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "fpxx", temp_i);
-		m_pXmlParse.m_parentElement[3] = m_pXmlParse.m_Child;
-		
-		m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[3], "fpdm");
-		m_ErrInvInfo.InvUpFailInfo[temp_i].m_fpdm = m_pXmlParse.GetText();	//发票代码
-		DBG_PRINT(("SKJ_ERRUPINV: InvUpFailInfo[%d].m_fpdm = %s", temp_i,m_ErrInvInfo.InvUpFailInfo[temp_i].m_fpdm.c_str()));
-		
-		m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[3], "fphm");
-		m_ErrInvInfo.InvUpFailInfo[temp_i].m_fphm = atoi(m_pXmlParse.GetText().c_str());	//发票号码
-		DBG_PRINT(("SKJ_ERRUPINV: InvUpFailInfo[%d].m_fphm = %u", temp_i, m_ErrInvInfo.InvUpFailInfo[temp_i].m_fphm));
-
-		m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[3], "cwms");
-		m_ErrInvInfo.InvUpFailInfo[temp_i].m_errMsg = m_pXmlParse.GetText();	//发票代码
-		DBG_PRINT(("SKJ_ERRUPINV: InvUpFailInfo[%d].m_errMsg = %s", temp_i,m_ErrInvInfo.InvUpFailInfo[temp_i].m_errMsg.c_str()));
-	}
+	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "wscfpsj");
+	m_wscfpsj = m_pXmlParse.GetText();		//未上传发票累计时间
+	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpsj = %s", m_wscfpsj.c_str()));
+	
+	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "wscfpljje");
+	m_wscfpljje = m_pXmlParse.GetText();//未上传发票累计金额
+	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpljje = %s", m_wscfpljje.c_str()));
 
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "returncode");
 	m_retInfo.m_retCode = m_pXmlParse.GetText();		//返回代码
-	DBG_PRINT(("SKJ_ERRUPINV: returncode = %s", m_retInfo.m_retCode.c_str()));	
+	DBG_PRINT(("SKJ_HQLXSJ: returncode = %s", m_retInfo.m_retCode.c_str()));	
 
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "returnmsg");
 	m_retInfo.m_retMsg = m_pXmlParse.GetText();		//返回信息
-	DBG_PRINT(("SKJ_ERRUPINV: returnmsg = %s", m_retInfo.m_retMsg.c_str()));	
+	DBG_PRINT(("SKJ_HQLXSJ: returnmsg = %s", m_retInfo.m_retMsg.c_str()));	
 	
 	return XML_SUCCESS;
 }

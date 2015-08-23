@@ -131,17 +131,18 @@ INT32 CManageBusinessFunc::NetParaManage(CYWXML_GY &ywxml_gy, CNetPara *pNetPara
 	return ret;
 }
 
-INT32 CManageBusinessFunc::GetOffLineInvInfo(UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr)
+#endif
+
+INT32 CManageBusinessFunc::GetOffLineInvInfo(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr)
 {
 	INT32 ret = SUCCESS;
 	
-	ret = g_pBusBase->OffInvInfo_Business(wscfpzs, wscfpsj, wscfpljje, strErr);
+	ret = g_pBusBase->OffInvInfo_Business(ywxml_gy,wscfpzs, wscfpsj, wscfpljje, strErr);
 	ret = g_pBusBase->ErrParse(ret, strErr);
 	
 	return ret;
 }
 
-#endif
 
 
 INT32 CManageBusinessFunc::UpdateUploadInvInfo(CYWXML_GY &ywxml_gy)

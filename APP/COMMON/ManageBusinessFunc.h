@@ -98,7 +98,7 @@ public:
 	@return  1 SUCCESS； 0  FAILURE
 	*/
 	INT32 NetParaManage(CYWXML_GY &ywxml_gy, CNetPara *pNetPara, string &strErr);
-
+#endif
 
 	/*!
 	@brief 获取离线相关数据
@@ -109,8 +109,8 @@ public:
 	@param[out] strErr   错误信息
 	@return  1 SUCCESS； 0  FAILURE
 	*/
-	INT32 GetOffLineInvInfo(UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr);
-#endif
+	INT32 GetOffLineInvInfo(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr);
+
 
 	/*!
 	@brief 更新未上传发票信息

@@ -566,8 +566,12 @@ INT32 CAPIskjProc::Fpbl_API(CYWXML_GY &ywxml_gy, UINT32 bsqsrq, UINT32 bszzrq, s
 	return ret;
 }
 
-INT32 CAPIskjProc::Hqlxsj_API(string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr)
+INT32 CAPIskjProc::Hqlxsj_API(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr)
 {
+	UINT8 ret = SUCCESS;
+	CManageBusinessFunc managBusFun;
+	
+	ret = managBusFun.GetOffLineInvInfo(ywxml_gy, wscfpzs, wscfpsj, wscfpljje, strErr);
 	return SUCCESS;
 }
 

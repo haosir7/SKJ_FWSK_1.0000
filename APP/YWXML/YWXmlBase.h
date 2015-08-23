@@ -51,6 +51,7 @@
 #define BUSINESS_YWID_FJTH			"FJTH"				//分机退回
 #define BUSINESS_YWID_BGZSKL        "BGZSKL"            //变更证书口令
 #define BUSINESS_YWID_ERRUPINV		"ERRUPINV"			//获取上传出错发票信息
+#define BUSINESS_YWID_HQLXSJ		"HQLXSJ"			//获取离线相关数据
 
 #define BUSINESS_NETID_FPSC			"FPSSSC"			//发票实时上传
 #define BUSINESS_NETID_FPSCJGHQ		"FPSCJGHQ"			//发票上传结果获取

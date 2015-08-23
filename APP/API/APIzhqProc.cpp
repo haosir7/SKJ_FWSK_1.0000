@@ -432,12 +432,12 @@ INT32 CAPIzhqProc::Fpbl_API(CYWXML_GY &ywxml_gy, UINT32 bsqsrq, UINT32 bszzrq, s
 /*!
  获取离线数据
 */
-INT32 CAPIzhqProc::Hqlxsj_API(string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr)
+INT32 CAPIzhqProc::Hqlxsj_API(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr)
 {
 
 	UINT8 ret = SUCCESS;
 	
-	ret = m_SerialProc.hqlxsj_Serial(wscfpzs, wscfpsj, wscfpljje, sczs, scsjjg, strErr);
+	ret = m_SerialProc.hqlxsj_Serial(ywxml_gy, wscfpzs, wscfpsj, wscfpljje, sczs, scsjjg, strErr);
 	
 	return ret;
 }

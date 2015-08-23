@@ -190,10 +190,10 @@ public:
 #if BUSINESS_TYPE_MODE == BUSINESS_JSK_MODE
 	//网络参数维护 -- 转换器
 	virtual INT32 NetPara_Business(CYWXML_GY &ywxml_gy, CNetPara *pNetPara, string &strErr)=0;
-
-	//获取离线相关数据 -- 转换器
-	virtual INT32 OffInvInfo_Business(UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr)=0;
 #endif
+
+	//获取离线相关数据
+	virtual INT32 OffInvInfo_Business(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr)=0;
 
 
 public:
