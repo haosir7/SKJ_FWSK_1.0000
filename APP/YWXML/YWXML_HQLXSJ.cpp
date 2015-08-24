@@ -6,6 +6,8 @@
 */
 
 #include "YWXML_HQLXSJ.h"
+#include "SysMacDef.h"
+#include "arithmetic.h"
 
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
@@ -78,7 +80,7 @@ INT32 CGetOffLineData::XmlParse( )
 	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpsj = %s", m_wscfpsj.c_str()));
 	
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "wscfpljje");
-	m_wscfpljje = atoi(m_pXmlParse.GetText().c_str());//未上传发票累计金额
+	m_wscfpljje = double2int(atof(m_pXmlParse.GetText().c_str())*SUM_EXTENSION);//未上传发票累计金额
 	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpljje = %ld", m_wscfpljje));
 
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "returncode");

@@ -135,7 +135,7 @@ INT32 CManageBusinessFunc::GetOffLineInvInfo(CYWXML_GY &ywxml_gy, UINT32 &wscfpz
 {
 	INT32 ret = SUCCESS;
 	
-	ret = g_pBusBase->OffInvInfo_Business(ywxml_gy,wscfpzs, wscfpsj, wscfpljje, strErr);
+	ret = g_pBusBase->OffInvInfo_Business(ywxml_gy, wscfpzs, wscfpsj, wscfpljje, strErr);
 	ret = g_pBusBase->ErrParse(ret, strErr);
 	
 	return ret;
