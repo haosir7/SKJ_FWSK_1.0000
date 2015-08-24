@@ -245,7 +245,8 @@ UINT8 CInvStubPrnWin::QueryShow(CInvHead *pInvHead, UINT32 nIndex, UINT32 nPageI
 	sprintf(title_array[0], "[页%u/%u]", nPageIndex, nPageNum);
 	sprintf(title_array[1], "发票号码: %08u", pInvHead->m_fphm);	
 	sprintf(title_array[2], "开票时间: %s", strTmpDate.c_str());
-	if ((pInvHead->m_kplx==RETURN_INV)||(pInvHead->m_kplx==RET_MANUAL_INV)||(pInvHead->m_kplx==RET_SPECIAL_INV)) 
+	if ((pInvHead->m_kplx==RETURN_INV)|| (pInvHead->m_kplx==WASTE_RET) ||
+		(pInvHead->m_kplx==RET_MANUAL_INV)||(pInvHead->m_kplx==RET_SPECIAL_INV)) 
 	{
 		sprintf(title_array[4], "金额: -%.2lf", (double)(pInvHead->m_kphjje)/100.0);
 	}

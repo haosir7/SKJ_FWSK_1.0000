@@ -67,6 +67,7 @@
 #define XML_SUCCESS				0
 #define XML_FAILURE				-1
 #define XML_INTERNAL_ERR_NO		-110
+#define XML_NET_ERR_NO			-900000000
 
 #if TYPE_MODE == SKJ_MODE
 #define SKJ_PTHREAD_KPMUTEX_OPEN		1

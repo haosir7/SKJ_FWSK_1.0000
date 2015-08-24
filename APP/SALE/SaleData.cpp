@@ -1049,18 +1049,21 @@ UINT8 SaleData::MakeInvoiceHandle(UINT8 nIfPrn, UINT8 nId)
 	}
 
 	DBG_PRINT(("m_nInvCount= %u",m_nInvCount));
-	if (m_nInvCount >1)
+	if (g_globalArg->m_operator->m_role!=DEMO_ROLE) 
 	{
+		if (m_nInvCount >1)
+		{
 		BAR_DEF();
 		 BAR_SHOW("获取开具发票号码中...");
 				
-		ret = SALE_GetCurInv(g_globalArg->m_curInvVol,g_globalArg->m_strMsg);
-		DBG_PRINT(("ret= %u",ret))
-		if (ret ==FAILURE)
-		{
-			g_globalArg->m_curInvVol->ResetVol();
-			DBG_PRINT((",g_globalArg->m_strMsg= %s",g_globalArg->m_strMsg.c_str()));
-		} 	
+			ret = SALE_GetCurInv(g_globalArg->m_curInvVol,g_globalArg->m_strMsg);
+			DBG_PRINT(("ret= %u",ret))
+			if (ret ==FAILURE)
+			{
+				g_globalArg->m_curInvVol->ResetVol();
+				DBG_PRINT((",g_globalArg->m_strMsg= %s",g_globalArg->m_strMsg.c_str()));
+			} 	
+		}
 	}
 	
 	DBG_PRINT(("退出MakeInvoiceHandle函数"));

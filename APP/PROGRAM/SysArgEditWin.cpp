@@ -11,6 +11,7 @@
 #include "CaInput.h"
 #include "CMainFrame.h"
 #include "CGlobalArg.h"
+#include "VersionConfig.h"
 
 #include "SysArgMenu.h"
 #include "SysArgEditWin.h"

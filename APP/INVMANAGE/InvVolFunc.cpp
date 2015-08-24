@@ -195,7 +195,7 @@ UINT8 INV_MediumType(UINT8 &uJZlx,string &strErr)
 	status = msgBox.m_iStatus;
 	if (status != OK_PRESSED)
 	{
-		strErr= "请输入介质类型";
+		//strErr= "请输入介质类型";
 		return FAILURE;
 	}
 	uJZlx = atoi((INT8 *)msgBox.GetInputContent());
@@ -203,6 +203,7 @@ UINT8 INV_MediumType(UINT8 &uJZlx,string &strErr)
 	if( (uJZlx > 2)||(uJZlx == 0) )
 	{
 		strErr= "请输入正确的介质类型";
+		CaMsgBox::ShowMsg(strErr);
 		return FAILURE;
 	}
 

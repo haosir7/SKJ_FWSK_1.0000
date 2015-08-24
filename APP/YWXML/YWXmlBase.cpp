@@ -192,7 +192,7 @@ void CYWXmlBase::SetServInfo(string ip, string port, string path)
 
 INT32 CYWXmlBase::NETXml_Proc(string &strErr)
 {
-	DBG_PRINT(("=======YWXml_Proc Begin============="));
+	DBG_PRINT(("=======NETXml_Proc Begin============="));
 	MutexLock();
 	INT32 errcode = 0;
 	errcode = BuildProc();
@@ -276,7 +276,7 @@ INT32 CYWXmlBase::NETXml_Proc(string &strErr)
 	else
 	{
 		MutexUnlock();
-		return XML_FAILURE;
+		return XML_NET_ERR_NO;
 	}
 	
 	MutexUnlock();

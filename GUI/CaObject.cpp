@@ -98,8 +98,6 @@ int CaObject::Create(int iX,int iY,int iW,int iH)
 {
 	DBG_ASSERT_EXIT(( iX>=0 && iY>=0 && iW>0 && iH>0),
 		("iX=%d,iY=%d,iW=%d,iH=%d",iX,iY,iW,iH) );
-
-//	DBG_PRN("info",("iX=%d,iY=%d,iW=%d,iH=%d",iX,iY,iW,iH));
 	if(this->m_iType < CA_PAGE && this->m_iType >CA_OBJ_BASE)
 	{
 		m_iX=iX+m_pOwner->m_iX; //m_pOwner是相对原点的绝对坐标

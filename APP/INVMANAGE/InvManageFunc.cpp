@@ -716,6 +716,7 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,UINT8 uFlag)
 	if (uFlag ==1)
 	{
 		CaMsgBox::ShowMsg("发票信息等待上传！");
+		g_globalArg->m_pthreadFlag = 1;
 		return SUCCESS;
 	}
 	
@@ -786,11 +787,11 @@ UINT8 INVM_InvDetailNOQuery(string invCode,UINT32 invNO,UINT8 uFlag)
 			rtInv.m_fphm =Invhead.m_yfphm;
 			ret = rtInv.AddNew();				//写已退发票信息表
 			DBG_PRINT(("ret= %d",ret));
-			if ( ret!= SQLITE_OK)
-			{
-				CaMsgBox::ShowMsg("查询红票，存储蓝票信息表错误");
-				return FAILURE;
-			}
+// 			if ( ret!= SQLITE_OK)
+// 			{
+// 				CaMsgBox::ShowMsg("查询红票，存储蓝票信息表错误");
+// 				return FAILURE;
+// 			}
 			
 		}
 	}

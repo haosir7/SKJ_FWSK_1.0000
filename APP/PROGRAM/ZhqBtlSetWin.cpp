@@ -49,12 +49,13 @@ int CZhqBtlSetWin::Create(int iX,int iY,int iW,int iH)
 
 	//创建一个Lable  第一行
 	curH = SCREEN_TOP_OFFSET;
+	strcpy(title, "转换器原值: ");
 	m_pLbl1 = new CaLabel(false,CaObject::ALIGN_LEFT);
 	m_pLbl1->Create(left_offset,curH, SCREEN_W, CHAR_H);
 	m_pLbl1->SetTitle(title, strlen(title));
 
 	//创建一个Input  第二行
-	strcpy(title, "转换器新值:");
+	strcpy(title, "新 值: ");
 	titleLen = strlen(title) * CHAR_W;
 	curH += LINE_H;
 	m_pInput1=new CaInput(CaObject::ON_LEFT,titleLen);

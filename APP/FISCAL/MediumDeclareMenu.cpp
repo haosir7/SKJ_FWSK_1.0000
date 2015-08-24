@@ -53,7 +53,7 @@ void CMedDeclMenu::OnButton1(int iEvent, unsigned char * pEventData, int iDataLe
 	ret = INV_MediumType(uJZlx,strErr);
 	if (ret != SUCCESS)
 	{
-		CaMsgBox::ShowMsg(strErr);
+		//CaMsgBox::ShowMsg(strErr);
 		return ;
 	}
 

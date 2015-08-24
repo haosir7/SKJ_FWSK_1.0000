@@ -326,6 +326,8 @@ void CLoginWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLen)
 	//若是学习角色，则造假的当前卷发票
 	if (g_globalArg->m_operator->m_role==DEMO_ROLE) 
 	{
+		if(g_globalArg->m_curInvVol->m_code == "")
+			g_globalArg->m_curInvVol->m_code = "100000000001";
 		  g_globalArg->m_curInvVol->m_isno = 1;  /**< 发票起始号码 */
 		  g_globalArg->m_curInvVol->m_ieno = STUDY_INV_NUM;        /**< 发票截止号码 */    
 		  g_globalArg->m_curInvVol->m_remain = STUDY_INV_NUM;             /**< 发票卷剩余份数 */

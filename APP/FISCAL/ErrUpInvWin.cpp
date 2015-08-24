@@ -187,6 +187,12 @@ void CErrInvUpWin::DoActive()
 	}
 	else
 	{
+		if(m_pageNum <= 0)
+		{
+			CaMsgBox::ShowMsg("无上传日志信息");
+			ChangeWin(FISCAL_MAIN_MENU);
+			return;
+		}
 		QueryShow(m_InvUpFailInfo, m_pageIndex);//组织屏幕显示信息
 		ChangeTitle();
 		ReFresh();	

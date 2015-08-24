@@ -23,6 +23,7 @@
 #include "SerialPort.h"
 #include "PrintDriver.h"
 #include "arithmetic.h"
+#include "VersionConfig.h"
 
 #include "LOGCTRL.h"
 #define NO_POS_DEBUG
