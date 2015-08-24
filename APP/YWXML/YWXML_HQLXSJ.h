@@ -26,15 +26,15 @@ public:
 	@param[in] ywlx 		业务类型
 	*/
 
-	CGetOffLineData(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje);
+	CGetOffLineData(CYWXML_GY &ywxml_gy, UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje);
 	~CGetOffLineData();
 	
 	INT32 XmlBuild();
 	INT32 XmlParse();
 
-	string &m_wscfpzs;
+	UINT32 &m_wscfpzs;
 	string &m_wscfpsj;
-	string &m_wscfpljje;
+	INT64 &m_wscfpljje;
 
 private:
 	

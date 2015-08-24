@@ -6,7 +6,7 @@
 #if BUSINESS_TYPE_MODE == BUSINESS_JSK_MODE
 #include "CGlobalArgLib.h"
 #else
-//#include "CGlobalArg.h"
+#include "CGlobalArg.h"
 #endif
 
 #include "LOGCTRL.h"
@@ -115,7 +115,7 @@ INT32 CSaleBusinessFunc::InvoiceUpload(CYWXML_GY &ywxml_gy, string &strErr)
 #if BUSINESS_TYPE_MODE == BUSINESS_JSK_MODE
 			g_globalArgLib->m_pthreadFlag = 0;
 #else
-			//g_globalArg->m_pthreadFlag = 0;
+			g_globalArg->m_pthreadFlag = 0;
 #endif
 			break;
 		}

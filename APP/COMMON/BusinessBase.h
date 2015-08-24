@@ -63,6 +63,9 @@
 #ifndef XML_FAILURE
 #define XML_FAILURE				-1
 #endif
+#ifndef JSK_COMMON_ERR_NO
+#define JSK_COMMON_ERR_NO		-101
+#endif
 
 
 class CBusinessBase;
