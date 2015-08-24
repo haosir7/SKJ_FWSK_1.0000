@@ -132,7 +132,7 @@ public:
 	INT32 FPBL_Business(CYWXML_GY &ywxml_gy, UINT32 SDate, UINT32 EDate, string &strErr);
 
 	//获取离线相关数据 -- 转换器
-	INT32 OffInvInfo_Business(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr);
+	INT32 OffInvInfo_Business(CYWXML_GY &ywxml_gy, UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr);
 
 public:
 	//更新未上传发票信息

@@ -578,7 +578,7 @@ INT32 CBusinessJSKProc::FPBL_Business(CYWXML_GY &ywxml_gy, UINT32 SDate, UINT32 
 	return ret;
 }
 
-INT32 CBusinessJSKProc::OffInvInfo_Business(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr)
+INT32 CBusinessJSKProc::OffInvInfo_Business(CYWXML_GY &ywxml_gy, UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr)
 {
 	INT32 ret = JSK_SUCCESS;
 	

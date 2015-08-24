@@ -2,7 +2,6 @@
 #include "ManageBusinessFunc.h"
 #include "ClearDepotFunc.h"
 
-
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
 #include "pos_debug.h"
@@ -130,10 +129,9 @@ INT32 CManageBusinessFunc::NetParaManage(CYWXML_GY &ywxml_gy, CNetPara *pNetPara
 
 	return ret;
 }
-
 #endif
 
-INT32 CManageBusinessFunc::GetOffLineInvInfo(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr)
+INT32 CManageBusinessFunc::GetOffLineInvInfo(CYWXML_GY &ywxml_gy, UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr)
 {
 	INT32 ret = SUCCESS;
 	
@@ -163,7 +161,6 @@ INT32 CManageBusinessFunc::SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr)
 	return ret;
 }
 
-#if BUSINESS_TYPE_MODE == BUSINESS_XML_MODE
 
 INT32 CManageBusinessFunc::ClearMidDepot(string &strErr)
 {
@@ -175,4 +172,4 @@ INT32 CManageBusinessFunc::ClearMidDepot(string &strErr)
 	return ret;
 }
 
-#endif
+
