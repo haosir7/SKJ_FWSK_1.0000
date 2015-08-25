@@ -65,6 +65,12 @@ void CZhqParaSetMenu::OnButton2(int iEvent, unsigned char * pEventData, int iDat
 
 void CZhqParaSetMenu::OnButton3(int iEvent, unsigned char * pEventData, int iDataLen)
 {
+	if (g_globalArg->m_initFlag == 0)
+	{
+		DBG_PRINT(("机器未初始化"));
+		CaMsgBox::ShowMsg("机器未初始化");
+		return ;
+	}
 
 	INT32 errorcode = 0;
 	m_ComNetpara->Requery();
@@ -83,6 +89,14 @@ void CZhqParaSetMenu::OnButton3(int iEvent, unsigned char * pEventData, int iDat
 
 void CZhqParaSetMenu::OnButton4(int iEvent, unsigned char * pEventData, int iDataLen)
 {
+	if (g_globalArg->m_initFlag == 0)
+	{
+		DBG_PRINT(("机器未初始化"));
+		CaMsgBox::ShowMsg("机器未初始化");
+		return ;
+	}
+
+
 	BAR_DEF();
 	BAR_SHOW("网络连接测试...");
 

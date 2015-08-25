@@ -44,11 +44,11 @@ void powOff_init_drv( )
 	
 	//声明掉电消息函数
 	ioctl(fd_powoff, POWOFF_TRANSMIT_PID, getpid());
-	if (signal(SIGUSR1, pw_handler) == SIG_ERR)
-	{
-        DBG_PRINT((" signal failed!!, check you code"));
-		exit(-1);
-	}
+// 	if (signal(SIGUSR1, pw_handler) == SIG_ERR)
+// 	{
+//         DBG_PRINT((" signal failed!!, check you code"));
+// 		exit(-1);
+// 	}
 	
 #endif //USE_POWOFF_PROTECT_DRV
 	

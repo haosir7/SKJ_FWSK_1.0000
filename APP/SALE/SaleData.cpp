@@ -260,7 +260,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		DBG_ASSERT_EXIT((m_invDet != NULL), (" m_invDet == NULL!"));
 		m_invDet->m_spmc = deptInfo->m_spmc;
 		m_invDet->m_spdj = dPrice;
-		m_invDet->m_dotNum = AmountRound(&m_realCancelNum); //商品数量四舍五入	
+		m_invDet->m_dotNum = AmountRound_A(&m_realCancelNum); //商品数量四舍五入
 		m_invDet->m_spsl = m_realCancelNum;
 		DBG_PRINT(("m_realCancelNum = %f!", m_realCancelNum));
 		InitSaleData(0);  //销售信息初始化
@@ -278,19 +278,19 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		m_tmpAmount = orgMoneySum/(deptInfo->m_spdj)/SUM_EXTENSION;	//商品数量
 		m_saveAmount = m_tmpAmount;
 		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
-		m_dotNum = AmountRound(&m_saveAmount); //商品数量四舍五入
+		m_dotNum = AmountRound_A(&m_saveAmount); //商品数量四舍五入
 		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
 		DBG_PRINT(("m_dotNum : %d ", m_dotNum)); 
-		if (m_dotNum == -1)
-		{
-			m_dotNum = 0;
-			m_tmpAmount = 1.0;
-			m_saveAmount = 1.0;
-			m_tmpSum = 0;
-			DBG_PRINT(("The goods amount exceeds the limit!"));
-			InitSaleData(0);  //销售信息初始化
-			DBG_RETURN(EXCEED_AMOUNT);
-		}
+// 		if (m_dotNum == -1)
+// 		{
+// 			m_dotNum = 0;
+// 			m_tmpAmount = 1.0;
+// 			m_saveAmount = 1.0;
+// 			m_tmpSum = 0;
+// 			DBG_PRINT(("The goods amount exceeds the limit!"));
+// 			InitSaleData(0);  //销售信息初始化
+// 			DBG_RETURN(EXCEED_AMOUNT);
+// 		}
 	}
 	//如果用户没输入总价
 	else
@@ -311,19 +311,19 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		m_tmpAmount = m_tmpAmount * m_tmpRate/100.0;
 		m_saveAmount = m_tmpAmount;
 		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
-		m_dotNum = AmountRound(&m_saveAmount); //商品数量四舍五入
+    	m_dotNum = AmountRound_A(&m_saveAmount); //商品数量四舍五入
 		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
 		DBG_PRINT(("m_dotNum : %d ", m_dotNum)); 
-		if (m_dotNum == -1)
-		{
-			m_dotNum = 0;
-			m_tmpAmount = 1.0;
-			m_saveAmount = 1.0;
-			m_tmpSum = 0;
-			DBG_PRINT(("The goods amount exceeds the limit!"));
-			InitSaleData(0);  //销售信息初始化
-			DBG_RETURN(EXCEED_AMOUNT);
-		}
+// 		if (m_dotNum == -1)
+// 		{
+// 			m_dotNum = 0;
+// 			m_tmpAmount = 1.0;
+// 			m_saveAmount = 1.0;
+// 			m_tmpSum = 0;
+// 			DBG_PRINT(("The goods amount exceeds the limit!"));
+// 			InitSaleData(0);  //销售信息初始化
+// 			DBG_RETURN(EXCEED_AMOUNT);
+// 		}
 
 		moneySum = double2int(deptInfo->m_spdj *1000.0*m_tmpAmount*SUM_EXTENSION);//原始总金额
 		moneySum = double2int(moneySum / 1000.0);
@@ -440,7 +440,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 	m_invDet->m_spbm = deptInfo->m_spbm;	//商品编码
 	DBG_PRINT(("m_invDet->m_spbm == %s", m_invDet->m_spbm.c_str()));
 	m_invDet->m_spmc = deptInfo->m_spmc;	//商品名称
-	m_invDet->m_spsl = m_tmpAmount;			//商品数量
+	m_invDet->m_spsl = m_saveAmount;			//商品数量
 	m_invDet->m_dotNum = m_dotNum;			// 四舍五入后数量小数位数
 	m_invDet->m_spdj = deptInfo->m_spdj;	//商品单价(含税)
 	m_invDet->m_spje = orgMoneySum;			//商品金额(含税)
@@ -713,7 +713,7 @@ UINT8 SaleData::PayByCash( UINT8 &IfInvSum )
 	DBG_PRINT(("m_detailCount == %d", m_detailCount));
     m_pHead = m_singleInvInfo->pHead;
 	
-	g_YW_PowerOffData->ProcData.fptk_data.RemainLineCount = 0;
+//	g_YW_PowerOffData->ProcData.fptk_data.RemainLineCount = 0;
 	DBG_PRINT(("*****工作模式******：%u", g_globalArg->pSaveTemplateInfo->workMode));
 	while( !ScanGoodsLine(1) )
 	{
@@ -1883,13 +1883,13 @@ UINT8 SaleData::Plus(double tmpAmount)
 		DBG_RETURN(ILLEGAL_AMOUNT);
 	}
 	
-	m_dotNum = AmountRound(&tmpAmount);
-	if (m_dotNum == -1) //数量超限
-	{
-		m_dotNum = 0;
-		DBG_PRINT(("The goods amount exceeds the limit!"));
-		DBG_RETURN(EXCEED_AMOUNT);
-	}
+m_dotNum = AmountRound_A(&tmpAmount);
+// 	if (m_dotNum == -1) //数量超限
+// 	{
+// 		m_dotNum = 0;
+// 		DBG_PRINT(("The goods amount exceeds the limit!"));
+// 		DBG_RETURN(EXCEED_AMOUNT);
+// 	}
 	m_saveAmount = tmpAmount; //后续处理用的数量值
 	m_tmpAmount = amount;     //计算总金额时用的原始数量值
 	
@@ -2225,10 +2225,10 @@ UINT8 SaleData::RollData(UINT8 &nIfRolled)
 	}
 	
 	//掉电保护 滚动数据
-	g_YW_PowerOffData->invRollPwOffData.invDatelimit = nInvDelDate;/**<InvHead表滚动删除的截止日期  */ 
-	g_YW_PowerOffData->invRollPwOffData.sumDatelimit = nSumDelDate;/**<InvSum表滚动删除的截止日期  */  
-	g_YW_PowerOffData->invRollPwOffData.rtNolimit = nRtDetNo;/**<RtInv表滚动删除的截止号码  */   
-    g_YW_PowerOffData->invRollPwOffData.nRefDate = nRefDate; /**<上次申报的截止日期  */ 
+// 	g_YW_PowerOffData->invRollPwOffData.invDatelimit = nInvDelDate;/**<InvHead表滚动删除的截止日期  */ 
+// 	g_YW_PowerOffData->invRollPwOffData.sumDatelimit = nSumDelDate;/**<InvSum表滚动删除的截止日期  */  
+// 	g_YW_PowerOffData->invRollPwOffData.rtNolimit = nRtDetNo;/**<RtInv表滚动删除的截止号码  */   
+//     g_YW_PowerOffData->invRollPwOffData.nRefDate = nRefDate; /**<上次申报的截止日期  */ 
 	POWOFF_ENABLE();//开掉电中断	
 	
 	UINT8 retRoll;

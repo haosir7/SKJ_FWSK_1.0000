@@ -151,6 +151,12 @@ void fiscal_code_hex(unsigned char *hex, unsigned char *asc);
 INT32 AmountRound(double *f);
 
 /*!
+@brief 对计算或输入的数量做四舍五入处理
+@param[in,out] f 需要做处理的浮点数
+*/
+INT32 AmountRound_A(double *f);
+
+/*!
 @brief 将浮点数数量类型转换为国标要求的整型类型
 @param[in] dotnum 小数点后有效位数 需要做处理的浮点数
 @param[in] f 需要转换的浮点数

@@ -310,7 +310,7 @@ void CMaintenanceMenu::OnButton9(int iEvent, unsigned char * pEventData, int iDa
 	}
 
 	memset(chValue, 0, sizeof(chValue));
-	sprintf(chValue,"代码:%s 号码:%u 确认删除?", invServ.m_code.c_str(), invServ.m_InvNo);
+	sprintf(chValue,"代码:'%s' 号码:%u 确认删除?", invServ.m_code.c_str(), invServ.m_InvNo);
 	CaMsgBox msgBox(chValue,CaMsgBox::MB_YESNO);
 	msgBox.ShowBox();	
 	if (msgBox.m_iStatus == OK_PRESSED)

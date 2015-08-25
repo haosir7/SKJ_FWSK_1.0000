@@ -949,12 +949,20 @@ UINT8 CProductSaleMainMenu::PlusProc(void)
 	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
-	if(ii > MAX_MONEY)
+	if((double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
  	{
  		CaMsgBox::ShowMsg("数量超限");
  		return FAILURE;
-}
- 		m_pInput2->Clear();
+	}
+	dotNum = CheckFloatBit(ii);
+	if (dotNum>3) 
+	{
+		DBG_PRINT(("--------ii = %f--------", ii));
+		DBG_PRINT(("--------dotNum = %d--------", dotNum));
+		CaMsgBox::ShowMsg("小数位数不得超过三位");
+		return FAILURE;
+	}
+ 	m_pInput2->Clear();
 	ret = pSaleData->Plus(ii);
 	if (ret != SUCCESS) 
 	{

@@ -22,7 +22,7 @@
 
 #define  MAX_OFF_TIME_1  24   
 #define  MAX_OFF_TIME_2  12  
-#define  MAX_OFF_MONEY 0.08
+#define  MAX_OFF_MONEY 0.80
 #define  MAX_OFF_NUM   50
 
 
@@ -30,25 +30,25 @@ UINT8 SALE_GetCurInv(CInvVol *pInvVol,string &strErr)
 {
 	
 	INT32 ret=SUCCESS;
-
+	
 	ret=g_pAPIBase->GetCurInvInfo_API(*g_YwXmlArg, pInvVol, strErr);
-
+	
 	if (ret !=SUCCESS)
 	{
 		return FAILURE;
 	}
 	g_YwXmlArg->m_fplxdm = pInvVol->m_fplxdm;
 	DBG_PRINT(("g_YwXmlArg->m_fplxdm = %s", g_YwXmlArg->m_fplxdm.c_str()));
-  
-
+	
+	
 	return SUCCESS;
 }
 
 UINT8 SALE_MakeInvHand(CInvHead *pInvHead,string &strErr)
 {
-
+	
 	INT32 ret=SUCCESS;
-
+	
 	DBG_PRINT(("pInvHead->m_kplx= %u",pInvHead->m_kplx));
 	if((pInvHead->m_kplx == NORMAL_INV)||(pInvHead->m_kplx ==RETURN_INV))
 	{	
@@ -66,7 +66,7 @@ UINT8 SALE_MakeInvHand(CInvHead *pInvHead,string &strErr)
 	{
 		return FAILURE;
 	}
-		
+	
 	return SUCCESS;
 }
 
@@ -95,7 +95,7 @@ UINT8  SALE_OffLineDate(string &strErr)
 	DBG_PRINT(("nWscfpljje= %lld",nWscfpljje));
 	
 	DBG_PRINT(("wscfpsj= %s",wscfpsj.c_str()));
-	if ((wscfpsj != "")&&(g_globalArg->m_invKind->m_Lxkjsj >MAX_OFF_TIME_1))
+	if ((wscfpsj != "")&&(wscfpsj.length() !=16))
 	{
 		string  stmp = wscfpsj;
 		string strTmp = stmp.erase(8);
@@ -109,45 +109,75 @@ UINT8  SALE_OffLineDate(string &strErr)
 		TDateTime fDate(nDate, nTime);
 		DBG_PRINT(("第一张离线发票时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
 		DBG_PRINT(("离线开票时间 %u 小时", g_globalArg->m_invKind->m_Lxkjsj));
-
-		fDate = fDate.HourAdd(fDate, (g_globalArg->m_invKind->m_Lxkjsj-MAX_OFF_TIME_1));
-		DBG_PRINT(("离线截止时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
-
+		
 		TDateTime curDate = TDateTime::CurrentDateTime();
 		DBG_PRINT(("当前时间 = %s", curDate.FormatString(YYYYMMDDHHMMSS).c_str()));
-
-		if (curDate > fDate) 
+		
+		if (g_globalArg->m_invKind->m_Lxkjsj >MAX_OFF_TIME_1)
 		{
-			memset((void *)tmpch,0x00,sizeof(tmpch));
-			sprintf(tmpch,"离线截止时间不足%u小时请执行'发票上传'",MAX_OFF_TIME_1);
-	    	strErr =tmpch;
+			fDate = fDate.HourAdd(fDate, (g_globalArg->m_invKind->m_Lxkjsj-MAX_OFF_TIME_1));
+			DBG_PRINT(("离线截止时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
 			
-			fDate = fDate.HourAdd(fDate, (g_globalArg->m_invKind->m_Lxkjsj-MAX_OFF_TIME_2));
-		    DBG_PRINT(("离线截止时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
-			if (curDate > fDate)
+			if (curDate > fDate) 
+			{
+				memset((void *)tmpch,0x00,sizeof(tmpch));
+				sprintf(tmpch,"离线截止时间不足%u小时请执行'发票上传'",MAX_OFF_TIME_1);
+				strErr =tmpch;
+				
+				fDate = fDate.HourAdd(fDate, (g_globalArg->m_invKind->m_Lxkjsj-MAX_OFF_TIME_2));
+				DBG_PRINT(("离线截止时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
+				if (curDate > fDate)
+				{
+					memset((void *)tmpch,0x00,sizeof(tmpch));
+					sprintf(tmpch,"离线截止时间不足%u小时请执行'发票上传'",MAX_OFF_TIME_2);
+					strErr =tmpch;
+					return FAILURE;
+				}
+				return FAILURE;
+			}
+		}
+		else
+		{
+			if( g_globalArg->m_invKind->m_Lxkjsj< MAX_OFF_TIME_2)
 			{
 				memset((void *)tmpch,0x00,sizeof(tmpch));
 				sprintf(tmpch,"离线截止时间不足%u小时请执行'发票上传'",MAX_OFF_TIME_2);
-	    	    strErr =tmpch;
+				strErr =tmpch;
 				return FAILURE;
 			}
-			return FAILURE;
+			else
+			{
+				memset((void *)tmpch,0x00,sizeof(tmpch));
+				sprintf(tmpch,"离线截止时间不足%u小时请执行'发票上传'",MAX_OFF_TIME_1);
+				strErr =tmpch;
+				
+				fDate = fDate.HourAdd(fDate, (g_globalArg->m_invKind->m_Lxkjsj-MAX_OFF_TIME_2));
+				DBG_PRINT(("离线截止时间 = %s", fDate.FormatString(YYYYMMDDHHMMSS).c_str()));
+				if (curDate > fDate)
+				{
+					memset((void *)tmpch,0x00,sizeof(tmpch));
+					sprintf(tmpch,"离线截止时间不足%u小时请执行'发票上传'",MAX_OFF_TIME_2);
+					strErr =tmpch;
+					return FAILURE;
+				}
+				
+				return FAILURE;
+			}
 		}
 	}
-
 	DBG_PRINT(("g_globalArg->m_invKind->m_maxSum= %lld",g_globalArg->m_invKind->m_maxSum));
 	DBG_PRINT(("nWscfpljje= %lld",nWscfpljje));
-
-    INT64  maxJE= g_globalArg->m_invKind->m_maxSum *MAX_OFF_MONEY;
-    DBG_PRINT(("maxJE= %lld",maxJE));
-
+	
+	INT64  maxJE= g_globalArg->m_invKind->m_maxSum *MAX_OFF_MONEY;
+	DBG_PRINT(("maxJE= %lld",maxJE));
+	
 	if ( nWscfpljje>=maxJE)
 	{
 		strErr ="离线累计金额即将超限,请执行'发票上传'";
 		return FAILURE;
 	}
 	
-
+	
 	DBG_PRINT(("nWscfpzs= %u",nWscfpzs));
 	if (nWscfpzs>=MAX_OFF_NUM)
 	{
@@ -158,225 +188,225 @@ UINT8  SALE_OffLineDate(string &strErr)
 	}
 	
 	return SUCCESS;
-}
-//---------------------------------------------------------------------------
-//填充打印发票结构体的发票头
-//---------------------------------------------------------------------------
-UINT8 FillPrnInvHead(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
-{
-	DBG_ENTER("SaleData::FillPrnInvHead");
-	DBG_PRINT(("进入FillPrnInvHead函数"));
-	UINT8 N;
-	INT32 nLen, errorcode;
-	
-	DBG_ASSERT_EXIT((smallInvInfo != NULL), (" smallInvInfo == NULL!"));
-	DBG_ASSERT_EXIT((pPrnInvInfo != NULL), (" pPrnInvInfo == NULL!"));
-	
-	//发票代码由 20 ASC
-	memset((void *)pPrnInvInfo->chTypeCode, 0, sizeof(pPrnInvInfo->chTypeCode));
-	memcpy((void *)pPrnInvInfo->chTypeCode, (void *)(smallInvInfo->m_fpdm.c_str()), smallInvInfo->m_fpdm.length());
-	DBG_PRINT(("发票代码  : %s ", pPrnInvInfo->chTypeCode));
-	
-	//发票号码
-	pPrnInvInfo->InvNo = smallInvInfo->m_fphm; 
-	DBG_PRINT(("发票号码  : %d ", pPrnInvInfo->InvNo));
-	
-	//开票日期 CCYYMMDD
-	pPrnInvInfo->m_Date = smallInvInfo->m_kprq;
-	DBG_PRINT(("开票日期  : %u ", pPrnInvInfo->m_Date));
-	
-	//开票时间
-	pPrnInvInfo->m_Time = smallInvInfo->m_kpsj;
-    DBG_PRINT(("开票时间  : %u ", pPrnInvInfo->m_Time));
-	
-	//开票类型
-	pPrnInvInfo->InvType = smallInvInfo->m_kplx;
-	DBG_PRINT(("开票类型  : %d ", pPrnInvInfo->InvType));
-	
-	//原发票号码
-	pPrnInvInfo->PosInvNo = smallInvInfo->m_yfphm;
-	DBG_PRINT(("原发票号码: %u ", pPrnInvInfo->PosInvNo));
-	
-	//付款单位
-	nLen = smallInvInfo->m_fkdw.length() + 1;
-	// 	if (smallInvInfo->m_kplx == RETURN_INV)
-	// 	{
-	// 		sprintf(pPrnInvInfo->chClientName, "%08lu", pPrnInvInfo->PosInvNo);
-	// 	}
-	// 	else
-	//	{
-	memcpy((void *)pPrnInvInfo->chClientName, (void *)smallInvInfo->m_fkdw.c_str(), nLen);
-	//	}	
-	N = strlen((INT8 *)pPrnInvInfo->chClientName);
-	DBG_PRINT(("付款人  : %s ", pPrnInvInfo->chClientName));
-	// 注释下面是为了不填充空格
-	
-	if (N > 0)
+	}
+	//---------------------------------------------------------------------------
+	//填充打印发票结构体的发票头
+	//---------------------------------------------------------------------------
+	UINT8 FillPrnInvHead(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 	{
-		if (N <= 40)
+		DBG_ENTER("SaleData::FillPrnInvHead");
+		DBG_PRINT(("进入FillPrnInvHead函数"));
+		UINT8 N;
+		INT32 nLen, errorcode;
+		
+		DBG_ASSERT_EXIT((smallInvInfo != NULL), (" smallInvInfo == NULL!"));
+		DBG_ASSERT_EXIT((pPrnInvInfo != NULL), (" pPrnInvInfo == NULL!"));
+		
+		//发票代码由 20 ASC
+		memset((void *)pPrnInvInfo->chTypeCode, 0, sizeof(pPrnInvInfo->chTypeCode));
+		memcpy((void *)pPrnInvInfo->chTypeCode, (void *)(smallInvInfo->m_fpdm.c_str()), smallInvInfo->m_fpdm.length());
+		DBG_PRINT(("发票代码  : %s ", pPrnInvInfo->chTypeCode));
+		
+		//发票号码
+		pPrnInvInfo->InvNo = smallInvInfo->m_fphm; 
+		DBG_PRINT(("发票号码  : %d ", pPrnInvInfo->InvNo));
+		
+		//开票日期 CCYYMMDD
+		pPrnInvInfo->m_Date = smallInvInfo->m_kprq;
+		DBG_PRINT(("开票日期  : %u ", pPrnInvInfo->m_Date));
+		
+		//开票时间
+		pPrnInvInfo->m_Time = smallInvInfo->m_kpsj;
+		DBG_PRINT(("开票时间  : %u ", pPrnInvInfo->m_Time));
+		
+		//开票类型
+		pPrnInvInfo->InvType = smallInvInfo->m_kplx;
+		DBG_PRINT(("开票类型  : %d ", pPrnInvInfo->InvType));
+		
+		//原发票号码
+		pPrnInvInfo->PosInvNo = smallInvInfo->m_yfphm;
+		DBG_PRINT(("原发票号码: %u ", pPrnInvInfo->PosInvNo));
+		
+		//付款单位
+		nLen = smallInvInfo->m_fkdw.length() + 1;
+		// 	if (smallInvInfo->m_kplx == RETURN_INV)
+		// 	{
+		// 		sprintf(pPrnInvInfo->chClientName, "%08lu", pPrnInvInfo->PosInvNo);
+		// 	}
+		// 	else
+		//	{
+		memcpy((void *)pPrnInvInfo->chClientName, (void *)smallInvInfo->m_fkdw.c_str(), nLen);
+		//	}	
+		N = strlen((INT8 *)pPrnInvInfo->chClientName);
+		DBG_PRINT(("付款人  : %s ", pPrnInvInfo->chClientName));
+		// 注释下面是为了不填充空格
+		
+		if (N > 0)
 		{
-			memset((void *)&pPrnInvInfo->chClientName[N], ' ', 40 - N);
-			pPrnInvInfo->chClientName[40] = '\0';
-		}
-		else
-		{
-			for(;;)
+			if (N <= 40)
 			{
-				if (pPrnInvInfo->chClientName[--N] == ' ')
+				memset((void *)&pPrnInvInfo->chClientName[N], ' ', 40 - N);
+				pPrnInvInfo->chClientName[40] = '\0';
+			}
+			else
+			{
+				for(;;)
 				{
-					pPrnInvInfo->chClientName[N] = 0x0;
-					if (N == 0 || N == 40)
+					if (pPrnInvInfo->chClientName[--N] == ' ')
+					{
+						pPrnInvInfo->chClientName[N] = 0x0;
+						if (N == 0 || N == 40)
+						{
+							break;
+						}
+					}
+					else
 					{
 						break;
 					}
 				}
-				else
-				{
-					break;
-				}
 			}
 		}
-	}
-	
-	//收款员
-	nLen = smallInvInfo->m_sky.length() + 1;
-	memcpy((void *)pPrnInvInfo->chOperatorName, (void *)smallInvInfo->m_sky.c_str(), nLen);
-    DBG_PRINT(("收款员  : %s ", pPrnInvInfo->chOperatorName));
-	
-	//收款员ID
-	
-	//付款方式
-	
-	//商品行数量
-	
-	//税率
-	
-	//征收率
-	
-	//票种类别
-	
-	
-	
-	//防伪税控码
-	nLen = smallInvInfo->m_fwm.length();
-	memset((void *)pPrnInvInfo->chTaxCtrCode, 0, sizeof(pPrnInvInfo->chTaxCtrCode));
-	memcpy((void *)pPrnInvInfo->chTaxCtrCode, (void *)smallInvInfo->m_fwm.c_str(), nLen);
-    DBG_PRINT(("防伪税控码  : %s ", pPrnInvInfo->chTaxCtrCode));
-	
-	//打印次数
 		
-	//纳税人名称 40 ASC
-	nLen = g_globalArg->m_corpInfo->m_Nsrmc.length() + 1;
-	memcpy((void *)pPrnInvInfo->chCorpName, (void *)g_globalArg->m_corpInfo->m_Nsrmc.c_str(), nLen);
-	N = strlen((INT8 *)pPrnInvInfo->chCorpName);
-    DBG_PRINT(("纳税人名称  : %s ", pPrnInvInfo->chCorpName));
-	// 纳税人名称（收款单位）注释下面是为了不填充空格
-	
-	if (N > 0)
-	{
-		if (N <= 40)
+		//收款员
+		nLen = smallInvInfo->m_sky.length() + 1;
+		memcpy((void *)pPrnInvInfo->chOperatorName, (void *)smallInvInfo->m_sky.c_str(), nLen);
+		DBG_PRINT(("收款员  : %s ", pPrnInvInfo->chOperatorName));
+		
+		//收款员ID
+		
+		//付款方式
+		
+		//商品行数量
+		
+		//税率
+		
+		//征收率
+		
+		//票种类别
+		
+		
+		
+		//防伪税控码
+		nLen = smallInvInfo->m_fwm.length();
+		memset((void *)pPrnInvInfo->chTaxCtrCode, 0, sizeof(pPrnInvInfo->chTaxCtrCode));
+		memcpy((void *)pPrnInvInfo->chTaxCtrCode, (void *)smallInvInfo->m_fwm.c_str(), nLen);
+		DBG_PRINT(("防伪税控码  : %s ", pPrnInvInfo->chTaxCtrCode));
+		
+		//打印次数
+		
+		//纳税人名称 40 ASC
+		nLen = g_globalArg->m_corpInfo->m_Nsrmc.length() + 1;
+		memcpy((void *)pPrnInvInfo->chCorpName, (void *)g_globalArg->m_corpInfo->m_Nsrmc.c_str(), nLen);
+		N = strlen((INT8 *)pPrnInvInfo->chCorpName);
+		DBG_PRINT(("纳税人名称  : %s ", pPrnInvInfo->chCorpName));
+		// 纳税人名称（收款单位）注释下面是为了不填充空格
+		
+		if (N > 0)
 		{
-			memset((void *)&pPrnInvInfo->chCorpName[N], ' ', 40 - N);
-			pPrnInvInfo->chCorpName[40] = '\0';
-		}
-		else
-		{
-			for(;;)
+			if (N <= 40)
 			{
-				if (pPrnInvInfo->chCorpName[--N] == ' ')
+				memset((void *)&pPrnInvInfo->chCorpName[N], ' ', 40 - N);
+				pPrnInvInfo->chCorpName[40] = '\0';
+			}
+			else
+			{
+				for(;;)
 				{
-					pPrnInvInfo->chCorpName[N] = 0x0;
-					if (N == 0 || N == 40)
+					if (pPrnInvInfo->chCorpName[--N] == ' ')
+					{
+						pPrnInvInfo->chCorpName[N] = 0x0;
+						if (N == 0 || N == 40)
+						{
+							break;
+						}
+					}
+					else
 					{
 						break;
 					}
 				}
-				else
-				{
-					break;
-				}
 			}
 		}
-	}
-	
-	
-	//纳税人识别号 16ASC
-	memset(pPrnInvInfo->chCorpCode, 0, sizeof(pPrnInvInfo->chCorpCode));
-	memcpy((void *)pPrnInvInfo->chCorpCode, (void *)g_globalArg->m_corpInfo->m_Nsrsbh.c_str(), g_globalArg->m_corpInfo->m_Nsrsbh.length());
-	DBG_PRINT(("纳税人识别号  : %s ", pPrnInvInfo->chCorpCode));	
-	
-	//机器编码 16 ASC
-	memset(pPrnInvInfo->chMachineNo, 0, sizeof(pPrnInvInfo->chMachineNo));
-	memcpy((void *)pPrnInvInfo->chMachineNo, (void *)g_globalArg->m_machine->m_machineNo.c_str(), g_globalArg->m_machine->m_machineNo.length());
-	DBG_PRINT(("机器编码  : %s ", pPrnInvInfo->chMachineNo));	
-	
-	
-	//付款方识别号 16ASC
-	if (smallInvInfo->m_fkdwsh == PAYER_NAME_DEF)
-	{
-		smallInvInfo->m_fkdwsh = "";
-	}
-	memset(pPrnInvInfo->chClientCode, 0, sizeof(pPrnInvInfo->chClientCode));
-	memcpy((void *)pPrnInvInfo->chClientCode, (void *)smallInvInfo->m_fkdwsh.c_str(), smallInvInfo->m_fkdwsh.length());
-	DBG_PRINT(("付款方识别号  : %s ", pPrnInvInfo->chClientCode));	
-	
-	//备用字段
-	if( smallInvInfo->m_kplx == RET_SPECIAL_INV )
-	{
-		smallInvInfo->m_backup1 = "特殊红票  " + smallInvInfo->m_backup1;
-	}
-	memset(pPrnInvInfo->chRemarks, 0, sizeof(pPrnInvInfo->chRemarks));
-	memcpy((void *)pPrnInvInfo->chRemarks, (void *)smallInvInfo->m_backup1.c_str(), smallInvInfo->m_backup1.length());
-	if ((smallInvInfo->m_kplx==RETURN_INV)||(smallInvInfo->m_kplx==RET_SPECIAL_INV)||(smallInvInfo->m_kplx==RET_MANUAL_INV))
-	{
-		memset(pPrnInvInfo->chClientName, 0, sizeof(pPrnInvInfo->chClientName));
-		memcpy((void *)pPrnInvInfo->chClientName, (void *)smallInvInfo->m_backup1.c_str(), smallInvInfo->m_backup1.length());
-	}
-	DBG_PRINT(("付款单位  : %s ", pPrnInvInfo->chClientName));	
-	
-	//自定义标签1
-	string strZdy("");
-	if("" != g_globalArg->m_prnInfo->m_zdyTab1)
-	{
-		strZdy = g_globalArg->m_prnInfo->m_zdyTab1;
-		strZdy += " : ";
 		
-	}
-	strZdy += g_globalArg->m_prnInfo->m_zdyCont1;
-	
-	memset(pPrnInvInfo->chSelfDefTab1, 0, sizeof(pPrnInvInfo->chSelfDefTab1));
-	memcpy((void *)pPrnInvInfo->chSelfDefTab1, (void *)strZdy.c_str(), strZdy.length());
-	DBG_PRINT(("自定义标签1  : %s ", pPrnInvInfo->chSelfDefTab1));
-	
-	
-	
-	//自定义内容1
-	// 	memset(pPrnInvInfo->chSelfDefCont1, 0, sizeof(pPrnInvInfo->chSelfDefCont1));
-	// 	memcpy((void *)pPrnInvInfo->chSelfDefCont1, (void *)g_globalArg->m_prnInfo->m_zdyCont1.c_str(),g_globalArg->m_prnInfo->m_zdyCont1.length());
-	// 	DBG_PRINT(("自定义标签1  : %s ", pPrnInvInfo->chSelfDefCont1));	
-	
-	strZdy = "";
-	if("" != g_globalArg->m_prnInfo->m_zdyTab2)
-	{
-		strZdy = g_globalArg->m_prnInfo->m_zdyTab2;
-		strZdy += " : ";
-	}
-	strZdy += g_globalArg->m_prnInfo->m_zdyCont2;
-	//自定义标签2
-	
-	memset(pPrnInvInfo->chSelfDefTab2, 0, sizeof(pPrnInvInfo->chSelfDefTab2));
-	memcpy((void *)pPrnInvInfo->chSelfDefTab2, (void *)strZdy.c_str(), strZdy.length());
-	DBG_PRINT(("自定义标签2  : %s ", pPrnInvInfo->chSelfDefTab2));	
-	
-	
-	//自定义内容2
-	// 	memset(pPrnInvInfo->chSelfDefCont2, 0, sizeof(pPrnInvInfo->chSelfDefCont2));
-	// 	memcpy((void *)pPrnInvInfo->chSelfDefCont2, (void *)g_globalArg->m_prnInfo->m_zdyCont2.c_str(),g_globalArg->m_prnInfo->m_zdyCont2.length());
-	// 	DBG_PRINT(("自定义标签2  : %s ", pPrnInvInfo->chSelfDefCont2));	
-	
-	
-	DBG_PRINT(("退出FillPrnInvHead函数"));
-    DBG_RETURN(SUCCESS);	
+		
+		//纳税人识别号 16ASC
+		memset(pPrnInvInfo->chCorpCode, 0, sizeof(pPrnInvInfo->chCorpCode));
+		memcpy((void *)pPrnInvInfo->chCorpCode, (void *)g_globalArg->m_corpInfo->m_Nsrsbh.c_str(), g_globalArg->m_corpInfo->m_Nsrsbh.length());
+		DBG_PRINT(("纳税人识别号  : %s ", pPrnInvInfo->chCorpCode));	
+		
+		//机器编码 16 ASC
+		memset(pPrnInvInfo->chMachineNo, 0, sizeof(pPrnInvInfo->chMachineNo));
+		memcpy((void *)pPrnInvInfo->chMachineNo, (void *)g_globalArg->m_machine->m_machineNo.c_str(), g_globalArg->m_machine->m_machineNo.length());
+		DBG_PRINT(("机器编码  : %s ", pPrnInvInfo->chMachineNo));	
+		
+		
+		//付款方识别号 16ASC
+		if (smallInvInfo->m_fkdwsh == PAYER_NAME_DEF)
+		{
+			smallInvInfo->m_fkdwsh = "";
+		}
+		memset(pPrnInvInfo->chClientCode, 0, sizeof(pPrnInvInfo->chClientCode));
+		memcpy((void *)pPrnInvInfo->chClientCode, (void *)smallInvInfo->m_fkdwsh.c_str(), smallInvInfo->m_fkdwsh.length());
+		DBG_PRINT(("付款方识别号  : %s ", pPrnInvInfo->chClientCode));	
+		
+		//备用字段
+		if( smallInvInfo->m_kplx == RET_SPECIAL_INV )
+		{
+			smallInvInfo->m_backup1 = "特殊红票  " + smallInvInfo->m_backup1;
+		}
+		memset(pPrnInvInfo->chRemarks, 0, sizeof(pPrnInvInfo->chRemarks));
+		memcpy((void *)pPrnInvInfo->chRemarks, (void *)smallInvInfo->m_backup1.c_str(), smallInvInfo->m_backup1.length());
+		if ((smallInvInfo->m_kplx==RETURN_INV)||(smallInvInfo->m_kplx==RET_SPECIAL_INV)||(smallInvInfo->m_kplx==RET_MANUAL_INV))
+		{
+			memset(pPrnInvInfo->chClientName, 0, sizeof(pPrnInvInfo->chClientName));
+			memcpy((void *)pPrnInvInfo->chClientName, (void *)smallInvInfo->m_backup1.c_str(), smallInvInfo->m_backup1.length());
+		}
+		DBG_PRINT(("付款单位  : %s ", pPrnInvInfo->chClientName));	
+		
+		//自定义标签1
+		string strZdy("");
+		if("" != g_globalArg->m_prnInfo->m_zdyTab1)
+		{
+			strZdy = g_globalArg->m_prnInfo->m_zdyTab1;
+			strZdy += " : ";
+			
+		}
+		strZdy += g_globalArg->m_prnInfo->m_zdyCont1;
+		
+		memset(pPrnInvInfo->chSelfDefTab1, 0, sizeof(pPrnInvInfo->chSelfDefTab1));
+		memcpy((void *)pPrnInvInfo->chSelfDefTab1, (void *)strZdy.c_str(), strZdy.length());
+		DBG_PRINT(("自定义标签1  : %s ", pPrnInvInfo->chSelfDefTab1));
+		
+		
+		
+		//自定义内容1
+		// 	memset(pPrnInvInfo->chSelfDefCont1, 0, sizeof(pPrnInvInfo->chSelfDefCont1));
+		// 	memcpy((void *)pPrnInvInfo->chSelfDefCont1, (void *)g_globalArg->m_prnInfo->m_zdyCont1.c_str(),g_globalArg->m_prnInfo->m_zdyCont1.length());
+		// 	DBG_PRINT(("自定义标签1  : %s ", pPrnInvInfo->chSelfDefCont1));	
+		
+		strZdy = "";
+		if("" != g_globalArg->m_prnInfo->m_zdyTab2)
+		{
+			strZdy = g_globalArg->m_prnInfo->m_zdyTab2;
+			strZdy += " : ";
+		}
+		strZdy += g_globalArg->m_prnInfo->m_zdyCont2;
+		//自定义标签2
+		
+		memset(pPrnInvInfo->chSelfDefTab2, 0, sizeof(pPrnInvInfo->chSelfDefTab2));
+		memcpy((void *)pPrnInvInfo->chSelfDefTab2, (void *)strZdy.c_str(), strZdy.length());
+		DBG_PRINT(("自定义标签2  : %s ", pPrnInvInfo->chSelfDefTab2));	
+		
+		
+		//自定义内容2
+		// 	memset(pPrnInvInfo->chSelfDefCont2, 0, sizeof(pPrnInvInfo->chSelfDefCont2));
+		// 	memcpy((void *)pPrnInvInfo->chSelfDefCont2, (void *)g_globalArg->m_prnInfo->m_zdyCont2.c_str(),g_globalArg->m_prnInfo->m_zdyCont2.length());
+		// 	DBG_PRINT(("自定义标签2  : %s ", pPrnInvInfo->chSelfDefCont2));	
+		
+		
+		DBG_PRINT(("退出FillPrnInvHead函数"));
+		DBG_RETURN(SUCCESS);	
 }
 
 //---------------------------------------------------------------------------
@@ -412,14 +442,14 @@ UINT8 FillPrnInvDetail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 	{
 		//将带有折让的商品行分成两行来打
 		pPrnInvInfo->GoodsLines[j].Type = p->m_property;							//商品行属性
-	
+		
 		DBG_PRINT(("m_spsl= %f",p->m_spsl));
-		p->m_dotNum = AmountRound(&(p->m_spsl));									//商品数量四舍五入
-         DBG_PRINT(("m_dotNum= %d",p->m_dotNum));
-
+		p->m_dotNum = AmountRound_A(&(p->m_spsl));									//商品数量四舍五入
+		DBG_PRINT(("m_dotNum= %d",p->m_dotNum));
+		
 		pPrnInvInfo->GoodsLines[j].Amount = FormatAmount(p->m_dotNum, p->m_spsl);	//商品数量
 		DBG_PRINT(("商品数量          : %u ", pPrnInvInfo->GoodsLines[j].Amount));
-
+		
 		pPrnInvInfo->GoodsLines[j].Price = double2int(p->m_spdj*PRICE_EXTENSION);	//商品单价
 		if( (p->m_property==DETAIL_DISCOUNT) || (p->m_property==DETAIL_REDUCTION_TEMPLATE) ) 
 		{
@@ -512,7 +542,7 @@ UINT8 FillPrnInvTail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 UINT8 CheckIfFull(INT32 nInvHeadNum, INT32 nInvSumNum)
 {
 	CInvHead curInvHead;
-// 	CInvSum curInvSum;
+	// 	CInvSum curInvSum;
 	
 	INT32 errcode;
 	
@@ -534,21 +564,21 @@ UINT8 CheckIfFull(INT32 nInvHeadNum, INT32 nInvSumNum)
 		}
 	}
 	
-// 	if (nInvSumNum>=INV_SUM_MAX) 
-// 	{
-// 		curInvSum.Requery();
-// 		errcode = curInvSum.LoadOneRecord();
-// 		if (errcode==SQLITE_OK)
-// 		{
-// 			DBG_PRINT(("curInvSum.m_issueEndDate = %u ", curInvSum.m_issueEndDate));
-// 			DBG_PRINT(("g_globalArg->m_startDecDate = %u ", g_globalArg->m_startDecDate));
-// 			if (curInvSum.m_issueEndDate>=g_globalArg->m_startDecDate) 
-// 			{
-// 				DBG_PRINT(("INV_SUM表已满，必须申报! "));
-// 				DBG_RETURN(SUCCESS);
-// 			}
-// 		}
-// 	}
+	// 	if (nInvSumNum>=INV_SUM_MAX) 
+	// 	{
+	// 		curInvSum.Requery();
+	// 		errcode = curInvSum.LoadOneRecord();
+	// 		if (errcode==SQLITE_OK)
+	// 		{
+	// 			DBG_PRINT(("curInvSum.m_issueEndDate = %u ", curInvSum.m_issueEndDate));
+	// 			DBG_PRINT(("g_globalArg->m_startDecDate = %u ", g_globalArg->m_startDecDate));
+	// 			if (curInvSum.m_issueEndDate>=g_globalArg->m_startDecDate) 
+	// 			{
+	// 				DBG_PRINT(("INV_SUM表已满，必须申报! "));
+	// 				DBG_RETURN(SUCCESS);
+	// 			}
+	// 		}
+	// 	}
 	
 	DBG_RETURN(FAILURE);
 }
@@ -574,7 +604,7 @@ UINT8 ForwardPaper(void)
 	{
 		ForwardNPoint(32);
 	}
-
+	
 	DBG_RETURN(SUCCESS);
 }
 
@@ -586,7 +616,7 @@ UINT8 BackwardPaper(void)
 		DBG_RETURN(FAILURE);
 	}
 	BackwardNPoint(32);
-
+	
 	DBG_RETURN(SUCCESS);
 }
 
@@ -653,7 +683,7 @@ UINT8 is_Money(const char *str)
 {
 	UINT32 PointNum=0;
 	UINT32 len = strlen(str);
-		
+	
 	if ((*str == '.')||(*(str+len-1)=='.'))
 	{
 		return FAILURE;
@@ -672,7 +702,7 @@ UINT8 is_Money(const char *str)
 				return FAILURE;
 			}
 		}
-
+		
 		str++;
 		len--;
 	}
@@ -700,7 +730,7 @@ void * NetCommunicate(void *arg)
 			ywXml_Gy.m_jqbh = g_globalArg->m_pthreadJqbh;
 			ywXml_Gy.m_kpjh = g_globalArg->m_pthreadKpjh;
 			ywXml_Gy.m_zskl = g_globalArg->m_pthreadZskl;
-
+			
 			ret = saleFunc.InvoiceUpload(ywXml_Gy, strErr);
 			if (SUCCESS != ret)
 			{
