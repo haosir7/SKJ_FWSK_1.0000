@@ -135,7 +135,7 @@ public:
 	INT32 SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr);
 
 	//获取离线相关数据
-	INT32 OffInvInfo_Business(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr);
+	INT32 OffInvInfo_Business(CYWXML_GY &ywxml_gy, UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr);
 
 	//2.29.获取上传出错发票信息
 	INT32 GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr);	

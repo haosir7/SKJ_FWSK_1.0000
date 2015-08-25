@@ -6,6 +6,8 @@
 */
 
 #include "YWXML_HQLXSJ.h"
+#include "SysMacDef.h"
+#include "arithmetic.h"
 
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
@@ -16,7 +18,7 @@
 //-------------------------------------------------------------------------------------------
 //构造函数
 //-------------------------------------------------------------------------------------------
-CGetOffLineData::CGetOffLineData(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje):CYWXmlBase(ywxml_gy), m_wscfpzs(wscfpzs), m_wscfpsj(wscfpsj), m_wscfpljje(wscfpljje)
+CGetOffLineData::CGetOffLineData(CYWXML_GY &ywxml_gy, UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje):CYWXmlBase(ywxml_gy), m_wscfpzs(wscfpzs), m_wscfpsj(wscfpsj), m_wscfpljje(wscfpljje)
 {
 	
 }
@@ -70,16 +72,16 @@ INT32 CGetOffLineData::XmlParse( )
 	m_pXmlParse.m_parentElement[2] = m_pXmlParse.m_Child;
 
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "wscfpzs");
-	m_wscfpzs = m_pXmlParse.GetText();//未上传发票张数
-	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpzs = %s", m_wscfpzs.c_str()));
+	m_wscfpzs = atoi(m_pXmlParse.GetText().c_str());//未上传发票张数
+	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpzs = %u", m_wscfpzs));
 
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "wscfpsj");
 	m_wscfpsj = m_pXmlParse.GetText();		//未上传发票累计时间
 	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpsj = %s", m_wscfpsj.c_str()));
 	
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "wscfpljje");
-	m_wscfpljje = m_pXmlParse.GetText();//未上传发票累计金额
-	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpljje = %s", m_wscfpljje.c_str()));
+	m_wscfpljje = double2int(atof(m_pXmlParse.GetText().c_str())*SUM_EXTENSION);//未上传发票累计金额
+	DBG_PRINT(("SKJ_HQLXSJ: m_wscfpljje = %ld", m_wscfpljje));
 
 	m_pXmlParse.LocateNodeByName(m_pXmlParse.m_parentElement[2], "returncode");
 	m_retInfo.m_retCode = m_pXmlParse.GetText();		//返回代码

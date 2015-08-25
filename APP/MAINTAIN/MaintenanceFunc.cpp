@@ -1185,7 +1185,8 @@ UINT8 LibClearDepotFunc(string &strErr)
 	{
 #if (TYPE_MODE == SKJ_MODE)
 		{
-			proBar.SetText(" 设备清库成功，请重启收款机！");
+			CaMsgBox::ShowMsg(" 设备清库成功，请重启收款机！");
+			proBar.SetText("请重启收款机！");
 			proBar.Show();
 			while(1);
 		}

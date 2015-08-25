@@ -63,6 +63,9 @@
 #ifndef XML_FAILURE
 #define XML_FAILURE				-1
 #endif
+#ifndef JSK_COMMON_ERR_NO
+#define JSK_COMMON_ERR_NO		-101
+#endif
 
 
 class CBusinessBase;
@@ -193,7 +196,7 @@ public:
 #endif
 
 	//获取离线相关数据
-	virtual INT32 OffInvInfo_Business(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr)=0;
+	virtual INT32 OffInvInfo_Business(CYWXML_GY &ywxml_gy, UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr)=0;
 
 
 public:

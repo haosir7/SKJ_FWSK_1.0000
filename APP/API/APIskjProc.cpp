@@ -568,11 +568,25 @@ INT32 CAPIskjProc::Fpbl_API(CYWXML_GY &ywxml_gy, UINT32 bsqsrq, UINT32 bszzrq, s
 
 INT32 CAPIskjProc::Hqlxsj_API(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr)
 {
-	UINT8 ret = SUCCESS;
+	INT32 ret = SUCCESS;
+	UINT32 nfpzs = 0;
+	INT64  nfpljje = 0;
+	INT8 tmpbuf[32];
+
 	CManageBusinessFunc managBusFun;
+	ret = managBusFun.GetOffLineInvInfo(ywxml_gy, nfpzs, wscfpsj, nfpljje, strErr);
+	if (ret !=SUCCESS)
+	{
+		return FAILURE;
+	}
+	memset(tmpbuf, 0, sizeof(tmpbuf));
+	sprintf(tmpbuf, "%u", nfpzs);
+	wscfpzs = tmpbuf;
+	memset(tmpbuf, 0, sizeof(tmpbuf));
+	sprintf(tmpbuf, "%.2f", ((double)(nfpljje)/SUM_EXTENSION));
+	wscfpljje = tmpbuf;
 	
-	ret = managBusFun.GetOffLineInvInfo(ywxml_gy, wscfpzs, wscfpsj, wscfpljje, strErr);
-	return SUCCESS;
+	return ret;
 }
 
 INT32 CAPIskjProc::LibClearDepot(string &strErr)

@@ -14,7 +14,7 @@
 #include "CInvServ.h"
 
 #define	MAX_ERR_NUM		5
-
+#define MAX_NET_ERR_NUM		3
 
 class CSaleBusinessFunc
 {

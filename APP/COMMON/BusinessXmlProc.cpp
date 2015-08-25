@@ -47,7 +47,6 @@
 #include "NETXML_WLLQFPJGQR.h"
 
 
-
 CBusinessXmlProc::CBusinessXmlProc()
 {
 	
@@ -537,7 +536,7 @@ INT32 CBusinessXmlProc::SSLConnectTest(CYWXML_GY &ywxml_gy, string &strErr)
 
 
 //获取离线相关数据
-INT32 CBusinessXmlProc::OffInvInfo_Business(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &strErr)
+INT32 CBusinessXmlProc::OffInvInfo_Business(CYWXML_GY &ywxml_gy, UINT32 &wscfpzs, string &wscfpsj, INT64 &wscfpljje, string &strErr)
 {
 	INT32 ret = XML_SUCCESS;
 	ywxml_gy.m_strID = BUSINESS_YWID_HQLXSJ;
@@ -572,13 +571,8 @@ INT32 CBusinessXmlProc::GetErrUpInvInfo(CYWXML_GY &ywxml_gy, CDataInvServ *pData
 	for(int i=0; i<nCount; i++)
 	{
 		pDataInvServ[i].m_fpdm = ErrInvInfo.InvUpFailInfo[i].m_fpdm;
-		DBG_PRINT(("pDataInvServ[%d].m_fpdm : %s",  i, pDataInvServ[i].m_fpdm.c_str()));
-
 		pDataInvServ[i].m_fphm = ErrInvInfo.InvUpFailInfo[i].m_fphm;
-		DBG_PRINT(("pDataInvServ[%d].m_fphm : %u", i, pDataInvServ[i].m_fphm));
-
 		pDataInvServ[i].m_errMsg = ErrInvInfo.InvUpFailInfo[i].m_errMsg;
-		DBG_PRINT(("pDataInvServ[%d].m_errMsg : %s", i, pDataInvServ[i].m_errMsg.c_str()));
 	}
 	
 	return ret;
