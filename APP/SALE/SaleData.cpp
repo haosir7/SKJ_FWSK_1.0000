@@ -1883,7 +1883,7 @@ UINT8 SaleData::Plus(double tmpAmount)
 		DBG_RETURN(ILLEGAL_AMOUNT);
 	}
 	
-m_dotNum = AmountRound_A(&tmpAmount);
+    m_dotNum = AmountRound_A(&tmpAmount);
 // 	if (m_dotNum == -1) //ÊýÁ¿³¬ÏÞ
 // 	{
 // 		m_dotNum = 0;

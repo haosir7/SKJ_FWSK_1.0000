@@ -135,7 +135,7 @@ int CSysMainMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 			return SUCCESS;
 		}
 	}
-
+/*
 	if(FIND_KEY == iEvent)
 	{
 		UINT8 ret= GetServNum(uServNum,strErr);
@@ -159,7 +159,7 @@ int CSysMainMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 
 		return SUCCESS;
 	}
-	
+	*/
 
 	return CMultiBtnCommonWin::ProcEvent(iEvent,pEventData,iDataLen);
 }

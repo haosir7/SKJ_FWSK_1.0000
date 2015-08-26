@@ -13,7 +13,7 @@
 #include "CaProgressBar.h"
 
 #include "LOGCTRL.h"
-#define NO_POS_DEBUG
+//#define NO_POS_DEBUG
 #include "pos_debug.h"
 #include <string>
 
@@ -868,12 +868,8 @@ UINT8 CProductSaleMainMenu::PriceInputProc(void)
 	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
- 	if(ii > MAX_MONEY)
-	{
-			CaMsgBox::ShowMsg("金额超过最大允许值");
-	 		return FAILURE;
- 	}	
 	dotNum = CheckFloatBit(ii);
+	DBG_PRINT(("dotNum= %d",dotNum));
 	if (dotNum>2) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
@@ -881,6 +877,11 @@ UINT8 CProductSaleMainMenu::PriceInputProc(void)
 		CaMsgBox::ShowMsg("小数位数不得超过两位");
 		return FAILURE;
 	}
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	{
+		CaMsgBox::ShowMsg("金额超过最大允许值");
+		return FAILURE;
+ 	}	
 	m_pInput2->Clear();
 	ret = pSaleData->PriceInput(ii);
 	if (ret != SUCCESS) 
@@ -909,12 +910,8 @@ UINT8 CProductSaleMainMenu::SumInputProc(void)
 	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
-	 if(ii > MAX_MONEY)
-	 {
-			CaMsgBox::ShowMsg("金额超过最大允许值");
-	 		return FAILURE;
- 	}	
 	dotNum = CheckFloatBit(ii);
+	DBG_PRINT(("dotNum= %d",dotNum));
 	if (dotNum>2) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
@@ -922,6 +919,13 @@ UINT8 CProductSaleMainMenu::SumInputProc(void)
 		CaMsgBox::ShowMsg("小数位数不得超过两位");
 		return FAILURE;
 	}
+
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	{
+		CaMsgBox::ShowMsg("金额超过最大允许值");
+		return FAILURE;
+ 	}
+	
 	m_pInput2->Clear();
 	ret = pSaleData->SumInput(ii);
 	if (ret != SUCCESS) 
@@ -948,18 +952,20 @@ UINT8 CProductSaleMainMenu::PlusProc(void)
 		return(ErrMsgBox(INPUT_ERROR));
 	}
 	ii = atof(content);
-	DBG_PRINT(("ii= %lf",ii));
-	if((double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
- 	{
- 		CaMsgBox::ShowMsg("数量超限");
- 		return FAILURE;
-	}
 	dotNum = CheckFloatBit(ii);
+		DBG_PRINT(("ii= %lf",ii));
+	DBG_PRINT(("dotNum= %d",dotNum));
 	if (dotNum>3) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));
 		CaMsgBox::ShowMsg("小数位数不得超过三位");
+		return FAILURE;
+	}
+	DBG_PRINT(("MAX_MONEY= %lld",MAX_MONEY));
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	{
+		CaMsgBox::ShowMsg("数量超限");
 		return FAILURE;
 	}
  	m_pInput2->Clear();

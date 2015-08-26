@@ -175,7 +175,6 @@ int CMultiBtnCommonWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDat
 {
 
 #if (POS_TYPE==POS_APE3000R)
-
 	if (m_iNumOfBtn<10)
 	{
 		if (iEvent>'0' && iEvent<=m_iNumOfBtn+0x30)

@@ -60,7 +60,7 @@
 //顶端功能键
 #define	LOCKED_KEY			0xB0		//锁机
 #define OPEN_CASH_BOX		0xB1		//开钱箱
-#define PAYMENT_MODE_KEY	0xB2		//查询
+#define PAYMENT_MODE_KEY	FIND_KEY	//查询
 #define CHARGE_KEY			0xB3		//服务费
 #define GOODSREDUCT_KEY		0xB4		//折让
 #define DISCOUNT_KEY		0xB5		//折扣
