@@ -41,7 +41,7 @@ int CFpblWin::Create(int iX,int iY,int iW,int iH)
 	CaWindow::Create(iX,iY,iW,iH); // creat a window
 	
 	//创建一个Input  第一行
-	strcpy(title, "报税起始日期:");
+	strcpy(title, "补录起始日期:");
 	titleLen = strlen(title) * CHAR_W;
 	curH = SCREEN_TOP_OFFSET;
 	curH += LINE_H;
@@ -53,7 +53,7 @@ int CFpblWin::Create(int iX,int iY,int iW,int iH)
 	m_pInput1->OnObject = S_OnInput1;
 	
 	//创建一个Input  第二行
-	strcpy(title, "报税终止日期:");
+	strcpy(title, "补录截止日期:");
 	titleLen = strlen(title) * CHAR_W;
 	curH += LINE_H;
 	m_pInput2=new CaInput(CaObject::ON_LEFT,titleLen);
