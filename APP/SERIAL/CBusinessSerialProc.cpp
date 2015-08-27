@@ -476,10 +476,10 @@ UINT8 CBusinessSerialProc::jksjcx_Serial(CYWXML_GY &ywxml_gy, CInvKind &InvKind,
 			offset += SZSJ_LEN;
 
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
-			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, XIANE_LEN);;
+			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);;
 			InvKind.m_maxSign = double2int(atof(StrTempBuf)*SUM_EXTENSION);
 			DBG_PRINT(("InvKind.m_maxSign: %lld", InvKind.m_maxSign));
-			offset += XIANE_LEN;
+			offset += JE_LEN;
 
 			//最新报税日期不解析
 			offset += SZSJ_LEN;
@@ -500,7 +500,7 @@ UINT8 CBusinessSerialProc::jksjcx_Serial(CYWXML_GY &ywxml_gy, CInvKind &InvKind,
 			offset += LXKPSC_LEN;
 			
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
-			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, XIANE_LEN);
+			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, LJJE_LEN_14);
 			InvKind.m_maxSum = double2int(atof(StrTempBuf)*SUM_EXTENSION);
 			DBG_PRINT(("InvKind.m_maxSum: %lld", InvKind.m_maxSum));
 
@@ -1890,10 +1890,10 @@ UINT8 CBusinessSerialProc::fptjcx_Serial(CYWXML_GY &ywxml_gy, CTjxxhz *pTjxxhz, 
 			offset += TJCX_FPFS_LEN;
 			
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
-			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);
+			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, LJJE_LEN_14);
 			pTjxxhz->m_Zsfpljje = double2int(atof(StrTempBuf)*SUM_EXTENSION);	//正数发票累计金额
 			DBG_PRINT(("fptjcx: m_Zsfpljje = %lld", pTjxxhz->m_Zsfpljje));
-			offset += JE_LEN;	
+			offset += LJJE_LEN_14;	
 			
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
 			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);
@@ -1902,10 +1902,10 @@ UINT8 CBusinessSerialProc::fptjcx_Serial(CYWXML_GY &ywxml_gy, CTjxxhz *pTjxxhz, 
 			offset += JE_LEN;
 
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
-			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);
+			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, LJJE_LEN_14);
 			pTjxxhz->m_Zffpljje = double2int(atof(StrTempBuf)*SUM_EXTENSION);	//正废发票累计金额
 			DBG_PRINT(("fptjcx: m_Zffpljje = %lld", pTjxxhz->m_Zffpljje));		
-			offset += JE_LEN;
+			offset += LJJE_LEN_14;
 			
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
 			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);
@@ -1914,10 +1914,10 @@ UINT8 CBusinessSerialProc::fptjcx_Serial(CYWXML_GY &ywxml_gy, CTjxxhz *pTjxxhz, 
 			offset += JE_LEN;	
 
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
-			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);
+			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, LJJE_LEN_14);
 			pTjxxhz->m_Fsfpljje = double2int(atof(StrTempBuf)*SUM_EXTENSION);	//负数发票累计金额
 			DBG_PRINT(("fptjcx: m_Fsfpljje = %lld", pTjxxhz->m_Fsfpljje));			
-			offset += JE_LEN;	
+			offset += LJJE_LEN_14;	
 			
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
 			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);
@@ -1926,10 +1926,10 @@ UINT8 CBusinessSerialProc::fptjcx_Serial(CYWXML_GY &ywxml_gy, CTjxxhz *pTjxxhz, 
 			offset += JE_LEN;
 			
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
-			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);
+			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, LJJE_LEN_14);
 			pTjxxhz->m_Fffpljje = double2int(atof(StrTempBuf)*SUM_EXTENSION);	//负废发票累计金额
 			DBG_PRINT(("fptjcx: m_Fffpljje = %lld", pTjxxhz->m_Fffpljje));	
-			offset += JE_LEN;
+			offset += LJJE_LEN_14;
 			
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
 			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);
@@ -2572,10 +2572,10 @@ UINT8 CBusinessSerialProc::hqlxsj_Serial(CYWXML_GY &ywxml_gy, string &wscfpzs, s
 			
 			//未上传发票累计金额
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
-			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, JE_LEN);
+			memcpy(StrTempBuf, m_serialProtocol->m_rspCmd->rspData+offset, LJJE_LEN_14);
 			wscfpljje.assign(StrTempBuf);
 			DBG_PRINT(("wscfpljje: %s", wscfpljje.c_str()));
-			offset += JE_LEN;
+			offset += LJJE_LEN_14;
 			
 			//上传张数
 			memset(StrTempBuf, 0, sizeof(StrTempBuf));
