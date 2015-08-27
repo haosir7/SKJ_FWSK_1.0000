@@ -877,7 +877,7 @@ UINT8 CProductSaleMainMenu::PriceInputProc(void)
 		CaMsgBox::ShowMsg("小数位数不得超过两位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
 	{
 		CaMsgBox::ShowMsg("金额超过最大允许值");
 		return FAILURE;
@@ -920,7 +920,7 @@ UINT8 CProductSaleMainMenu::SumInputProc(void)
 		return FAILURE;
 	}
 
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
 	{
 		CaMsgBox::ShowMsg("金额超过最大允许值");
 		return FAILURE;
@@ -963,7 +963,7 @@ UINT8 CProductSaleMainMenu::PlusProc(void)
 		return FAILURE;
 	}
 	DBG_PRINT(("MAX_MONEY= %lld",MAX_MONEY));
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	if(((UINT64)double2int(ii*GOODS_NUM_EXTENSION)) >= MAX_GOODS_NUM)
 	{
 		CaMsgBox::ShowMsg("数量超限");
 		return FAILURE;

@@ -759,7 +759,7 @@ UINT8 CProductSaleWin::CashShow(double cash)
 			ret = MONEY_RANDOM;	
 			return ret;
 		}
-		if(cash > MAX_MONEY)
+		if(cash >= MAX_MONEY)
 		{
 			ret = MONEY_EXCEED;
 			return ret;
@@ -1132,7 +1132,7 @@ UINT8 CProductSaleWin::PriceInputProc(void)
 		CaMsgBox::ShowMsg("小数位数不得超过两位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
 	{
 		CaMsgBox::ShowMsg("金额超过最大允许值");
 		return FAILURE;
@@ -1171,7 +1171,7 @@ UINT8 CProductSaleWin::SumInputProc(void)
 		CaMsgBox::ShowMsg("小数位数不得超过两位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
 	{
 		CaMsgBox::ShowMsg("金额超过最大允许值");
 		return FAILURE;
@@ -1210,7 +1210,7 @@ UINT8 CProductSaleWin::PlusProc(void)
 		CaMsgBox::ShowMsg("小数位数不得超过三位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	if(((UINT64)double2int(ii*GOODS_NUM_EXTENSION)) >= MAX_GOODS_NUM)
 	{
 		CaMsgBox::ShowMsg("数量超限");
 		return FAILURE;

@@ -325,11 +325,13 @@ UINT8 CDeptEditWin::CheckInputValid(string &strErr)
 		return FAILURE;
 	}
 	double dPrice = atof((char *)(m_pInput3->m_contentBuf));
-	//if (((UINT64)(PRICE_EXTENSION * dPrice)) > MAX_MONEY ) 
-		if (((UINT64)(double2int(dPrice))) > MAX_MONEY_A )
+	DBG_PRINT(("dPrice  = %lf", dPrice));
+	UINT64 PriceTemp = (UINT64)(double2int(PRICE_EXTENSION *dPrice));
+	DBG_PRINT(("PriceTemp = %lld",  PriceTemp));
+	if (PriceTemp >= MAX_MONEY ) 
 	{
-		DBG_PRINT(("dPrice = %f",  dPrice));
-		DBG_PRINT(("MAX_MONEY_A = %lld",  MAX_MONEY_A));
+		//DBG_PRINT(("dPrice = %lf",  dPrice));
+		//DBG_PRINT(("PriceTemp = %lld",  PriceTemp));
 		//DBG_PRINT(("PRICE_EXTENSION * dPrice = %lld", PRICE_EXTENSION * dPrice));
 		strErr = "µ¥¼Û³¬ÏÞ";
 		m_pInputList->SetFocusToObj(m_pInput3);
