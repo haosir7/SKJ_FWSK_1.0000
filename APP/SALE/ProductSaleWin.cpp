@@ -222,12 +222,25 @@ int CProductSaleWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLe
 		{
 			CaMsgBox::ShowMsg("请先输入折扣率");
 			return SUCCESS;
+		} 
+		else if (strlen(content) >2)
+		{
+			CaMsgBox::ShowMsg("折扣率长度超过两位");
+			return SUCCESS;
 		}
+		
 		ret=is_Money(content);
 		if (ret != SUCCESS)
 		{
-			return(ErrMsgBox(INPUT_ERROR));
+			return(ErrMsgBox(ret));
 		}
+
+		ret =is_Figure(content);
+		if (ret != SUCCESS)
+		{
+			return(ErrMsgBox(INPUT_FIGURE_ERROR));
+		}
+
 		ii = atof(content);
 		ii = (INT32)ii;//向零取整
 		m_pInput2->Clear();
@@ -447,6 +460,7 @@ int CProductSaleWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLe
 			return FAILURE;
 		}
 		content = (char*)(m_pInput2->m_contentBuf);
+
 		deptNo = atoi(content);
 		m_pInput2->Clear();
 		return(DeptSaleProc(deptNo));
@@ -704,6 +718,12 @@ int CProductSaleWin::ErrMsgBox(UINT8 ret)
 	   case  INPUT_ERROR:
 		   pText = "含非法字符,请重新输入";
 		   break;
+	   case INPUT_LEN_EXCEED:
+		   pText ="输入长度超过12位！";
+		   break;
+	   case INPUT_FIGURE_ERROR:
+		   pText ="请输入1～99区间的数字";
+		   break;
 	   case ONE_INV:
 		   pText = "超过一张发票允许的商品行数";
 		   break;
@@ -759,7 +779,7 @@ UINT8 CProductSaleWin::CashShow(double cash)
 			ret = MONEY_RANDOM;	
 			return ret;
 		}
-		if(cash > MAX_MONEY)
+                if(((UINT64)double2int(cash *SUM_EXTENSION)) >= MAX_MONEY)
 		{
 			ret = MONEY_EXCEED;
 			return ret;
@@ -1119,7 +1139,7 @@ UINT8 CProductSaleWin::PriceInputProc(void)
 	ret=is_Money(content);
 	if (ret != SUCCESS)
 	{
-		return(ErrMsgBox(INPUT_ERROR));
+		return(ErrMsgBox(ret));
 	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
@@ -1132,7 +1152,7 @@ UINT8 CProductSaleWin::PriceInputProc(void)
 		CaMsgBox::ShowMsg("小数位数不得超过两位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
 	{
 		CaMsgBox::ShowMsg("金额超过最大允许值");
 		return FAILURE;
@@ -1158,7 +1178,7 @@ UINT8 CProductSaleWin::SumInputProc(void)
 	ret=is_Money(content);
 	if (ret != SUCCESS)
 	{
-		return(ErrMsgBox(INPUT_ERROR));
+		return(ErrMsgBox(ret));
 	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
@@ -1171,7 +1191,7 @@ UINT8 CProductSaleWin::SumInputProc(void)
 		CaMsgBox::ShowMsg("小数位数不得超过两位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
 	{
 		CaMsgBox::ShowMsg("金额超过最大允许值");
 		return FAILURE;
@@ -1197,7 +1217,7 @@ UINT8 CProductSaleWin::PlusProc(void)
 	ret=is_Money(content);
 	if (ret != SUCCESS)
 	{
-		return(ErrMsgBox(INPUT_ERROR));
+		return(ErrMsgBox(ret));
 	}
 	ii = atof(content);
     DBG_PRINT(("ii= %lf",ii));
@@ -1210,7 +1230,7 @@ UINT8 CProductSaleWin::PlusProc(void)
 		CaMsgBox::ShowMsg("小数位数不得超过三位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) > MAX_MONEY)
+	if(((UINT64)double2int(ii*GOODS_NUM_EXTENSION)) >= MAX_MONEY)
 	{
 		CaMsgBox::ShowMsg("数量超限");
 		return FAILURE;

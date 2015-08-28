@@ -53,6 +53,7 @@
 #define PRICE_EXTENSION					100 	//价格放大倍数
 #define SUM_EXTENSION					100		//金额放大倍数
 #define DEPT_TAX_EXTENSION				100 	//商品税率放大倍数
+#define GOODS_NUM_EXTENSION				1000 	//商品数量放大倍数
 
 #define NORMAL_INV						1		//正常发票
 #define RETURN_INV						2		//已退发票
@@ -201,8 +202,7 @@
 #define SG_MONEY_LMT            0XFFFFFFFFU     /**< 单张开票限额默认值*/
 #define ISSUE_END_DATE          20990101		/**< 开票截止日期默认值*/
 //#define MAX_MONEY               0XFFFFFFFFU		/**< 金额最大限额*/
-#define MAX_MONEY_A              1000000000	    	/**< 金额限额*/
-#define MAX_MONEY               MAX_MONEY_A*100		/**< 金额最大限额*/
+#define MAX_MONEY               100000000000ULL		/**< 金额最大限额*/
 #define DEFAULTE_VOL_NUM        100           /**< 每卷默认发票张数（字符串形式，便于控件显示）*/
 
 

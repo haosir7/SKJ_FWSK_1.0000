@@ -189,10 +189,9 @@ void CRetToInvWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataLe
 
     UINT8 uJZlx=2;//ΩÀ∞≈ÃΩÈ÷ 
 
-	ret= INV_MediumType(uJZlx,strErr);
+	ret= INV_MediumType(uJZlx);
     if (ret != SUCCESS)
 	{
-		CaMsgBox::ShowMsg(strErr);
 		return ;
 	}
 

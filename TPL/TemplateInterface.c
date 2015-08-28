@@ -10,7 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "LOGCTRL.h"
-#define NO_POS_DEBUG
+//#define NO_POS_DEBUG
 #include "pos_log.h"
 
 
@@ -1843,7 +1843,7 @@ UINT8 GetPrnLineData(TPrnTempRow *tempLine2, TPrnLineInfo *conWriteBuffer, TPrnT
 							memset((void *)tmp, 0, 8);
 						}
 						else
-						{
+						{/*
 							prn_log2("Amount= %u",pInv->GoodsLines[templateNo].Amount);
 							realAmount = pInv->GoodsLines[templateNo].Amount & 0xFFFFFFUL;
 							prn_log2("realAmount = %u", realAmount);
@@ -1862,9 +1862,15 @@ UINT8 GetPrnLineData(TPrnTempRow *tempLine2, TPrnLineInfo *conWriteBuffer, TPrnT
 							{
 								sprintf(tmp, "%%.%luf", ((pInv->GoodsLines[templateNo].Amount & 0xFF000000UL) >> 24) & (0xFF));
 							}
+							*/
+							prn_log2("Amount= %u",pInv->GoodsLines[templateNo].Amount);
+							realAmount = pInv->GoodsLines[templateNo].Amount;
+							prn_log2("realAmount = %u", realAmount);
+							multiple=NUMBER_EXTENSION_TEMPLATE; //价格放大1000倍
+							sprintf(tmp, "%%.3f");
 						}
-						sprintf(&prnLineInfo->chContent[location-1], tmp, (double)((double)realAmount / multiple));
-						
+						sprintf(&prnLineInfo->chContent[location-1], tmp, (double)((double)realAmount /multiple ));
+
 						/*______________________________end____________________________________*/
 							
 					   

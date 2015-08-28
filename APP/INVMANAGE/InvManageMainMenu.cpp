@@ -123,10 +123,9 @@ void CInvManageMenu::OnButton3(int iEvent, unsigned char * pEventData, int iData
 	UINT8 ret=SUCCESS;
 
 	UINT8 uJZlx=2;
-	ret= INV_MediumType(uJZlx,strErr);
+	ret= INV_MediumType(uJZlx);
     if (ret != SUCCESS)
 	{
-		CaMsgBox::ShowMsg(strErr);
 		return ;
 	}
 

@@ -93,6 +93,9 @@ enum retType
 	 BX_RET_MONTH_ERR,           /**< 冲红票非本月以前*/
 	 TAX_UNAUTHORIZED,				/**< 税率未授权*/
      INPUT_ERROR,                  /**< 含非法字符,请重新输入*/
+	 INPUT_LEN_EXCEED,              /**< 输入长度超过12位字符,请重新输入*/
+	 INPUT_FIGURE_ERROR,            /**< 请输入1～99区间数字*/
+
 
 	 //发票管理
      WASTE_NUM_EXCEED,          /**< 超过剩余发票份数*/
