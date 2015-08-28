@@ -10,7 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "LOGCTRL.h"
-//#define NO_POS_DEBUG
+#define NO_POS_DEBUG
 #include "pos_log.h"
 
 
