@@ -339,7 +339,7 @@ UINT8 SerialProtocol::Rev_Pack(string &strErr)
 				}
 
 				memset(StrBuf, 0, sizeof(StrBuf));
-				sprintf(StrBuf, "操作正在进行中... %u\/%u", WaitCount, temNum);
+				sprintf(StrBuf, "网络连接中...(%u\/%u次)", WaitCount, temNum);
 				info.SetText(StrBuf);
  				info.Show();
 // 				if (0 == WaitCount%2)
