@@ -674,7 +674,7 @@ int CProductSaleWin::ErrMsgBox(UINT8 ret)
 		   pText = "请输入总价金额";
 		   break;
 	   case EXCEED_AMOUNT:
-		   pText = "数量超限";
+		   pText = "数量值小于0.001";
 		   break;
 	   case NO_GOODS:
 		   pText = "没有商品";
@@ -1143,20 +1143,20 @@ UINT8 CProductSaleWin::PriceInputProc(void)
 	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
+	{
+		CaMsgBox::ShowMsg("金额超过最大允许值");
+		return FAILURE;
+	}	
 	dotNum = CheckFloatBit(ii);
 	DBG_PRINT(("dotNum= %d",dotNum));
 	if (dotNum>2) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));
-		CaMsgBox::ShowMsg("小数位数不得超过两位");
+		CaMsgBox::ShowMsg("小数位数不超过两位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
-	{
-		CaMsgBox::ShowMsg("金额超过最大允许值");
-		return FAILURE;
-	}	
 	m_pInput2->Clear();
 	ret = pSaleData->PriceInput(ii);
 	if (ret != SUCCESS) 
@@ -1182,20 +1182,20 @@ UINT8 CProductSaleWin::SumInputProc(void)
 	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
+	{
+		CaMsgBox::ShowMsg("金额超过最大允许值");
+		return FAILURE;
+ 	}	
 	dotNum = CheckFloatBit(ii);
 	DBG_PRINT(("dotNum= %d",dotNum));
 	if (dotNum>2) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));
-		CaMsgBox::ShowMsg("小数位数不得超过两位");
+		CaMsgBox::ShowMsg("小数位数不超过两位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
-	{
-		CaMsgBox::ShowMsg("金额超过最大允许值");
-		return FAILURE;
- 	}	
 	m_pInput2->Clear();
 	ret = pSaleData->SumInput(ii);
 	if (ret != SUCCESS) 
@@ -1221,20 +1221,20 @@ UINT8 CProductSaleWin::PlusProc(void)
 	}
 	ii = atof(content);
     DBG_PRINT(("ii= %lf",ii));
+	if(((UINT64)double2int(ii*GOODS_NUM_EXTENSION)) >= MAX_MONEY)
+	{
+		CaMsgBox::ShowMsg("数量超过最大允许值");
+		return FAILURE;
+	}	
 	dotNum = CheckFloatBit(ii);
 	DBG_PRINT(("dotNum= %d",dotNum));
 	if (dotNum>3) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));
-		CaMsgBox::ShowMsg("小数位数不得超过三位");
+		CaMsgBox::ShowMsg("小数位数不超过三位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*GOODS_NUM_EXTENSION)) >= MAX_MONEY)
-	{
-		CaMsgBox::ShowMsg("数量超限");
-		return FAILURE;
-	}	
 	m_pInput2->Clear();
 	ret = pSaleData->Plus(ii);
 	if (ret != SUCCESS) 

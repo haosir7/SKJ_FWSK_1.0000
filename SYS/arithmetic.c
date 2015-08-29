@@ -7,7 +7,7 @@
 #include "arithmetic.h"
 
 #include "LOGCTRL.h"
-//#define NO_POS_DEBUG
+#define NO_POS_DEBUG
 #include "pos_debug.h"
 
 
@@ -309,6 +309,10 @@ INT32 AmountRound_A(double *f)
 	DBG_PRN("info",("--------f2int= %lld--------", f2int));
 	DBG_PRN("info",("--------dotnum= %d--------", dotnum));
 	
+	if (f2int==0)
+	{
+		dotnum =-1;
+	}
 	return dotnum;
 }
 
