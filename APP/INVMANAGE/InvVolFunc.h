@@ -86,10 +86,9 @@ UINT8 INV_HostGetInvVol(UINT8 uJZlx,string &strErr);
 /*!
 @brief 选择介质类型
 @param[out] uJZlx   介质类型
-@param[out] strErr  消息框显示信息 
 @return  1：SUCCESS；0：FAILURE
 */
-UINT8 INV_MediumType(UINT8 &uJZlx,string &strErr);
+UINT8 INV_MediumType(UINT8 &uJZlx);
 
 /*!
 @brief 选择介质类型

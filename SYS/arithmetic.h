@@ -178,6 +178,13 @@ INT32 CheckFloatBit(double f);
 */
 INT64 double2int(double input);
 
+/**
+ * brief 输入字符串是否为0-9数字
+ * @param[in]  字符串内容
+ * @return 1: SUCCESS, 0: FAILURE
+ */
+UINT8 is_Figure(const char *str);
+
 
 void getBytes(short data, UINT8* bytes);
 

@@ -7,6 +7,7 @@
 #include "DeptEditWin.h"
 #include "arithmetic.h"
 
+
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
 #include "pos_debug.h"
@@ -326,8 +327,23 @@ UINT8 CDeptEditWin::CheckInputValid(string &strErr)
 	}
 	double dPrice = atof((char *)(m_pInput3->m_contentBuf));
 	DBG_PRINT(("dPrice  = %lf", dPrice));
+
+	if (CheckFloatBit(dPrice)>2) 
+	{
+		strErr ="单价不得超过两位小数";
+		m_pInputList->SetFocusToObj(m_pInput3);
+		return FAILURE;
+	}
+	else if (((UINT64)(PRICE_EXTENSION * dPrice)) == 0 )
+	{
+		strErr = "单价输入为0";
+		m_pInputList->SetFocusToObj(m_pInput3);
+		return FAILURE;		
+	}
 	UINT64 PriceTemp = (UINT64)(double2int(PRICE_EXTENSION *dPrice));
 	DBG_PRINT(("PriceTemp = %lld",  PriceTemp));
+
+	
 	if (PriceTemp >= MAX_MONEY ) 
 	{
 		//DBG_PRINT(("dPrice = %lf",  dPrice));
@@ -336,18 +352,6 @@ UINT8 CDeptEditWin::CheckInputValid(string &strErr)
 		strErr = "单价超限";
 		m_pInputList->SetFocusToObj(m_pInput3);
 		return FAILURE;		
-	}
- 	else if (((UINT64)(PRICE_EXTENSION * dPrice)) == 0 )
-	{
-		strErr = "单价输入为0";
-		m_pInputList->SetFocusToObj(m_pInput3);
-		return FAILURE;		
-	}
-	else if (CheckFloatBit(dPrice)>2) 
-	{
-		strErr ="单价不得超过两位小数";
-		m_pInputList->SetFocusToObj(m_pInput3);
-		return FAILURE;
 	}
     
 	
@@ -374,14 +378,15 @@ UINT8 CDeptEditWin::CheckInputValid(string &strErr)
 		m_pInputList->SetFocusToObj(m_pInput6);
 		return FAILURE;
 	}
-
-	if ( 0==atoi((char *)(m_pInput6->m_contentBuf)) )
+	UINT8 ret=SUCCESS;
+	ret =is_Figure((char *)(m_pInput6->m_contentBuf));
+	if (ret != SUCCESS)
 	{
-		strErr = "部类号输入为0";
+		strErr = "请输入1～99区间部类号";
 		m_pInputList->SetFocusToObj(m_pInput6);
 		return FAILURE;
 	}
-	
+
 	return SUCCESS;
 }
 

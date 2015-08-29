@@ -202,9 +202,7 @@
 #define SG_MONEY_LMT            0XFFFFFFFFU     /**< 单张开票限额默认值*/
 #define ISSUE_END_DATE          20990101		/**< 开票截止日期默认值*/
 //#define MAX_MONEY               0XFFFFFFFFU		/**< 金额最大限额*/
-//#define MAX_MONEY_A           1000000000	    	/**< 金额限额*/
 #define MAX_MONEY               100000000000ULL		/**< 金额最大限额*/
-#define MAX_GOODS_NUM			1000000000000ULL
 #define DEFAULTE_VOL_NUM        100           /**< 每卷默认发票张数（字符串形式，便于控件显示）*/
 
 

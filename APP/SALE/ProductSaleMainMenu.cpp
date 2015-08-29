@@ -45,7 +45,7 @@ int CProductSaleMainMenu::Create(int iX,int iY,int iW,int iH)
 	char title[OBJ_TITLE_MAX_LEN + 1];
 	//	string curtime = TDateTime::CurrentDateTime().FormatString(YYYYMMDDHHMMSS);
 	string curtime = TDateTime::CurrentDate().FormatString(YYYYMMDD);
-
+	
 	//curtime += "  ";
     int titleLen=0;
 	
@@ -132,17 +132,29 @@ int CProductSaleMainMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iD
 		
 	case DISCOUNT_KEY:
 		content = (char*)(m_pInput2->m_contentBuf);
-
+		
 		if (strlen(content)==0)
 		{
 			CaMsgBox::ShowMsg("请先输入折扣率");
 			return SUCCESS;
-		}	
+		} 
+		else if (strlen(content) >2)
+		{
+			CaMsgBox::ShowMsg("折扣率的长度超过两位");
+			return SUCCESS;
+		}
+		
 		ret=is_Money(content);
-	   if (ret != SUCCESS)
-	   {
-		return(ErrMsgBox(INPUT_ERROR));
-	   }
+		if (ret != SUCCESS)
+		{
+			return(ErrMsgBox(ret));
+		}
+		ret =is_Figure(content);
+		if (ret != SUCCESS)
+		{
+			return(ErrMsgBox(INPUT_FIGURE_ERROR));
+		}
+		
 		ii = atof(content);
 		ii = (INT32)ii;//向零取整
 		m_pInput2->Clear();
@@ -260,6 +272,11 @@ int CProductSaleMainMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iD
 			return FAILURE;
 		}
 		content = (char*)(m_pInput2->m_contentBuf);
+		if (is_Figure(content) != SUCCESS)
+		{
+			CaMsgBox::ShowMsg("请输入1～99区间部类号");
+			return FAILURE;
+		}
 		deptNo = atoi(content);
 		m_pInput2->Clear();
 		return(DeptSaleProc(deptNo));
@@ -480,7 +497,7 @@ UINT8 CProductSaleMainMenu::ErrMsgBox(UINT8 ret)
 		   break;
 	   case TAX_UNAUTHORIZED:
 		   pText = "税率未授权";
-			break;	
+		   break;	
 	   case NM_EXCEED:
 		   pText = "单张开票金额超限";
 		   break;
@@ -519,7 +536,7 @@ UINT8 CProductSaleMainMenu::ErrMsgBox(UINT8 ret)
 		   pText = "请输入总价金额";
 		   break;
 	   case EXCEED_AMOUNT:
-		   pText = "数量超限";
+		   pText = "数量值小于0.001";
 		   break;
 	   case ILLEGAL_AMOUNT:
 		   pText = "数量非法";
@@ -537,7 +554,13 @@ UINT8 CProductSaleMainMenu::ErrMsgBox(UINT8 ret)
 		   pText = "折扣行金额为零";
 		   break;
 	   case  INPUT_ERROR:
-		    pText = "含非法字符,请重新输入";
+		   pText = "含非法字符,请重新输入";
+		   break;
+	   case INPUT_LEN_EXCEED:
+		   pText ="输入长度超过12位！";
+		   break;
+	   case INPUT_FIGURE_ERROR:
+		   pText ="请输入1～99区间的数字";
 		   break;
 	   default:;
 	}  
@@ -595,7 +618,7 @@ void CProductSaleMainMenu::DoActive()
 {
 	DBG_PRINT(("进入CProductSaleMainMenu::DoActive函数"));
 	DBG_ENTER("CProductSaleMainMenu::DoActive()");
-
+	
 	// 	if (ScannerInit()!=SUCCESS)
 	// 	{
 	// 		CaMsgBox::ShowMsg("扫描枪初始化失败");
@@ -611,15 +634,15 @@ void CProductSaleMainMenu::DoActive()
 	
 	m_strSuffix = "";
 	m_pInput2->Clear();	//清除Input里的内容
-
+	
 	NormalShow();
 	
 	ChangeTitle();
-
+	
 	//每卷第一张时提醒用户换卷
 	if (1 == g_globalArg->m_curInvVol->m_curInvNo%DEFAULTE_VOL_NUM)
 	{
-	//	CaMsgBox::ShowMsg("请确认纸质发票卷与当前发票号对应!");
+		//	CaMsgBox::ShowMsg("请确认纸质发票卷与当前发票号对应!");
 	}
 	
 	ReFresh();
@@ -667,13 +690,13 @@ UINT8 CProductSaleMainMenu::NormalShow()
 	string strErr;
 	UINT8 ret = SUCCESS;
 	INT32 nCurrentInvNo  = 0;
-
+	
 	//当前发票号
 	if (g_globalArg->m_operator->m_role==DEMO_ROLE) 
 	{
 		nCurrentInvNo = g_globalArg->m_curInvVol->m_ieno + 1 - g_globalArg->m_curInvVol->m_remain;
 		g_globalArg->m_curInvVol->m_curInvNo = nCurrentInvNo; 
-	//	sprintf(title_array[1], "当前发票号: %08d", nCurrentInvNo);
+		//	sprintf(title_array[1], "当前发票号: %08d", nCurrentInvNo);
 	}
 	else
 	{
@@ -681,7 +704,7 @@ UINT8 CProductSaleMainMenu::NormalShow()
 		{
 			
 			BAR_DEF();
-		    BAR_SHOW("获取开具发票号码中...");
+			BAR_SHOW("获取开具发票号码中...");
 			
 			ret = SALE_GetCurInv(g_globalArg->m_curInvVol,strErr);
 			DBG_PRINT(("strErr= %s",strErr.c_str()));
@@ -691,7 +714,7 @@ UINT8 CProductSaleMainMenu::NormalShow()
 			} 	
 		}	
 	}
-
+	
 	//第一行
 	if( 0 != g_globalArg->m_curInvVol->m_curInvNo) 
 	{
@@ -834,16 +857,16 @@ UINT8 CProductSaleMainMenu::ClientCodeInputProc(void)
 	string srrErr("");
 	
 	content = (char*)(m_pInput2->m_contentBuf);
-
+	
 	ret = pSaleData->ClientCodeInput(content,srrErr);
-
+	
 	m_pInput2->Clear();
 	if (ret != SUCCESS) 
 	{
 		CaMsgBox::ShowMsg(srrErr);
 		return FAILURE;
 	}
-
+	
 	ClientCodeShow();
 	ChangeTitle();
 	ReFresh();
@@ -864,24 +887,24 @@ UINT8 CProductSaleMainMenu::PriceInputProc(void)
 	ret=is_Money(content);
 	if (ret != SUCCESS)
 	{
-		return(ErrMsgBox(INPUT_ERROR));
+		return(ErrMsgBox(ret));
 	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
+	{
+		CaMsgBox::ShowMsg("金额超过最大允许值");
+		return FAILURE;
+	}	
 	dotNum = CheckFloatBit(ii);
 	DBG_PRINT(("dotNum= %d",dotNum));
 	if (dotNum>2) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));
-		CaMsgBox::ShowMsg("小数位数不得超过两位");
+		CaMsgBox::ShowMsg("小数位数不超过两位");
 		return FAILURE;
 	}
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
-	{
-		CaMsgBox::ShowMsg("金额超过最大允许值");
-		return FAILURE;
- 	}	
 	m_pInput2->Clear();
 	ret = pSaleData->PriceInput(ii);
 	if (ret != SUCCESS) 
@@ -906,26 +929,25 @@ UINT8 CProductSaleMainMenu::SumInputProc(void)
 	ret=is_Money(content);
 	if (ret != SUCCESS)
 	{
-		return(ErrMsgBox(INPUT_ERROR));
+		return(ErrMsgBox(ret));
 	}
 	ii = atof(content);
 	DBG_PRINT(("ii= %lf",ii));
+	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
+	{
+		CaMsgBox::ShowMsg("金额超过最大允许值");
+		return FAILURE;
+	}
 	dotNum = CheckFloatBit(ii);
 	DBG_PRINT(("dotNum= %d",dotNum));
 	if (dotNum>2) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));
-		CaMsgBox::ShowMsg("小数位数不得超过两位");
+		CaMsgBox::ShowMsg("小数位数不超过两位");
 		return FAILURE;
 	}
 
-	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
-	{
-		CaMsgBox::ShowMsg("金额超过最大允许值");
-		return FAILURE;
- 	}
-	
 	m_pInput2->Clear();
 	ret = pSaleData->SumInput(ii);
 	if (ret != SUCCESS) 
@@ -949,26 +971,28 @@ UINT8 CProductSaleMainMenu::PlusProc(void)
 	ret=is_Money(content);
 	if (ret != SUCCESS)
 	{
-		return(ErrMsgBox(INPUT_ERROR));
+		return(ErrMsgBox(ret));
 	}
 	ii = atof(content);
+	DBG_PRINT(("MAX_MONEY= %lld",MAX_MONEY));
+	DBG_PRINT(("double2int(ii*GOODS_NUM_EXTENSION)= %lld",double2int(ii*GOODS_NUM_EXTENSION)));
+	if(((UINT64)double2int(ii*GOODS_NUM_EXTENSION)) >= MAX_MONEY)
+	{
+		CaMsgBox::ShowMsg("数量超过最大允许值");
+		return FAILURE;
+	}
 	dotNum = CheckFloatBit(ii);
-		DBG_PRINT(("ii= %lf",ii));
+	DBG_PRINT(("ii= %lf",ii));
 	DBG_PRINT(("dotNum= %d",dotNum));
 	if (dotNum>3) 
 	{
 		DBG_PRINT(("--------ii = %f--------", ii));
 		DBG_PRINT(("--------dotNum = %d--------", dotNum));
-		CaMsgBox::ShowMsg("小数位数不得超过三位");
+		CaMsgBox::ShowMsg("小数位数不超过三位");
 		return FAILURE;
 	}
-	DBG_PRINT(("MAX_MONEY= %lld",MAX_MONEY));
-	if(((UINT64)double2int(ii*GOODS_NUM_EXTENSION)) >= MAX_GOODS_NUM)
-	{
-		CaMsgBox::ShowMsg("数量超限");
-		return FAILURE;
-	}
- 	m_pInput2->Clear();
+
+	m_pInput2->Clear();
 	ret = pSaleData->Plus(ii);
 	if (ret != SUCCESS) 
 	{

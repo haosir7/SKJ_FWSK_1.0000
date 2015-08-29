@@ -49,7 +49,7 @@
 #define TRAINING_MODE '\2'                  /* 训练模式						*/
 
 #define  PRICE_EXTENSION_TEMPLATE		   100			/* 价格放大倍数					*/
-#define  NUMBER_EXTENSION_TEMPLATE	       10000			/* 数量放大倍数					*/
+#define  NUMBER_EXTENSION_TEMPLATE	       1000			/* 数量放大倍数					*/
 #define  SUM_EXTENSION_TEMPLATE		       100				/* 金额放大倍数					*/
 #define  RATE_EXTENSION_TEMPLATE		   100				/* 折扣服务率放大倍数			*/
 

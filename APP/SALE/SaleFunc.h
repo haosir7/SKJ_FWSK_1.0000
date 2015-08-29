@@ -133,8 +133,10 @@ UINT8 MakeInvLog(UINT8 nInvType, UINT32 EventResult, string Backup = "");
  */
 UINT8 GetServNum(UINT32 &uNum,string &strErr);
 
+
+
 /**
- * brief 输入字符串是否为金额，价格和数量
+ * brief 输入字符串是否为金额，价格和数量 长度不超过12位
  * @param[in]  字符串内容
  * @return 1: SUCCESS, 0: FAILURE
  */

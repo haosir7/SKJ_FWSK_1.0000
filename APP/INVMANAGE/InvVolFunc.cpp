@@ -184,7 +184,7 @@ UINT8 INV_HostGetInvVol(UINT8 uJZlx,string &strErr)
 	return SUCCESS;
 }
 
-UINT8 INV_MediumType(UINT8 &uJZlx,string &strErr)
+UINT8 INV_MediumType(UINT8 &uJZlx)
 {
 	INT32 status;
 	CaMsgBox msgBox("介质(1报税盘2金税盘):",CaMsgBox::MB_INPUT);
@@ -202,8 +202,7 @@ UINT8 INV_MediumType(UINT8 &uJZlx,string &strErr)
 	DBG_PRINT(("uJZlx = %d", uJZlx));
 	if( (uJZlx > 2)||(uJZlx == 0) )
 	{
-		strErr= "请输入正确的介质类型";
-		CaMsgBox::ShowMsg(strErr);
+		CaMsgBox::ShowMsg("请输入正确的介质类型");
 		return FAILURE;
 	}
 

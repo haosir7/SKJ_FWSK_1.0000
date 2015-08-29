@@ -32,12 +32,12 @@ int CClientEditWin::Create(int iX,int iY,int iW,int iH)
     int curH;
 	char title[OBJ_TITLE_MAX_LEN + 1];
     int titleLen=0;
-
+	
     m_iBtnW = (SCREEN_W/3 - 0) ; //控件的宽度
 	m_iColW = m_iBtnW + 0;        //控件的列宽
-  
+	
 	m_pFrame->RegsiterWin(this,CLIENT_EDIT_WIN);
-  
+	
 	CaWindow::Create(iX,iY,iW,iH); // creat a window
 	
 	//创建一个Input  第一行
@@ -51,7 +51,7 @@ int CClientEditWin::Create(int iX,int iY,int iW,int iH)
 	m_pInput1->SetMaxLen(3);
 	m_pInput1->m_InputType = m_pInput1->aINT; //该输入框只接受数字
 	m_pInput1->OnObject = S_OnInput1;
-
+	
 	//创建一个Input  第二行
 	strcpy(title, "名称:");
 	titleLen = strlen(title) * CHAR_W;
@@ -62,7 +62,7 @@ int CClientEditWin::Create(int iX,int iY,int iW,int iH)
 	m_pInput2->m_InputType = m_pInput2->aCHAR; //该输入框只接受字符
     m_pInput2->SetMaxLen(PAYER_NAME_LEN);
 	m_pInput2->OnObject = S_OnInput2;
-
+	
 	//创建一个Input  第三行
 	strcpy(title, "税号:");
 	titleLen = strlen(title) * CHAR_W;
@@ -75,11 +75,11 @@ int CClientEditWin::Create(int iX,int iY,int iW,int iH)
 	m_pInput3->OnObject = S_OnInput3;
 	
 	m_iBtnW = (SCREEN_W - 40)/3 - 4; //Button的宽度
- 	m_iColW = (SCREEN_W - 40)/3; //Button的列宽
+	m_iColW = (SCREEN_W - 40)/3; //Button的列宽
 	INT32 left_offset = SCREEN_LEFT_OFFSET+8;
 	INT32 leftoffset_btn = left_offset + 14;
 	
-
+	
 	strcpy(title, "确认");
 	m_pBtn1 = new CaButton();
 	curH += LINE_H;
@@ -96,7 +96,7 @@ int CClientEditWin::Create(int iX,int iY,int iW,int iH)
 	m_pBtn2->SetTitle(title, strlen(title));
 	m_pBtn2->BoxType(CaObject::BOX_NO);
 	m_pBtn2->OnObject = S_OnButton2;	
-
+	
 	strcpy(title, "返回");
 	m_pBtn3 = new CaButton();
 	m_pBtn3->Create(leftoffset_btn+m_iColW*2, curH, m_iBtnW, WORD_H); 
@@ -104,7 +104,7 @@ int CClientEditWin::Create(int iX,int iY,int iW,int iH)
 	m_pBtn3->SetTitle(title, strlen(title));
 	m_pBtn3->BoxType(CaObject::BOX_NO);
 	m_pBtn3->OnObject = S_OnButton3;		
-
+	
 	OnActive = S_OnActive;
 	this->End();
 	return 0;
@@ -125,7 +125,7 @@ int CClientEditWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen
 	default: 
 		break;		
 	}
-
+	
 	return CaWindow::ProcEvent(iEvent,pEventData,iDataLen);
 }
 
@@ -140,10 +140,10 @@ int CClientEditWin::ReFresh()
 	CaGroup::ReFresh();
 	if(m_pCurObj != NULL )
 	{
- 		m_pCurObj->SetFocusIn();
+		m_pCurObj->SetFocusIn();
 	}
 	LCDRedraw();
-
+	
 	return 1;
 }
 
@@ -208,7 +208,7 @@ void CClientEditWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 		this->ReFresh();
 		return ;
 	}
-
+	
 	m_Client_edit->m_khbh = (char *)m_pInput1->m_contentBuf;
 	m_Client_edit->m_khmc = (char *)m_pInput2->m_contentBuf;
 	m_Client_edit->m_khsh = (char *)m_pInput3->m_contentBuf;
@@ -228,13 +228,13 @@ void CClientEditWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 	}
 	else
 	{
-//		sprintf(sqlbuf, "update CLIENT set KH_DM = '%s', KH_JM = '%s', KH_MC = '%s' where KH_BH = '%s'", 
-//					m_Client_edit->m_khdm.c_str(), m_Client_edit->m_khjm.c_str(), 
-//					m_Client_edit->m_khmc.c_str(), m_Client_edit->m_khbh.c_str());
-
+		//		sprintf(sqlbuf, "update CLIENT set KH_DM = '%s', KH_JM = '%s', KH_MC = '%s' where KH_BH = '%s'", 
+		//					m_Client_edit->m_khdm.c_str(), m_Client_edit->m_khjm.c_str(), 
+		//					m_Client_edit->m_khmc.c_str(), m_Client_edit->m_khbh.c_str());
+		
 		sprintf(sqlbuf, "update CLIENT set KH_MC = '%s', KH_SH = '%s' where KH_BH = '%s'", 
-					m_Client_edit->m_khmc.c_str(), m_Client_edit->m_khsh.c_str(), m_Client_edit->m_khbh.c_str());
-
+			m_Client_edit->m_khmc.c_str(), m_Client_edit->m_khsh.c_str(), m_Client_edit->m_khbh.c_str());
+		
 		sqlstr=sqlbuf;
 		m_Client_edit->SetSQL(sqlstr);
 		errcode = m_Client_edit->ExecuteSQL();
@@ -243,10 +243,10 @@ void CClientEditWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 			strErr = "客户信息修改错误！";			
 			return ;
 		}		
-
+		
 		CaMsgBox::ShowMsg("客户信息修改成功");
 	}
-
+	
 	ClearClientWin();
 	ChangeWin(PROGRAM_CTRL_MAIN_MENU);
 }
@@ -255,7 +255,7 @@ void CClientEditWin::OnButton2(int iEvent, unsigned char * pEventData, int iData
 {
 	INT8 tmpstr[32];
 	INT32 res;
-
+	
 	if (m_isClientExist == true)
 	{
 		m_Client_edit->m_khbh = (char *)m_pInput1->m_contentBuf;
@@ -296,7 +296,7 @@ UINT8 CClientEditWin::CheckInputValid(string &strErr)
 		m_pInput1->SetFocus();
 		return FAILURE;
 	}
-
+	
 	//客户名称是否输入正确
 	if (m_pInput2->IsEmpty())
 	{	
@@ -304,7 +304,7 @@ UINT8 CClientEditWin::CheckInputValid(string &strErr)
 		m_pInput2->SetFocus();
 		return FAILURE;
 	}
-
+	
 	return SUCCESS;
 }
 
@@ -341,14 +341,14 @@ void CClientEditWin::DoActive()
 	string ClientNo("");
 	INT8 nLen  = 0;
 	string code = "";
-
+	
 	DBG_ENTER("CClientEditWin::DoActive()");
 	ReFresh();
-
+	
 	CaMsgBox msgBox("客户编号:",CaMsgBox::MB_INPUT);
 	msgBox.SetInputType(CaInput::aINT);
 	msgBox.SetMaxInputLen(3);
-
+	
 	while (1)
 	{
 		code = "";
@@ -358,18 +358,27 @@ void CClientEditWin::DoActive()
 		DBG_PRINT(("status=%d, ClientNo=%s", status, ClientNo.c_str()));
 		if (status != OK_PRESSED || ClientNo != "")//能进入这里一定按了OK_PRESSED键
 		{
-	if (status == OK_PRESSED)
-	{
-		nLen = CLENT_CODE_LEN - ClientNo.length();
-		if (nLen > 0)//不足3位，则前补零到3位
-		{
-			while(nLen > 0)
+			if (status == OK_PRESSED)
 			{
+				nLen = CLENT_CODE_LEN - ClientNo.length();
+				if (nLen > 0)
+				{	
+					CaMsgBox::ShowMsg("客户编码长度至少3位");
+					this->ReFresh();
+					continue;
+				}
+				
+				/*
+				if (nLen > 0)//不足3位，则前补零到3位
+				{
+				while(nLen > 0)
+				{
 				code += "0";
 				nLen--;
-			}
-		}	
-		code += ClientNo;
+				}
+				}	
+				*/
+				code += ClientNo;
 				
 				if( code == DErrorCode() )
 				{
@@ -382,11 +391,11 @@ void CClientEditWin::DoActive()
 		}
 		CaMsgBox::ShowMsg("请输入客户编码");//只按了OK_PRESSED键
 	}
-
+	
 	if (status == OK_PRESSED)
 	{
 		ClientNo = code;
-
+		
 		sprintf(value, "WHERE KH_BH = '%s'", ClientNo.c_str());
 		m_Client_edit->m_filter.append(value);
 		m_Client_edit->Requery();
@@ -417,7 +426,7 @@ void CClientEditWin::DoActive()
 			m_isClientExist = true;
 			editFlag = 1;
 			break;
-
+			
 		default:
 			CaMsgBox::ShowMsg("客户信息表错误");
 			editFlag = 0;

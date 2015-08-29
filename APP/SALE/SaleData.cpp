@@ -281,16 +281,16 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		m_dotNum = AmountRound_A(&m_saveAmount); //商品数量四舍五入
 		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
 		DBG_PRINT(("m_dotNum : %d ", m_dotNum)); 
-// 		if (m_dotNum == -1)
-// 		{
-// 			m_dotNum = 0;
-// 			m_tmpAmount = 1.0;
-// 			m_saveAmount = 1.0;
-// 			m_tmpSum = 0;
-// 			DBG_PRINT(("The goods amount exceeds the limit!"));
-// 			InitSaleData(0);  //销售信息初始化
-// 			DBG_RETURN(EXCEED_AMOUNT);
-// 		}
+		if (m_dotNum == -1)
+		{
+			m_dotNum = 0;
+			m_tmpAmount = 1.0;
+			m_saveAmount = 1.0;
+			m_tmpSum = 0;
+			DBG_PRINT(("The goods amount exceeds the limit!"));
+			InitSaleData(0);  //销售信息初始化
+			DBG_RETURN(EXCEED_AMOUNT);
+		}
 	}
 	//如果用户没输入总价
 	else
@@ -314,16 +314,16 @@ UINT8 SaleData::Sale( CDept *deptInfo )
     	m_dotNum = AmountRound_A(&m_saveAmount); //商品数量四舍五入
 		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
 		DBG_PRINT(("m_dotNum : %d ", m_dotNum)); 
-// 		if (m_dotNum == -1)
-// 		{
-// 			m_dotNum = 0;
-// 			m_tmpAmount = 1.0;
-// 			m_saveAmount = 1.0;
-// 			m_tmpSum = 0;
-// 			DBG_PRINT(("The goods amount exceeds the limit!"));
-// 			InitSaleData(0);  //销售信息初始化
-// 			DBG_RETURN(EXCEED_AMOUNT);
-// 		}
+		if (m_dotNum == -1)
+		{
+			m_dotNum = 0;
+			m_tmpAmount = 1.0;
+			m_saveAmount = 1.0;
+			m_tmpSum = 0;
+			DBG_PRINT(("The goods amount exceeds the limit!"));
+			InitSaleData(0);  //销售信息初始化
+			DBG_RETURN(EXCEED_AMOUNT);
+		}
 
 		moneySum = double2int(deptInfo->m_spdj *1000.0*m_tmpAmount*SUM_EXTENSION);//原始总金额
 		moneySum = double2int(moneySum / 1000.0);
@@ -1877,19 +1877,19 @@ UINT8 SaleData::Plus(double tmpAmount)
 	DBG_PRINT(("进入Plus函数"));
 	double amount = tmpAmount;
 	
-	if((doublecmp(tmpAmount, 0.0))==1)
-	{
-		DBG_PRINT(("The goods amount = 0.0! "));
-		DBG_RETURN(ILLEGAL_AMOUNT);
-	}
+// 	if((doublecmp(tmpAmount, 0.0))==1)
+// 	{
+// 		DBG_PRINT(("The goods amount = 0.0! "));
+// 		DBG_RETURN(ILLEGAL_AMOUNT);
+// 	}
 	
     m_dotNum = AmountRound_A(&tmpAmount);
-// 	if (m_dotNum == -1) //数量超限
-// 	{
-// 		m_dotNum = 0;
-// 		DBG_PRINT(("The goods amount exceeds the limit!"));
-// 		DBG_RETURN(EXCEED_AMOUNT);
-// 	}
+	if (m_dotNum == -1) //
+	{
+		m_dotNum = 0;
+		DBG_PRINT(("The goods amount exceeds the limit!"));
+		DBG_RETURN(EXCEED_AMOUNT);
+	}
 	m_saveAmount = tmpAmount; //后续处理用的数量值
 	m_tmpAmount = amount;     //计算总金额时用的原始数量值
 	

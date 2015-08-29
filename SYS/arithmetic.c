@@ -7,7 +7,7 @@
 #include "arithmetic.h"
 
 #include "LOGCTRL.h"
-//#define NO_POS_DEBUG
+#define NO_POS_DEBUG
 #include "pos_debug.h"
 
 
@@ -309,7 +309,11 @@ INT32 AmountRound_A(double *f)
 	DBG_PRN("info",("--------f2int= %lld--------", f2int));
 	DBG_PRN("info",("--------dotnum= %d--------", dotnum));
 	
-	return MAX_DOT_NUM_A;
+	if (f2int==0)
+	{
+		dotnum =-1;
+	}
+	return dotnum;
 }
 
 
@@ -393,11 +397,13 @@ INT32 AmountRound(double *f)
 UINT32 FormatAmount(UINT32 dotnum, double f)
 {
 	UINT32 f2int = (UINT32)(f*(pow(10, dotnum+1)));
+	DBG_PRN("info",("--------f2int= %lld--------", f2int));
 	f2int += 5;
+	
 	f2int /= 10;
-
 	f2int = (f2int | (dotnum << 24));
 
+	DBG_PRN("info",("--------f2int= %lld--------", f2int));
 	return f2int;
 }
 
@@ -457,6 +463,28 @@ INT64 double2int(double input)
 		tmp = 0-tmp;
 	}
 	return tmp;
+}
+
+UINT8 is_Figure(const char *str)
+{
+	UINT32 len = strlen(str);
+	
+	if (*str == '0')
+	{
+		return FAILURE;
+	}
+	
+	while(len > 0) 
+	{
+		if (*str < '0' || *str > '9') 
+		{
+			return FAILURE;
+		}
+		
+		str++;
+		len--;
+	}
+	return SUCCESS; 
 }
 
 void getBytes(short data, UINT8* bytes){

@@ -10,7 +10,7 @@
 #include "SaleFunc.h"
 //#include "CUserMore.h"
 #include "CInvServ.h"
-
+#include "SaleData.h"
 #include "APIBase.h"
 #include "powoff_protect.h"
 #include "SaleBusinessFunc.h"
@@ -168,7 +168,7 @@ UINT8  SALE_OffLineDate(string &strErr)
 	DBG_PRINT(("g_globalArg->m_invKind->m_maxSum= %lld",g_globalArg->m_invKind->m_maxSum));
 	DBG_PRINT(("nWscfpljje= %lld",nWscfpljje));
 	
-	INT64  maxJE= g_globalArg->m_invKind->m_maxSum *MAX_OFF_MONEY;
+	INT64  maxJE= (INT64)(double2int(g_globalArg->m_invKind->m_maxSum *MAX_OFF_MONEY));
 	DBG_PRINT(("maxJE= %lld",maxJE));
 	
 	if ( nWscfpljje>=maxJE)
@@ -447,7 +447,8 @@ UINT8 FillPrnInvDetail(TPrnInvoiceInfo *pPrnInvInfo, CInvHead *smallInvInfo)
 		p->m_dotNum = AmountRound_A(&(p->m_spsl));									//商品数量四舍五入
 		DBG_PRINT(("m_dotNum= %d",p->m_dotNum));
 		
-		pPrnInvInfo->GoodsLines[j].Amount = FormatAmount(p->m_dotNum, p->m_spsl);	//商品数量
+		//pPrnInvInfo->GoodsLines[j].Amount = FormatAmount(p->m_dotNum, p->m_spsl);	//商品数量
+		pPrnInvInfo->GoodsLines[j].Amount = (INT64)(double2int(p->m_spsl*GOODS_NUM_EXTENSION));	//商品数量
 		DBG_PRINT(("商品数量          : %u ", pPrnInvInfo->GoodsLines[j].Amount));
 		
 		pPrnInvInfo->GoodsLines[j].Price = double2int(p->m_spdj*PRICE_EXTENSION);	//商品单价
@@ -679,27 +680,33 @@ UINT8 GetServNum(UINT32 &uNum,string &strErr)
 	
 }
 
+
 UINT8 is_Money(const char *str)
 {
 	UINT32 PointNum=0;
 	UINT32 len = strlen(str);
 	
+	if (len >12)
+	{
+		return INPUT_LEN_EXCEED;
+	}
+
 	if ((*str == '.')||(*(str+len-1)=='.'))
 	{
-		return FAILURE;
+		return INPUT_ERROR;
 	}
 	while(len > 0) 
 	{
 		if ((*str < '0' || *str > '9')&&(*str != '.')) 
 		{
-			return FAILURE;
+			return INPUT_ERROR;
 		}
 		else if (*str == '.')
 		{
 			PointNum++;
 			if(PointNum>1)
 			{
-				return FAILURE;
+				return INPUT_ERROR;
 			}
 		}
 		
