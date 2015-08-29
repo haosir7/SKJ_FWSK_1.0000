@@ -13,6 +13,9 @@
 #include "CaMsgBox.h"
 #include "InvManageFunc.h"
 
+#include "keymap.h"
+#include "AutoIssueFunc.h"
+
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
 #include "pos_debug.h"
@@ -113,13 +116,13 @@ int CInvWasteWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen)
 		ChangeWin(INV_WASTE_MENU);			
 		return SUCCESS;
 		break;
-//#if (RELEASE_VER == 0)
-//		case DISCOUNT_KEY:
-//			DBG_PRINT(("进入DISCOUNT_KEY"));
-//			UINT8 nIfInvSum;
-//			AutoIssue(nIfInvSum);	
-//			break;
-//#endif
+#if (RELEASE_VER == 0)
+		case DISCOUNT_KEY:
+			DBG_PRINT(("进入DISCOUNT_KEY"));
+			UINT8 nIfInvSum;
+			AutoIssue(nIfInvSum);	
+			break;
+#endif
 	default: break;		
 	}
  	  
