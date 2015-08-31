@@ -174,6 +174,10 @@ UINT8 SimpleAutoIssue(UINT8 &nIfInvSum)
 					{
 						CaMsgBox::ShowMsg("¹ö¶¯Íê±Ï!");			
 					}
+					else if(INV_LIB_ERR == ret)
+					{
+						CaMsgBox::ShowMsg(g_globalArg->m_strMsg);
+					}
 					else
 					{
 						CaMsgBox::ShowMsg(strErr);
