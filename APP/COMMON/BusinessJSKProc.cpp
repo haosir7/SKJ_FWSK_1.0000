@@ -81,7 +81,7 @@ INT32 CBusinessJSKProc::SKSBQTYXXCX_Business(CYWXML_GY &ywxml_gy, UINT8 xxlx, st
 
 	CJSKManageProc::set_JSKPara(ywxml_gy.m_jqbh, ywxml_gy.m_sksbkl, ywxml_gy.m_bspkl);
 	ret = CJSKManageProc::SKSBQTYXXCX_Proc(ywxml_gy.m_fplxdm, xxlx, sksbxx, strErr);
-	
+	DBG_PRINT(("ret= %d strErr= %s",ret, strErr.c_str()));
 	return ret;
 }
 

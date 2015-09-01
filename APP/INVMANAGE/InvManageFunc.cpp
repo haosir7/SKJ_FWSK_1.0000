@@ -173,7 +173,6 @@ UINT8 INVM_CheckIsNoDB(string invCode,UINT32 invNo,CInvHead *pInvHead)
 	memset((void*)value, 0, sizeof(value));
 	INT32 errorcode=0;
 	sprintf(value,"where FPDM = '%s' and FPHM = %u",invCode.c_str(), invNo);
-	//	errorcode = pInvHead->LoadOneRecordBySql(value);
 	
 	pInvHead->m_filter.append(value);
 	errorcode = pInvHead->Load();

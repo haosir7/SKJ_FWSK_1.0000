@@ -354,6 +354,7 @@ INT32  CAPIzhqProc::NetDeclareProc_API(CYWXML_GY &ywxml_gy, string &strErr)
 	UINT8 NetBusinessFlag = 1;
 	
 	ret = m_SerialProc.sjcb_Serial(ywxml_gy, jzlx, NetBusinessFlag, strErr);
+		DBG_PRINT(("ret= %d strErr= %s",ret,strErr.c_str()));
 	return ret;
 }
 

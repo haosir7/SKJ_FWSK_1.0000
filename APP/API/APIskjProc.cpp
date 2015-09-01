@@ -486,7 +486,7 @@ INT32  CAPIskjProc::NetDeclareProc_API(CYWXML_GY &ywxml_gy, string &strErr)
 
 	CDeclareBusinessFunc  declareBusFun;
 	ret= declareBusFun.NetDeclareProc(ywxml_gy, strErr);
-	
+		DBG_PRINT(("ret= %d strErr= %s",ret,strErr.c_str()));
 	if (ret !=SUCCESS)
 	{
 		return FAILURE;

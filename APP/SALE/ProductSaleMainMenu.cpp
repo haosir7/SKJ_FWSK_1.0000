@@ -138,23 +138,11 @@ int CProductSaleMainMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iD
 			CaMsgBox::ShowMsg("请先输入折扣率");
 			return SUCCESS;
 		} 
-		else if (strlen(content) >2)
-		{
-			CaMsgBox::ShowMsg("折扣率的长度超过两位");
-			return SUCCESS;
-		}
-		
-		ret=is_Money(content);
-		if (ret != SUCCESS)
-		{
-			return(ErrMsgBox(ret));
-		}
 		ret =is_Figure(content);
 		if (ret != SUCCESS)
 		{
 			return(ErrMsgBox(INPUT_FIGURE_ERROR));
 		}
-		
 		ii = atof(content);
 		ii = (INT32)ii;//向零取整
 		m_pInput2->Clear();
@@ -274,7 +262,7 @@ int CProductSaleMainMenu::ProcEvent(int iEvent,unsigned char *pEventData, int iD
 		content = (char*)(m_pInput2->m_contentBuf);
 		if (is_Figure(content) != SUCCESS)
 		{
-			CaMsgBox::ShowMsg("请输入1～99区间部类号");
+			CaMsgBox::ShowMsg("请输入1～99区间的整数");
 			return FAILURE;
 		}
 		deptNo = atoi(content);
@@ -517,7 +505,7 @@ UINT8 CProductSaleMainMenu::ErrMsgBox(UINT8 ret)
 		   pText = "现金金额不足";
 		   break;
 	   case MONEY_RANDOM:
-		   pText="现金金额异常";
+		   pText="现金金额小于0.01";
 		   break;
 	   case REBATE_ERROR:
 		   pText = "折扣率超限";
@@ -560,7 +548,7 @@ UINT8 CProductSaleMainMenu::ErrMsgBox(UINT8 ret)
 		   pText ="输入长度超过12位！";
 		   break;
 	   case INPUT_FIGURE_ERROR:
-		   pText ="请输入1～99区间的数字";
+		   pText ="请输入1～99区间的整数";
 		   break;
 	   default:;
 	}  

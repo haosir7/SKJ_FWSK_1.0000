@@ -330,7 +330,7 @@ UINT8 CDeptEditWin::CheckInputValid(string &strErr)
 
 	if (CheckFloatBit(dPrice)>2) 
 	{
-		strErr ="单价不得超过两位小数";
+		strErr ="单价不超过两位小数";
 		m_pInputList->SetFocusToObj(m_pInput3);
 		return FAILURE;
 	}
@@ -349,7 +349,7 @@ UINT8 CDeptEditWin::CheckInputValid(string &strErr)
 		//DBG_PRINT(("dPrice = %lf",  dPrice));
 		//DBG_PRINT(("PriceTemp = %lld",  PriceTemp));
 		//DBG_PRINT(("PRICE_EXTENSION * dPrice = %lld", PRICE_EXTENSION * dPrice));
-		strErr = "单价超限";
+		strErr = "单价超过最大允许值";
 		m_pInputList->SetFocusToObj(m_pInput3);
 		return FAILURE;		
 	}
@@ -382,7 +382,7 @@ UINT8 CDeptEditWin::CheckInputValid(string &strErr)
 	ret =is_Figure((char *)(m_pInput6->m_contentBuf));
 	if (ret != SUCCESS)
 	{
-		strErr = "请输入1～99区间部类号";
+		strErr = "请输入1～99区间的整数";
 		m_pInputList->SetFocusToObj(m_pInput6);
 		return FAILURE;
 	}

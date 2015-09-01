@@ -1607,10 +1607,6 @@ UINT8 SaleData::SumInput(double dSum)
 	{
 		DBG_RETURN(MONEY_ZERO);
 	}
-	if (nSum<=0)
-	{
-		DBG_RETURN(MONEY_RANDOM);
-	}
     m_tmpSum = nSum;
 	DBG_PRINT(("m_tmpSum = %d", m_tmpSum));
 	DBG_RETURN(SUCCESS);

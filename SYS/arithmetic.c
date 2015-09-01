@@ -469,6 +469,10 @@ UINT8 is_Figure(const char *str)
 {
 	UINT32 len = strlen(str);
 	
+	if (len >2)
+	{
+		return FAILURE;
+	}
 	if (*str == '0')
 	{
 		return FAILURE;

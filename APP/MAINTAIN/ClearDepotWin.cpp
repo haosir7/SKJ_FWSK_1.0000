@@ -129,10 +129,7 @@ int CClearDepotWin::ProcEvent(int iEvent,unsigned char *pEventData, int iDataLen
 	switch(iEvent)
 	{	   
 	case RETURN_MAIN_MENU:  //return to SYSTEMMENU
-		if (m_workState == WORK_COMPLETE) 
-		{
-			ChangeWin(MAINTENANCE_MENU);			
-		}		
+		ChangeWin(MAINTENANCE_MENU);					
 		return SUCCESS;
 		break;
 		
@@ -168,6 +165,8 @@ void CClearDepotWin::DoActive()
 	DBG_PRINT((" CClearDepotWin::DoActive()!"));
 	
 	m_pInput1->Clear();//清除Input里的内容
+	m_pInput2->Clear();//清除Input里的内容
+	m_pInput3->Clear();//清除Input里的内容
 	ReFresh();	
 }
 
@@ -228,13 +227,15 @@ void CClearDepotWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 {
 	UINT8 ret;
 	string strInfo;
-	m_workState = WORK_INCOMPLETE;
 
 	//若盘口令或证书口令有输入值
 	if((!m_pInput2->IsEmpty())||(!m_pInput3->IsEmpty()))
 	{
 		if(YesNoMsBox("是否按输入值修改口令?")==FAILURE)
 		{
+			m_pInput2->Clear();//清除Input里的内容
+			m_pInput3->Clear();//清除Input里的内容
+        	ReFresh();	
 			return;
 		}
 	}
@@ -243,7 +244,6 @@ void CClearDepotWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 	if (ret==FAILURE)
 	{
 		CaMsgBox::ShowMsg(strInfo);
-		m_workState = WORK_COMPLETE;
 		g_globalArg->m_threadIn = 1;//允许进线程循环
 	}
 	else
@@ -255,10 +255,8 @@ void CClearDepotWin::OnButton1(int iEvent, unsigned char * pEventData, int iData
 
 void CClearDepotWin::OnButton2(int iEvent, unsigned char * pEventData, int iDataLen)
 {
-	if (m_workState == WORK_COMPLETE) 
-	{
+
 		ChangeWin(MAINTENANCE_MENU);	 //返回发票管理界面		
-	}		
 
 }
 
@@ -294,7 +292,6 @@ UINT8 CClearDepotWin::ClearDepot(string &strInfo)
 	{
 		if(strlen(content1)!=12)
 		{
-			m_workState = WORK_COMPLETE;
 			strInfo = "机器编码长度非法！";	
 			return(FAILURE);
 		}

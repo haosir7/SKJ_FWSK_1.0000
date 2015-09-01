@@ -94,7 +94,7 @@ enum retType
 	 TAX_UNAUTHORIZED,				/**< 税率未授权*/
      INPUT_ERROR,                  /**< 含非法字符,请重新输入*/
 	 INPUT_LEN_EXCEED,              /**< 输入长度超过12位字符,请重新输入*/
-	 INPUT_FIGURE_ERROR,            /**< 请输入1～99区间数字*/
+	 INPUT_FIGURE_ERROR,            /**< 请输入1～99区间的整数*/
 
 
 	 //发票管理

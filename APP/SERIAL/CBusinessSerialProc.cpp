@@ -6,7 +6,7 @@
 
 
 #include "LOGCTRL.h"
-#define NO_POS_DEBUG
+//#define NO_POS_DEBUG
 #include "pos_debug.h"
 
 CBusinessSerialProc::CBusinessSerialProc()
@@ -1668,6 +1668,7 @@ UINT8 CBusinessSerialProc::sjcb_Serial(CYWXML_GY &ywxml_gy, UINT8 jzlx, UINT8 Ne
 	DBG_PRINT(("ywxml_gy.m_kpjh : %s", ywxml_gy.m_kpjh.c_str()));
 
 	UINT8 ret = m_serialProtocol->sendData(cmdType, cmdNo, strErr);
+	DBG_PRINT(("ret= %d strErr= %s",ret,strErr.c_str()));
 	if (ret != SUCCESS)
 	{
 		m_serialProtocol->resetAll();

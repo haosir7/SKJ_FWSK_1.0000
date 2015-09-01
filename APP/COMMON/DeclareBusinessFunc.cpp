@@ -42,7 +42,7 @@ INT32 CDeclareBusinessFunc::NetDeclareProc(CYWXML_GY &ywxml_gy, string &strErr)
 
 	ret = g_pBusBase->WLCB_Business(ywxml_gy, strSQ, strFphz, strSksbxx, strErr);
 	ret = g_pBusBase->ErrParse(ret, strErr);
-
+	
 	return ret;
 }
 
