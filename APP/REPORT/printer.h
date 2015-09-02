@@ -137,10 +137,10 @@ PACK_PREFIX struct TDateSegSumPrnData
 	UINT32       StartDate;                     /*开票起始日期   YYYYMMDD       */
 	UINT32       EndDate;                       /*开票截至日期   YYYYMMDD       */
 	UINT32       PosInvCount;                   /*正常发票份数                  */
-	UINT32       PosInvSum;                     /*正常发票金额                  */
+	INT64       PosInvSum;                     /*正常发票金额                  */
 	UINT32       WasteInvCount;                 /*废票份数                      */
 	UINT32       ReInvCount;                    /*退票份数                      */
-	UINT32       ReInvSum;                      /*退票金额                      */	
+	INT64       ReInvSum;                      /*退票金额                      */	
 //	UINT8        TaxItem[TAX_ITEM_MAX_COUNT];   /*税种税目序列hex               */
 //	UINT32       PosInvSumByTax[TAX_ITEM_MAX_COUNT]; /*正常发票金额                  */
 //	UINT32       ReInvSumByTax[TAX_ITEM_MAX_COUNT];  /*退票金额                      */	
