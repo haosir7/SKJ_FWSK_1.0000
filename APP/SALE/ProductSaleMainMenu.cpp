@@ -527,7 +527,7 @@ UINT8 CProductSaleMainMenu::ErrMsgBox(UINT8 ret)
 		   pText = "数量值小于0.001";
 		   break;
 	   case ILLEGAL_AMOUNT:
-		   pText = "数量非法";
+		   pText = "数量超过最大允许值";
 		   break;
 	   case NO_PAPER:
 		   pText = "没有纸质发票";
@@ -966,8 +966,7 @@ UINT8 CProductSaleMainMenu::PlusProc(void)
 	DBG_PRINT(("double2int(ii*GOODS_NUM_EXTENSION)= %lld",double2int(ii*GOODS_NUM_EXTENSION)));
 	if(((UINT64)double2int(ii*GOODS_NUM_EXTENSION)) >= MAX_MONEY)
 	{
-		CaMsgBox::ShowMsg("数量超过最大允许值");
-		return FAILURE;
+		return (ErrMsgBox(ILLEGAL_AMOUNT));
 	}
 	dotNum = CheckFloatBit(ii);
 	DBG_PRINT(("ii= %lf",ii));

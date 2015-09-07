@@ -677,7 +677,7 @@ int CProductSaleWin::ErrMsgBox(UINT8 ret)
 		   pText = "无商品可取消";
 		   break;
 	   case ILLEGAL_AMOUNT:
-		   pText = "数量非法";
+		   pText = "数量超过最大允许值";
 		   break;
 	   case RETURN_GOODS_EXCEED:
 		   pText = "退货所需发票张数大于1";
@@ -1214,8 +1214,7 @@ UINT8 CProductSaleWin::PlusProc(void)
     DBG_PRINT(("ii= %lf",ii));
 	if(((UINT64)double2int(ii*GOODS_NUM_EXTENSION)) >= MAX_MONEY)
 	{
-		CaMsgBox::ShowMsg("数量超过最大允许值");
-		return FAILURE;
+		return (ErrMsgBox(ILLEGAL_AMOUNT));
 	}	
 	dotNum = CheckFloatBit(ii);
 	DBG_PRINT(("dotNum= %d",dotNum));

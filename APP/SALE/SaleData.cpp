@@ -280,6 +280,18 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
 		m_dotNum = AmountRound_A(&m_saveAmount); //商品数量四舍五入
 		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
+      
+		if(((UINT64)double2int(m_saveAmount*GOODS_NUM_EXTENSION)) >= MAX_MONEY)
+		{
+			m_dotNum = 0;
+			m_tmpAmount = 1.0;
+			m_saveAmount = 1.0;
+			m_tmpSum = 0;
+			DBG_PRINT(("The goods amount exceeds the limit!"));
+			InitSaleData(0);  //销售信息初始化
+			DBG_RETURN(ILLEGAL_AMOUNT);
+		}
+
 		DBG_PRINT(("m_dotNum : %d ", m_dotNum)); 
 		if (m_dotNum == -1)
 		{
