@@ -60,8 +60,8 @@ enum retType
 	 NVM_SUM_EXCEED,			/**< 单卷正票累计金额超限*/
 	 RVM_SUM_EXCEED,			/**< 单卷红票累计金额超限*/
 	 MONEY_NOT_ENOUGH,			/**< 现金金额不足*/
-	 MONEY_RANDOM,			   /**< 现金金额异常*/
-     MONEY_EXCEED,				/**< 现金金额超限*/
+	 MONEY_RANDOM,			   /**< 现金金额小于0.01*/
+     MONEY_EXCEED,				/**< 现金金额超过最大允许值*/
 	 MONEY_ZERO,				/**< 现金金额为零*/
 	 DISCOUNT_MONEY_ZERO,        /**< 折扣金额为零*/
 	 REDUCT_MONEY_SMALL,        /**< 折让金额过小*/

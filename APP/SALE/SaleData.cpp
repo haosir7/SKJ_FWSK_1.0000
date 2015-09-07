@@ -270,6 +270,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
     //判断商品金额是否超单张开票限额
 	INT64 moneySum, orgMoneySum;			//orgMoneySum是折扣前该商品行的金额，moneySum是折扣后该商品行的金额。
 	INT64 moneyTaxSum=0;
+	double fOrgMoneySum=0; 
 	DBG_PRINT(("m_tmpSum==%lf ", m_tmpSum));//m_tmpSum在DeptSale函数里置成了0
 	//如果用户输入了总价
 	if( m_tmpSum > 0 )  
@@ -281,7 +282,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		m_dotNum = AmountRound_A(&m_saveAmount); //商品数量四舍五入
 		DBG_PRINT(("m_saveAmount : %f ", m_saveAmount));
       
-		if(((UINT64)double2int(m_saveAmount*GOODS_NUM_EXTENSION)) >= MAX_MONEY)
+		if(((UINT64)double2int(m_saveAmount*GOODS_NUM_EXTENSION)) >= MAX_MONEY)  //数量的判断
 		{
 			m_dotNum = 0;
 			m_tmpAmount = 1.0;
@@ -310,10 +311,27 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 		DBG_PRINT(("deptInfo->m_spdj==%lf ", deptInfo->m_spdj));
 		DBG_PRINT(("m_tmpAmount==%lf ", m_tmpAmount));
 
-		orgMoneySum = double2int(deptInfo->m_spdj * 1000.0 * m_tmpAmount * SUM_EXTENSION);//原始总金额
+		fOrgMoneySum = deptInfo->m_spdj * m_tmpAmount ;//原始总金额
+		DBG_PRINT(("fOrgMoneySum : %f ", fOrgMoneySum));
+
+		m_dotNum = AmountRound_A(&fOrgMoneySum); //商品金额四舍五入
+		DBG_PRINT(("fOrgMoneySum : %f ", fOrgMoneySum));
+
+		orgMoneySum = double2int(fOrgMoneySum * SUM_EXTENSION);
 		DBG_PRINT(("orgMoneySum == %lld", orgMoneySum));
-		orgMoneySum = double2int(orgMoneySum / 1000.0);
-		DBG_PRINT(("orgMoneySum == %lld", orgMoneySum));
+		
+		if(orgMoneySum >= MAX_MONEY)  //数量的判断
+		{
+			InitSaleData(0);  //销售信息初始化
+			DBG_RETURN(MONEY_EXCEED);
+		}
+		DBG_PRINT(("m_dotNum : %d ", m_dotNum)); 
+		if (m_dotNum == -1)
+		{
+			m_dotNum = 0;
+			InitSaleData(0);  //销售信息初始化
+			DBG_RETURN(MONEY_RANDOM);
+		}
 	}
 	//至此，orgMoneySum里存入了该商品行的金额。100元。
 	

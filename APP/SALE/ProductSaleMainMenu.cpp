@@ -504,6 +504,9 @@ UINT8 CProductSaleMainMenu::ErrMsgBox(UINT8 ret)
 	   case MONEY_NOT_ENOUGH:
 		   pText = "现金金额不足";
 		   break;
+	   case MONEY_EXCEED:
+		   pText = "现金金额超过最大允许值";
+		   break;
 	   case MONEY_RANDOM:
 		   pText="现金金额小于0.01";
 		   break;
@@ -881,8 +884,7 @@ UINT8 CProductSaleMainMenu::PriceInputProc(void)
 	DBG_PRINT(("ii= %lf",ii));
 	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
 	{
-		CaMsgBox::ShowMsg("金额超过最大允许值");
-		return FAILURE;
+		return(ErrMsgBox(MONEY_EXCEED));
 	}	
 	dotNum = CheckFloatBit(ii);
 	DBG_PRINT(("dotNum= %d",dotNum));
@@ -923,8 +925,7 @@ UINT8 CProductSaleMainMenu::SumInputProc(void)
 	DBG_PRINT(("ii= %lf",ii));
 	if(((UINT64)double2int(ii*SUM_EXTENSION)) >= MAX_MONEY)
 	{
-		CaMsgBox::ShowMsg("金额超过最大允许值");
-		return FAILURE;
+		return(ErrMsgBox(MONEY_EXCEED));
 	}
 	dotNum = CheckFloatBit(ii);
 	DBG_PRINT(("dotNum= %d",dotNum));

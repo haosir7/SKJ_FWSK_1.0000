@@ -689,7 +689,7 @@ INSERT INTO dept VALUES ('0000000000000003', '部类商品3', 30.0, 0.00, '扎', 3, '
 insert into sysarg values(0,'',1,'',0);
 insert into sysarg values(1,'',0,'个人',0);
 insert into sysarg values(2,'',9600,'',0);
-insert into sysarg values(3,'',9600,'',0);
+insert into sysarg values(3,'',115200,'',0);
 insert into sysarg values(4,'',0,'',0);
 insert into sysarg values(5,'',1,'',0);
 insert into sysarg values(6,'',3,'',0);
