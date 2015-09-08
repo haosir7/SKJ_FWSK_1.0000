@@ -856,8 +856,8 @@ UINT8 GetPrnLineData(TPrnTempRow *tempLine2, TPrnLineInfo *conWriteBuffer, TPrnT
 					//折行有打印内容，标志置3
 					continueWriteFlag = 3;
 					/**********for 57mm***********/
-					continueWriteLocation = location;//跟上一行付款单位的起始打印位置对齐
-					//continueWriteLocation = 2;//从一行的起始位置开始打印
+					//continueWriteLocation = location;//跟上一行付款单位的起始打印位置对齐
+					continueWriteLocation = 2;//从一行的起始位置开始打印
 					/**********for 57mm***********/
 					
 					prnLineInfo->Bhigh = tempLine2->BhighOne;
@@ -1046,8 +1046,8 @@ UINT8 GetPrnLineData(TPrnTempRow *tempLine2, TPrnLineInfo *conWriteBuffer, TPrnT
 					{					
 						continueWriteFlag = 3;
 						/**********for 57mm***********/
-						continueWriteLocation = location;		
-					//	continueWriteLocation = 2;	
+						//continueWriteLocation = location;		
+						continueWriteLocation = 2;	
 						/**********for 57mm***********/
 						prnLineInfo->Bhigh = tempLine2->BhighOne;
 						
