@@ -1714,6 +1714,26 @@ UINT8 SaleData::ClientCodeInput(const char *content, string &strErr)
 		strErr = "未输入付款方税号";
 		DBG_RETURN(FAILURE);
 	}
+
+	DBG_PRINT(("content = %s", content));
+
+	UINT8 tmpCon[32];
+	memset((void *)tmpCon,0x00,sizeof(tmpCon));
+    memcpy((void *)tmpCon,content,len);
+
+    DBG_PRINT(("tmpCon = %s", tmpCon));
+	while(len > 0) 
+	{
+		if (!isalnum(*tmpCon)) 
+		{
+			strErr = "输入付款方税号含有非法字符";
+	    	DBG_RETURN(FAILURE);
+		}
+
+		(*tmpCon)++;
+		len--;
+	}
+		
 	DBG_PRINT(("content = %s", content));
 	
 	m_singleInvInfo->m_fkdwsh = content;
