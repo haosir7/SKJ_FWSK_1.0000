@@ -79,7 +79,7 @@ void OpenPrinterDEV()
 
 #ifndef WIN32
 
-	printf("4000RG_uart1 opened start\n");
+	//printf("4000RG_uart1 opened start\n");
 	INT32 res;
 
 	pPrinterSerial = &Printerserial;
@@ -90,15 +90,15 @@ void OpenPrinterDEV()
 	if (res == FAILURE) 
 	{
 		pPrinterSerial->ClosePort(pPrinterSerial);
-		printf("4000RG_open uart1 error\n");
+		//printf("4000RG_open uart1 error\n");
 		exit(-1);
 	}
 	else
 	{
-		printf("4000RG_uart1 opened\n");
+		//printf("4000RG_uart1 opened\n");
 	}
 	fd_uart1 = pPrinterSerial->m_fd;
-	printf("4000RG_uart1: InitPort Success %d\n", fd_uart1);
+	//printf("4000RG_uart1: InitPort Success %d\n", fd_uart1);
 
 #endif
 	return;
@@ -115,7 +115,7 @@ void YMPrinterIni(void)
 {
 #ifndef WIN32
 	
-	printf("\n*****************************PrinterIni_Begin********************\n");
+	//printf("\n*****************************PrinterIni_Begin********************\n");
 
 	SendCmd(2, 0x1B, 0x40);//设置初始化命令,该命令不会改变双向打印参数的设置,以及下面两项
 
@@ -127,7 +127,7 @@ void YMPrinterIni(void)
 	write(fd_uart1, str_Printerinitset, sizeof(str_Printerinitset));
 	write(fd_uart1, str_Jinzhimodeset, sizeof(str_Jinzhimodeset));
 
-	printf("\n*****************************PrinterIni_End********************\n");
+	//printf("\n*****************************PrinterIni_End********************\n");
 #endif //WIN32
 
 	return;
@@ -153,7 +153,7 @@ void SetAsciiMode(void)
 
 void ForwardNPoint(UINT16 N)
 {
-	printf("\n*****************************ForwardNPoint N0 = %u********************\n",N);
+	//printf("\n*****************************ForwardNPoint N0 = %u********************\n",N);
 	if (N == 0)
 	{
 		return;
@@ -166,14 +166,14 @@ void ForwardNLine(UINT8 N)
 {
 	UINT8 i;
 	
-	printf("\n*****************************ForwardNLine N0 = %u********************\n",N);
+	//printf("\n*****************************ForwardNLine N0 = %u********************\n",N);
 	SendCmd(3, 0x1B, 0x64, N);
 }
 
 
 void SetDoubleChineseMode(void)
 {
-	printf("\n*****************************SetDoubleChineseMode********************\n");
+	//printf("\n*****************************SetDoubleChineseMode********************\n");
 
 	SendCmd(3, 0x1C, 0x21, 0x04);//选择中文方式下的打印模式
 }
@@ -181,7 +181,7 @@ void SetDoubleChineseMode(void)
 
 void CancelDoubleChineseMode(void)
 {
-	printf("\n*****************************CancelDoubleChineseMode********************\n");
+	//printf("\n*****************************CancelDoubleChineseMode********************\n");
 
 	SendCmd(3, 0x1C, 0x21, 0x00);//选择中文方式下的打印模式
 }
@@ -189,20 +189,20 @@ void CancelDoubleChineseMode(void)
 
 void SetLineSpace(UINT8 N)
 {
-	printf("\n*****************************SetLineSpace N0 = %u********************\n",N);
+	//printf("\n*****************************SetLineSpace N0 = %u********************\n",N);
 
 	if (N < 16)
 	{
 		N = N + 16;
 	}
-	printf("\n*****************************SetLineSpace N1 = %u********************\n",N);
+	//printf("\n*****************************SetLineSpace N1 = %u********************\n",N);
 	SendCmd(3, 0x1B, 0x33, N);
 }
 
 
 void CarriageReturn(void)
 {
-	printf("\n*****************************CarriageReturn********************\n");
+	//printf("\n*****************************CarriageReturn********************\n");
 
 	SendCmd(1, 0x0D);
 }
@@ -210,7 +210,7 @@ void CarriageReturn(void)
 
 void LineFormard(void)
 {
-	printf("\n*****************************LineFormard********************\n");
+	//printf("\n*****************************LineFormard********************\n");
 
 	SendCmd(1, 0x0A);
 }
@@ -218,14 +218,14 @@ void LineFormard(void)
 
 void SeekForntBorderBlackMark(void)
 {
-	printf("\n*****************************SeekForntBorderBlackMark********************\n");
+	//printf("\n*****************************SeekForntBorderBlackMark********************\n");
 
 	SendCmd(2, 0x1D, 0x0C);
 }
 
 void SeekBackBorderBlackMark(void)
 {
-	printf("\n*****************************SeekBackBorderBlackMark********************\n");
+	//printf("\n*****************************SeekBackBorderBlackMark********************\n");
 
 	SendCmd(2, 0x1D, 0x0C);
 }
@@ -246,7 +246,7 @@ void ExecuteHT(void)
 void PrintChineseLine(INT8 *LineBuff, UINT8 BuffLen)
 {
 #ifndef WIN32	
-	printf("\n*****************************PrintChineseLine_Begin********************\n");
+	//printf("\n*****************************PrintChineseLine_Begin********************\n");
 
 	UINT8 i;
 	
@@ -281,7 +281,7 @@ void PrintChineseLine(INT8 *LineBuff, UINT8 BuffLen)
 	CarriageReturn();
 	LineFormard();
 
-	printf("\n*****************************PrintChineseLine_End********************\n");
+	//printf("\n*****************************PrintChineseLine_End********************\n");
 
 #endif	//WIN32
 	
@@ -292,7 +292,7 @@ void PrintChineseLine(INT8 *LineBuff, UINT8 BuffLen)
 void PrintDoubleChineseLine(INT8 *LineBuff, UINT8 BuffLen)
 {
 #ifndef WIN32
-	printf("\n*****************************PrintDoubleChineseLine_Begin********************\n");
+	//printf("\n*****************************PrintDoubleChineseLine_Begin********************\n");
 
 	UINT8 i;
 	
@@ -329,7 +329,7 @@ void PrintDoubleChineseLine(INT8 *LineBuff, UINT8 BuffLen)
 	CarriageReturn();
 	LineFormard();
 
-	printf("\n*****************************PrintDoubleChineseLine_End********************\n");
+	//printf("\n*****************************PrintDoubleChineseLine_End********************\n");
 
 #endif	//WIN32
 
@@ -341,7 +341,7 @@ void PrintDoubleChineseLine(INT8 *LineBuff, UINT8 BuffLen)
 void PrintAsciiLine(INT8 *LineBuff, UINT8 BuffLen)
 {
 #ifndef WIN32
-	printf("\n*****************************PrintAsciiLine_Begin********************\n");
+	//printf("\n*****************************PrintAsciiLine_Begin********************\n");
 
 	UINT8 i;
 	
@@ -376,7 +376,7 @@ void PrintAsciiLine(INT8 *LineBuff, UINT8 BuffLen)
 	CarriageReturn();
 	LineFormard();
 
-	printf("\n*****************************PrintAsciiLine_End********************\n");
+	//printf("\n*****************************PrintAsciiLine_End********************\n");
 
 #endif	//WIN32
 	return;
@@ -386,7 +386,7 @@ void PrintAsciiLine(INT8 *LineBuff, UINT8 BuffLen)
 void PrintReportLine(INT8 *LineBuff, UINT8 BuffLen)
 {
 #ifndef WIN32
-	printf("\n*****************************PrintReportLine_Begin********************\n");
+	//printf("\n*****************************PrintReportLine_Begin********************\n");
 
 	UINT8 i;
 
@@ -435,7 +435,7 @@ void PrintReportLine(INT8 *LineBuff, UINT8 BuffLen)
 	CarriageReturn();
 	LineFormard();
 
-	printf("\n*****************************PrintReportLine_End********************\n");
+	//printf("\n*****************************PrintReportLine_End********************\n");
 
 #endif	//WIN32
 	return;
@@ -451,7 +451,7 @@ void PrintSeparateLine(void)
 
 void BackwardNPoint(UINT16 N)
 {
-	printf("\n*****************************BackwardNPoint N0 = %u********************\n",N);
+	//printf("\n*****************************BackwardNPoint N0 = %u********************\n",N);
 
 	if (N == 0)
 	{
@@ -470,7 +470,7 @@ void BackwardNPoint(UINT16 N)
 
 void SetWordSpace(UINT8 N)
 {
-	printf("\n*****************************SetWordSpace N0 = %u********************\n",N);
+	//printf("\n*****************************SetWordSpace N0 = %u********************\n",N);
 
 	if (N<=32)
 	{
@@ -482,7 +482,7 @@ void SetWordSpace(UINT8 N)
 void SetBidirectionalPara(UINT8 N)
 {
 #if SIDA_PRINTER 
-	printf("\n*****************************SetBidirectionalPara N0 = %u********************\n",N);
+	//printf("\n*****************************SetBidirectionalPara N0 = %u********************\n",N);
 	if ((GetPrinterStatus() & 0x04) == 0x00)	//有打印纸时执行,否则阻塞串口
 	{
 		UINT8 checksum = 0;
@@ -497,7 +497,7 @@ void SetBidirectionalPara(UINT8 N)
 			checksum += str_BIDparaset[tempi];
 		}
 		str_BIDparaset[6]= checksum;
-		printf("str_BIDparaset[6] = %x",str_BIDparaset[6]);
+		//printf("str_BIDparaset[6] = %x",str_BIDparaset[6]);
 		write(fd_uart1, str_BIDparaset, 7);
 	}
 #endif
@@ -506,7 +506,7 @@ void SetBidirectionalPara(UINT8 N)
 
 void BidirectionalParaTest(void)
 {
-	printf("\n*****************************BidirectionalParaTest********************\n");
+	//printf("\n*****************************BidirectionalParaTest********************\n");
 	SetLineSpace(24);
 	UINT8 checksum = 0;
 	INT32 tempi = 0;
@@ -547,30 +547,30 @@ UINT8 GetPrinterStatus(void)
 		nCount = pPrinterSerial->GetReceiveCount(pPrinterSerial);
 		CommonSleep(100);
 		timeOut++;
-		printf("timeOut = %u\n", timeOut);
+		//printf("timeOut = %u\n", timeOut);
 	}
-	printf("最终的 nCount = %d\n",nCount);
+	//printf("最终的 nCount = %d\n",nCount);
 	if (nCount >= 1)
 	{
-		printf("uart1: GetChar Success!\n");
+		//printf("uart1: GetChar Success!\n");
 		for (tempi=nCount; tempi>0; tempi--)
 		{
 			chGet = pPrinterSerial->GetChar(pPrinterSerial);
 			nCount = pPrinterSerial->GetReceiveCount(pPrinterSerial);
-			printf("此时的 nCount = %d\n",nCount);
-			printf("此时的 chGet = 0x%x\n", chGet);
+			//printf("此时的 nCount = %d\n",nCount);
+			//printf("此时的 chGet = 0x%x\n", chGet);
 		}
 	}
 	else
 	{
 		chGet = 0x01;
-		printf("uart1: GetChar Failure!");
+		//printf("uart1: GetChar Failure!");
 	}
 
 #endif
 
 #endif	//WIN32
-	printf("最终的 chGet = 0x%x\n", chGet);
+	//printf("最终的 chGet = 0x%x\n", chGet);
 	return chGet;
 }
 
@@ -593,14 +593,14 @@ void OpenPrinterDEV()
 {
 
 #ifndef WIN32
-	printf("uart1 opened start\n");
+	//printf("uart1 opened start\n");
 	if ((fd_uart1 = open("/dev/uart1", O_RDWR)) == -1)
 	{
-		printf("open uart1 err\n");
+		//printf("open uart1 err\n");
 		exit(-1);
 	}
 	else
-		printf("uart1 opened\n");
+		//printf("uart1 opened\n");
 #endif
 	return;
 }

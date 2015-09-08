@@ -270,7 +270,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
     //判断商品金额是否超单张开票限额
 	INT64 moneySum, orgMoneySum;			//orgMoneySum是折扣前该商品行的金额，moneySum是折扣后该商品行的金额。
 	INT64 moneyTaxSum=0;
-	double fOrgMoneySum=0; 
+	double fOrgMoneySum=0.00; 
 	DBG_PRINT(("m_tmpSum==%lf ", m_tmpSum));//m_tmpSum在DeptSale函数里置成了0
 	//如果用户输入了总价
 	if( m_tmpSum > 0 )  
@@ -1706,7 +1706,7 @@ UINT8 SaleData::ClientCodeInput(const char *content, string &strErr)
     DBG_PRINT(("len = %u", len));
 	if (len > TAX_CODE_LEN) 
 	{
-		strErr = "付款方税号过长";
+		strErr = "付款方税号不超过20位";
 		DBG_RETURN(FAILURE);
 	}
 	else if(len == 0)
