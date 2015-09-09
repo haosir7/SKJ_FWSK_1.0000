@@ -156,9 +156,11 @@ UINT8 fpcx_Serial(CYWXML_GY &ywxml_gy, UINT8 cxfs, string cxtj, UINT32 &invNum, 
 @brief  税控盘报税盘组合操作
 @param[in] ywxml_gy	公共参数
 @param[in] czlx	操作类型
+@param[in] hzxx 其他信息
+@param[in] qtxx	汇总信息
 @param[out] strErr	错误信息
 */
-UINT8 skpbspzhcz_Serial(CYWXML_GY &ywxml_gy, UINT8 czlx, string &strErr);
+UINT8 skpbspzhcz_Serial(CYWXML_GY &ywxml_gy, UINT8 czlx, string hzxx,string qtxx,string &strErr);
 
 
 /*!

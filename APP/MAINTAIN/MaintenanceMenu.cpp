@@ -67,8 +67,13 @@ void CMaintenanceMenu::OnButton2(int iEvent, unsigned char * pEventData, int iDa
 //修改时钟
 void CMaintenanceMenu::OnButton3(int iEvent, unsigned char * pEventData, int iDataLen)
 {
-	CaMsgBox::ShowMsg("暂不支持,此功能");
-	return;
+	if (g_globalArg->m_initFlag == 0)
+	{
+		DBG_PRINT(("机器未初始化"));
+		CaMsgBox::ShowMsg("机器未初始化");
+		return ;
+	}
+
 	ChangeWin(CHANGE_DATETIME_WIN);		
 }
 

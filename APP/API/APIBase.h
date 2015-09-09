@@ -89,6 +89,13 @@ public:
 	*/
 	virtual INT32 BGZSKL_API(CYWXML_GY &ywxml_gy, string ykl, string xkl, string &strErr)=0;
 
+	/*!
+	@brief 修改金税盘时钟
+	@param[in]  szxx     时钟信息
+	@param[out] strErr   错误信息
+	@return  1 SUCCESS； 0  FAILURE
+	*/
+	virtual INT32 XGJSPSZ_API(CYWXML_GY &ywxml_gy, string szxx, string &strErr)=0;
 
 
 	/*!

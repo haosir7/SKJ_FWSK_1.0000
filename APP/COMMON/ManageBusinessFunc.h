@@ -133,6 +133,14 @@ public:
 	*/
 	INT32 ClearMidDepot(string &strErr);
 
+	/*!
+	@brief 修改金税盘时钟
+	@param[in] 修改时间“20150909122023”
+	@param[out] strErr   错误信息
+	@return  1 SUCCESS； 0  FAILURE
+	*/
+	INT32 UpdateClockProc(CYWXML_GY &ywxml_gy, string strTime, string &strErr);
+
 
 };
 

@@ -28,7 +28,7 @@ public:
 	@param[in]  Czlx 操作类型
 	@param[in]  Hzxx 汇总信息
 	*/
-	CSkpBsp(CYWXML_GY &ywxml_gy, UINT8 Czlx, string Hzxx);
+	CSkpBsp(CYWXML_GY &ywxml_gy, UINT8 Czlx, string Hzxx, string Qtxx);
 	~CSkpBsp();
 
 private:
@@ -47,6 +47,7 @@ private:
 
 	UINT8 m_Czlx;
 	string m_Hzxx;
+	string m_Qtxx;
 };
 
 

@@ -7,6 +7,7 @@
 #include "comdatatype.h"
 #include "TDateTime.h"
 #include "ChangeDateTimeWin.h"
+#include "APIBase.h"
 
 #include "LOGCTRL.h"
 //#define NO_POS_DEBUG
@@ -145,7 +146,7 @@ void CChangeDateTime::S_DefaultDateTime(CaObject *obj,int iEvent, unsigned char 
 void CChangeDateTime::ConfirmDateTime(int iEvent, unsigned char * pEventData, int iDataLen)
 {
 	string strErr;
-	string result;
+	string strClock;
 	TDateTime dateTime;
 	
 
@@ -159,12 +160,26 @@ void CChangeDateTime::ConfirmDateTime(int iEvent, unsigned char * pEventData, in
 	CaProgressBar info("修改时间中...");
 	info.Show();
 
-	//调试信息，设置的日期时间是否正确
-	result = dateTime.FormatString(YYYYMMDD, NULL);
-	DBG_PRINT(("当前日期 %s", result.c_str()));
-	result = dateTime.FormatString(HHMMSS, NULL);
-	DBG_PRINT(("当前时间 %s", result.c_str()));
+	
+	UINT32 nCurDate = dateTime.FormatInt(YYYYMMDD);
+	UINT32 nCurTime = dateTime.FormatInt(HHMMSS);
+
+    INT8 tmpBuf[32];
+	memset((void *)tmpBuf,0x00,sizeof(tmpBuf));
+	sprintf(tmpBuf,"%u%u",nCurDate,nCurTime);
+	strClock = tmpBuf;
+	DBG_PRINT(("当前日期 %s", strClock.c_str()));
 	//END
+
+	INT32 nRet = g_pAPIBase->XGJSPSZ_API(*g_YwXmlArg,strClock, strErr);
+	DBG_PRINT(("nRet= %d",nRet));
+	
+	if (nRet != SUCCESS)
+	{
+		CaMsgBox::ShowMsg(strErr);
+		this->ReFresh();
+		return ;
+	}
 
 	TDateTime::SetCurrentDateTime(dateTime);
 	info.SetText("修改时间完成，请重启");

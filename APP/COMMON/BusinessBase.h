@@ -123,7 +123,7 @@ public:
 	virtual INT32 FPCX_Business(CYWXML_GY &ywxml_gy, UINT8 cxfs, string cxtj, UINT32 &invNum, CInvHead *pInvhead, string &strErr)=0;
 
 	//税控设备报税盘组合操作
-	virtual INT32 SKPBSP_Business(CYWXML_GY &ywxml_gy, UINT8 czlx, string &strErr)=0;
+	virtual INT32 SKPBSP_Business(CYWXML_GY &ywxml_gy, UINT8 czlx, string qtxx,string &strErr)=0;
 
 	//发票段信息查询(报税盘发票查询)
 	virtual INT32 BSPFPCX_Business(CYWXML_GY &ywxml_gy, UINT32 &invNum, CInvVol *pInvVol, string &strErr)=0;

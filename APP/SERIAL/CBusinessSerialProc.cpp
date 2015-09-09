@@ -1318,7 +1318,7 @@ UINT8 CBusinessSerialProc::fpcx_Serial(CYWXML_GY &ywxml_gy, UINT8 cxfs, string c
 }
 
 //税控盘报税盘组合操作
-UINT8 CBusinessSerialProc::skpbspzhcz_Serial(CYWXML_GY &ywxml_gy, UINT8 czlx, string &strErr)
+UINT8 CBusinessSerialProc::skpbspzhcz_Serial(CYWXML_GY &ywxml_gy, UINT8 czlx, string hzxx,string qtxx,string &strErr)
 {
 	DBG_PRINT(("----------税控盘报税盘组合操作----------"));
 
@@ -1334,9 +1334,15 @@ UINT8 CBusinessSerialProc::skpbspzhcz_Serial(CYWXML_GY &ywxml_gy, UINT8 czlx, st
 	m_serialProtocol->FillParament(ywxml_gy.m_bspkl, KOULING_LEN);
 	m_serialProtocol->FillParament(ywxml_gy.m_fplxdm, FPLXDM_S_LEN);
 
+
 	memset(tempbuf, 0x00, sizeof(tempbuf));
 	sprintf(tempbuf, "%u", czlx);
 	m_serialProtocol->FillParament(tempbuf, CZLX_LEN);
+
+
+	m_serialProtocol->FillParament(hzxx, HZXX_LEN);
+	
+	m_serialProtocol->FillParament(qtxx, ZH_QTXX_LEN);
 
 	m_serialProtocol->FillParament(ywxml_gy.m_jqbh, JQBH_LEN);
 	
@@ -1346,7 +1352,7 @@ UINT8 CBusinessSerialProc::skpbspzhcz_Serial(CYWXML_GY &ywxml_gy, UINT8 czlx, st
 		m_serialProtocol->resetAll();
 		
 		return FAILURE;
-	}
+	} 
 	
 	ret = m_serialProtocol->revData(strErr);
 	DBG_PRINT(("ret = %u", ret));

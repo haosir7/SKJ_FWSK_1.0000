@@ -51,7 +51,7 @@ INT32 CDeclareBusinessFunc::DeclareProc(CYWXML_GY &ywxml_gy, UINT8 jzlx, string 
 	INT32 ret = SUCCESS;
 	string strSQ("");
 	string strFphz("");
-
+    string strQtxx("");
 	if(jzlx == SJCB_JZLX_JSP)		//金税盘报税
 	{
 	ret = g_pBusBase->SJCB_Business(ywxml_gy, jzlx, strSQ, strFphz, strErr);
@@ -60,7 +60,7 @@ INT32 CDeclareBusinessFunc::DeclareProc(CYWXML_GY &ywxml_gy, UINT8 jzlx, string 
 	else if(jzlx == SJCB_JZLX_BSP)	//报税盘报税
 	{
 		UINT8 czlx = SKPBSP_CZLX_SJCB;
-		ret = g_pBusBase->SKPBSP_Business(ywxml_gy, czlx, strErr);
+		ret = g_pBusBase->SKPBSP_Business(ywxml_gy, czlx, strQtxx, strErr);
 		ret = g_pBusBase->ErrParse(ret, strErr);
 	}
 	else
@@ -110,8 +110,9 @@ INT32 CDeclareBusinessFunc::UpdateTaxProc(CYWXML_GY &ywxml_gy, string &strErr)
 {
 	INT32 ret = SUCCESS;
 	UINT8 czlx = SKPBSP_CZLX_QLJS;
+     string qtxx("");
 
-	ret = g_pBusBase->SKPBSP_Business(ywxml_gy, czlx, strErr);
+	ret = g_pBusBase->SKPBSP_Business(ywxml_gy, czlx,qtxx, strErr);
 	ret = g_pBusBase->ErrParse(ret, strErr);
 
 	return ret;

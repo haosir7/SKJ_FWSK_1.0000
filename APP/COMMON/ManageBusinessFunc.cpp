@@ -172,4 +172,14 @@ INT32 CManageBusinessFunc::ClearMidDepot(string &strErr)
 	return ret;
 }
 
+INT32 CManageBusinessFunc::UpdateClockProc(CYWXML_GY &ywxml_gy, string strTime, string &strErr)
+{
+	INT32 ret = SUCCESS;
+	
+	UINT8 czlx = SKPBSP_CZLX_JZSZ; //修改金税盘时钟
+	ret = g_pBusBase->SKPBSP_Business(ywxml_gy, czlx,strTime, strErr);
+	ret = g_pBusBase->ErrParse(ret, strErr);
 
+	
+	return ret;
+}

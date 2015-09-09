@@ -237,12 +237,12 @@ INT32 CBusinessXmlProc::FPCX_Business(CYWXML_GY &ywxml_gy, UINT8 cxfs, string cx
 }
 
 //税控设备报税盘组合操作
-INT32 CBusinessXmlProc::SKPBSP_Business(CYWXML_GY &ywxml_gy, UINT8 czlx, string &strErr)
+INT32 CBusinessXmlProc::SKPBSP_Business(CYWXML_GY &ywxml_gy, UINT8 czlx, string qtxx,string &strErr)
 {
 	INT32 ret = XML_SUCCESS;
-	string strTemp;
+	string hzxx("");
 	ywxml_gy.m_strID = BUSINESS_YWID_SKPBSP;
-	CSkpBsp SkpBsp(ywxml_gy, czlx, strTemp);
+	CSkpBsp SkpBsp(ywxml_gy, czlx, hzxx,qtxx);
 	
 	ret = SkpBsp.YWXml_Proc(strErr);
 	return ret;

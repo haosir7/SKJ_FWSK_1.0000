@@ -29,14 +29,14 @@ INT32 CAPIzhqProc::OnLine(string &strErr)
 	
 	fTime = tp.time * 1000 + tp.millitm;
 	DBG_PRINT(("1 联机测试起始时间, fTime = %llu ", fTime));
-
+	
 	ret = m_SerialProc.onLine_Serial(strErr);
 	
 	ftime(&tp);
 	fTime2 = tp.time * 1000 + tp.millitm;
 	DBG_PRINT(("2 联机测试所用时间  fTime2 - fTime = %llu ", (fTime2 - fTime)));
 	
-
+	
 	return ret;
 }
 
@@ -162,9 +162,9 @@ INT32  CAPIzhqProc::LXXXUpdatePro_API(CYWXML_GY &ywxml_gy, string &strErr)
 INT32  CAPIzhqProc::NetParaManage_API(CNetPara *pNetPara, string &strErr)
 {
 	UINT8 ret = SUCCESS;
-
+	
 	ret = m_SerialProc.wlcswh_Serial(pNetPara, strErr);
-
+	
 	return ret;
 }
 
@@ -289,7 +289,7 @@ INT32  CAPIzhqProc::MakeNormalInv_API(CYWXML_GY &ywxml_gy, CInvHead *pInvHead, s
 {
 	UINT8 ret = SUCCESS;
 	
-
+	
 	UINT64 fTime, fTime2;
 	struct timeb tp;
 	ftime(&tp);
@@ -302,7 +302,7 @@ INT32  CAPIzhqProc::MakeNormalInv_API(CYWXML_GY &ywxml_gy, CInvHead *pInvHead, s
 	ftime(&tp);
 	fTime2 = tp.time * 1000 + tp.millitm;
 	DBG_PRINT(("2 开票所用时间  fTime2 - fTime = %llu ", (fTime2 - fTime)));
-
+	
 	return ret;
 }
 
@@ -354,7 +354,7 @@ INT32  CAPIzhqProc::NetDeclareProc_API(CYWXML_GY &ywxml_gy, string &strErr)
 	UINT8 NetBusinessFlag = 1;
 	
 	ret = m_SerialProc.sjcb_Serial(ywxml_gy, jzlx, NetBusinessFlag, strErr);
-		DBG_PRINT(("ret= %d strErr= %s",ret,strErr.c_str()));
+	DBG_PRINT(("ret= %d strErr= %s",ret,strErr.c_str()));
 	return ret;
 }
 
@@ -378,12 +378,34 @@ INT32  CAPIzhqProc::DeclareProc_API(CYWXML_GY &ywxml_gy, UINT8 jzlx, string &str
 	else if(jzlx == 1)
 	{
 		UINT8 czlx=1;	//1：数据抄报
-						//2：清零解锁
-						//3：反写购票信息
-						//4：校准税控设备时钟
-		ret =m_SerialProc.skpbspzhcz_Serial(ywxml_gy, czlx, strErr); //报税盘
+		//2：清零解锁
+		//3：反写购票信息
+		//4：校准税控设备时钟
+		string hzxx(""),qtxx("");
+		
+		ret =m_SerialProc.skpbspzhcz_Serial(ywxml_gy, czlx, hzxx,qtxx,strErr); //报税盘
 	}
 	
+	
+	return ret;
+}
+INT32 CAPIzhqProc::XGJSPSZ_API(CYWXML_GY &ywxml_gy, string szxx, string &strErr)
+{
+	UINT8 ret = SUCCESS;
+	
+	DBG_PRINT(("ywxml_gy.m_nsrsbh : %s", ywxml_gy.m_nsrsbh.c_str()));
+	DBG_PRINT(("ywxml_gy.m_sksbbh : %s", ywxml_gy.m_sksbbh.c_str()));
+	DBG_PRINT(("ywxml_gy.m_sksbkl : %s", ywxml_gy.m_sksbkl.c_str()));
+	DBG_PRINT(("ywxml_gy.m_fplxdm : %s", ywxml_gy.m_fplxdm.c_str()));
+	DBG_PRINT(("ywxml_gy.m_jqbh : %s", ywxml_gy.m_jqbh.c_str()));
+	
+	UINT8 czlx=4;	//1：数据抄报
+	//2：清零解锁
+	//3：反写购票信息
+	//4：校准税控设备时钟
+
+	string hzxx("");
+	ret =m_SerialProc.skpbspzhcz_Serial(ywxml_gy, czlx,hzxx,szxx, strErr); 
 	
 	return ret;
 }
@@ -408,11 +430,13 @@ INT32  CAPIzhqProc::UpdateTaxProc_API(CYWXML_GY &ywxml_gy, string &strErr)
 {
 	UINT8 ret = SUCCESS;
 	UINT8 czlx = 2;		//1：数据抄报
-						//2：清零解锁
-						//3：反写购票信息
-						//4：校准税控设备时钟
-
-	ret = m_SerialProc.skpbspzhcz_Serial(ywxml_gy, czlx, strErr);
+	//2：清零解锁
+	//3：反写购票信息
+	//4：校准税控设备时钟
+	
+	string hzxx(""),qtxx("");
+	
+	ret = m_SerialProc.skpbspzhcz_Serial(ywxml_gy, czlx,hzxx, qtxx,strErr);
 	
 	return ret;
 }
@@ -431,11 +455,11 @@ INT32 CAPIzhqProc::Fpbl_API(CYWXML_GY &ywxml_gy, UINT32 bsqsrq, UINT32 bszzrq, s
 
 
 /*!
- 获取离线数据
+获取离线数据
 */
 INT32 CAPIzhqProc::Hqlxsj_API(CYWXML_GY &ywxml_gy, string &wscfpzs, string &wscfpsj, string &wscfpljje, string &sczs, string &scsjjg, string &strErr)
 {
-
+	
 	UINT8 ret = SUCCESS;
 	
 	ret = m_SerialProc.hqlxsj_Serial(ywxml_gy, wscfpzs, wscfpsj, wscfpljje, sczs, scsjjg, strErr);
@@ -456,12 +480,12 @@ INT32 CAPIzhqProc::LibClearDepot(string &strErr)
 
 INT32 CAPIzhqProc::InvUpFailInfo_API(CYWXML_GY &ywxml_gy, CDataInvServ *pDataInvServ, UINT32 &nCount, string &strErr)
 {
-
+	
 	UINT8 ret = SUCCESS;
 	
 	ret = m_SerialProc.InvUpFailInfo_Serial(ywxml_gy, pDataInvServ, nCount, strErr);
-		
- 	return ret;
+	
+	return ret;
 }
 
 

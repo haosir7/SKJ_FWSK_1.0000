@@ -16,7 +16,7 @@
 //-------------------------------------------------------------------------------------------
 //构造函数
 //-------------------------------------------------------------------------------------------
-CSkpBsp::CSkpBsp(CYWXML_GY &ywxml_gy, UINT8 Czlx, string Hzxx): m_Czlx(Czlx), m_Hzxx(Hzxx), CYWXmlBase(ywxml_gy)
+CSkpBsp::CSkpBsp(CYWXML_GY &ywxml_gy, UINT8 Czlx, string Hzxx, string Qtxx): m_Czlx(Czlx), m_Hzxx(Hzxx),m_Qtxx(Qtxx), CYWXmlBase(ywxml_gy)
 {
 	
 }
@@ -71,7 +71,7 @@ INT32 CSkpBsp::XmlBuild()
 	m_pXmlConstruct.AddText("");		
 
 	m_pXmlConstruct.AddNode(m_pXmlConstruct.m_parentElement[2], "qtxx");
-	m_pXmlConstruct.AddText("");
+	m_pXmlConstruct.AddText(m_Qtxx);  //4：校准税控设备时钟 修改金税盘时钟
 //	Qtxx = m_pXmlConstruct.GetText().c_str();	
 //	Qtxx = "";	//仅数据抄报有效，用于抄报发票领用存信息（此字段目前不用，给空值。）;	
 

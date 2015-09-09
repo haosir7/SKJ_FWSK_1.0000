@@ -39,6 +39,8 @@
 #define BLXX_LEN			16				//保留信息长度
 #define KZXX_LEN			80				//扩展信息长度
 #define SPHSL_LEN			4				//商品行数量长度
+#define HZXX_LEN			100				//汇总信息
+#define ZH_QTXX_LEN			50				//税控设备报税盘组合操作：其他信息
 
 #define FPLXDM_S_LEN		3				//单个发票类型代码长度
 #define DATE_LEN			8				//日期长度

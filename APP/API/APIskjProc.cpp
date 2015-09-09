@@ -496,6 +496,23 @@ INT32  CAPIskjProc::NetDeclareProc_API(CYWXML_GY &ywxml_gy, string &strErr)
 }
 
 /*!
+ 修改金税盘时钟
+*/
+INT32 CAPIskjProc::XGJSPSZ_API(CYWXML_GY &ywxml_gy, string szxx, string &strErr)
+{
+	INT32 ret = SUCCESS;
+	
+	CManageBusinessFunc  managBusFun;
+	ret= managBusFun.UpdateClockProc(ywxml_gy, szxx,strErr);
+	DBG_PRINT(("ret= %d strErr= %s",ret,strErr.c_str()));
+	if (ret !=SUCCESS)
+	{
+		return FAILURE;
+	}
+	return ret;
+}
+
+/*!
  介质抄报（抄报时提示选择金税盘或者报税盘）
 */
 INT32  CAPIskjProc::DeclareProc_API(CYWXML_GY &ywxml_gy, UINT8 jzlx, string &strErr)

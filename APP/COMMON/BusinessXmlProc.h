@@ -62,7 +62,7 @@ public:
 	INT32 FPCX_Business(CYWXML_GY &ywxml_gy, UINT8 cxfs, string cxtj, UINT32 &invNum, CInvHead *pInvhead, string &strErr);
 	
 	//税控设备报税盘组合操作
-	INT32 SKPBSP_Business(CYWXML_GY &ywxml_gy, UINT8 czlx, string &strErr);
+	INT32 SKPBSP_Business(CYWXML_GY &ywxml_gy, UINT8 czlx, string qtxx,string &strErr);
 	
 	//发票段信息查询(报税盘发票查询)
 	INT32 BSPFPCX_Business(CYWXML_GY &ywxml_gy, UINT32 &invNum, CInvVol *pInvVol, string &strErr);
