@@ -20,6 +20,7 @@ CInvRetQueryWin::CInvRetQueryWin():CaWindow()
 {
 	m_invCode = "";
 	m_invNo = 0;
+	m_checkResult = SUCCESS;
 }
 
 CInvRetQueryWin::~CInvRetQueryWin()
@@ -259,12 +260,32 @@ void CInvRetQueryWin::OnButton1(int iEvent, unsigned char * pEventData, int iDat
 		return ;
 	}
 	
-	ret = INVM_CheckIsNoDB(m_invCode, m_invNo,&m_InvHead);
-
-	DBG_PRINT(("ret= %u",ret));
-	if(ret != SUCCESS)
+	m_checkResult = INVM_CheckIsNoDB(m_invCode, m_invNo,&m_InvHead);
+	DBG_PRINT(("m_checkResult= %u",m_checkResult));
+	if (m_checkResult == NO_INV)
 	{
-		INVM_ErrMsgBox(ret);
+		m_InvHead.m_kplx = RET_MANUAL_INV;
+		m_InvHead.m_fpdm = g_globalArg->m_curInvVol->m_code;
+		m_InvHead.m_fphm = g_globalArg->m_curInvVol->m_curInvNo;
+		m_InvHead.m_yfpdm = m_invCode;
+		m_InvHead.m_yfphm = m_invNo;
+		CaProgressBar proBar("");
+
+		CaMsgBox msgBox1("手工负票,是否开具?",CaMsgBox::MB_YESNO);
+		msgBox1.ShowBox();
+		if(msgBox1.m_iStatus == OK_PRESSED)
+		{
+			this->ReFresh();
+			ChangeWin(INV_RETURN_WIN);//切换到发票退回窗口
+		}
+		else
+		{
+			return;
+		}
+    }
+	else if(m_checkResult != SUCCESS)
+	{
+		INVM_ErrMsgBox(m_checkResult);
 		return ;
 	}
 

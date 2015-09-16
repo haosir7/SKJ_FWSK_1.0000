@@ -23,11 +23,24 @@ CInvReturnWin::CInvReturnWin():CaWindow()
 {
 	m_pRtInvHead=NULL;
 	
+
+	m_ret = 0;
+	m_codeNo = "";
+	m_invNo = 0;
+	if(NULL== pSaleData)
+	{
+		pSaleData = new SaleData;
+		DBG_ASSERT_EXIT((pSaleData != NULL), (" pSaleData == NULL!"));
+	}	
 }
 
 CInvReturnWin::~CInvReturnWin()
 {
-
+	if(pSaleData != NULL)
+	{
+		delete pSaleData;
+		pSaleData = NULL;
+	}
 }
 
 
@@ -158,12 +171,25 @@ void CInvReturnWin::DoActive()
 {
 	DBG_PRINT(("进入CInvReturnWin::DoActive函数"));
 	UINT8 ret;	
+	if(pSaleData == NULL)
+	{
+		pSaleData = new SaleData;
+		DBG_ASSERT_EXIT((pSaleData != NULL), (" pSaleData == NULL!"));
+	}	
 
 	m_pQueryWin = (CInvRetQueryWin*)m_pFrame->GetWin(INV_RET_QUERY_WIN);//至关重要，将m_pQueryWin与INV_RET_QUERY_WIN界面绑定在一起 
     m_pRtInvHead =&(m_pQueryWin->m_InvHead);//m_InvHead存储着要退发票的信息，赋值给m_pRtInvHead
 	DBG_PRINT(("m_pRtInvHead->m_fphm= %u",m_pRtInvHead->m_fphm));
 	
-	//修改屏幕显示才	
+	ret = m_pQueryWin->m_checkResult;
+	if(ret == NO_INV)
+	{
+		DBG_PRINT(("InvReturnOtherProc"));
+		InvReturnOtherProc(pSaleData, m_pRtInvHead->m_yfpdm, m_pRtInvHead->m_yfphm);//退非本机发票
+		return;
+	}
+
+
 	ReturnShow(m_pRtInvHead);
 	ChangeTitle();
 	ReFresh();
@@ -272,6 +298,20 @@ void CInvReturnWin::OnButton1(int iEvent, unsigned char * pEventData, int iDataL
    return;
 }
 
+
+UINT8 CInvReturnWin::InvReturnOtherProc(SaleData *pSale, string codeNo, UINT32 invNo)
+{
+	DBG_PRINT(("进入CInvReturnWin::InvReturnOtherProc函数"));
+	DBG_ASSERT_EXIT((pSale != NULL), (" pSale == NULL!"));
+
+
+	ReturnGoods(pSale, codeNo, invNo); //转入退货流程
+
+	ChangeWin(PRODUCT_SALE_MAIN_MENU);//进入销售界面
+
+	DBG_PRINT(("退出CInvReturnWin::InvReturnOtherProc函数"));
+	return SUCCESS;	
+}
 
 void CInvReturnWin::OnButton2(int iEvent, unsigned char * pEventData, int iDataLen)
 {

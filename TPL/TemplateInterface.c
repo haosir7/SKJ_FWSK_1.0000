@@ -1214,7 +1214,7 @@ UINT8 GetPrnLineData(TPrnTempRow *tempLine2, TPrnLineInfo *conWriteBuffer, TPrnT
 					
 					
 					if ((pInv->InvType == RETURN_INV_TEMPLATE) || (pInv->InvType == RETURN_INV_NOTEXIT_TEMPLATE) ||
-						(pInv->InvType == RET_SPECIAL_INV))
+						(pInv->InvType == RET_SPECIAL_INV) || (pInv->InvType == RET_MANUAL_INV))
 					{
 						sprintf(saveRightBuf,"гд%.2f",-(double)((double)pInv->InvSumLowcase) / 100);
 					}

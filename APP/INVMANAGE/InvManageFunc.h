@@ -101,7 +101,7 @@ UINT8  INVM_InvReturn(SaleData *pSale, CInvHead *pInvHead);
 @param[in] invNo       所退发票的发票号码  
 @return  1 成功； 非1  错误代码
 */
-// UINT8 ReturnGoods(SaleData *pSale, string codeNo, UINT32 invNo);
+ UINT8 ReturnGoods(SaleData *pSale, string codeNo, UINT32 invNo);
 
 // UINT8 InvReturnSpe(SaleData *pSale);
 

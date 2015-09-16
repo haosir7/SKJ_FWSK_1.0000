@@ -744,7 +744,7 @@ UINT8 CBusinessSerialProc::fpkj_Serial(CYWXML_GY &ywxml_gy, CInvHead *pInvHead, 
 		memset(tempbuf, 0x00, sizeof(tempbuf));
 		sprintf(tempbuf, "%u", kplx_temp);
 	}
-	else if (RETURN_INV == pInvHead->m_kplx)
+	else if (RETURN_INV == pInvHead->m_kplx ||  RET_MANUAL_INV== pInvHead->m_kplx)
 	{
 		UINT8 kplx_temp = 1;	//规范要求红票开具要传1
 		memset(tempbuf, 0x00, sizeof(tempbuf));

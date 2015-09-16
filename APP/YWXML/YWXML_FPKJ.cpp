@@ -73,7 +73,7 @@ INT32 CFpkj::XmlBuild()
 
 	if(m_InvInfo.m_kplx == NORMAL_INV)
 		tmpFplx = 0;
-	else if(m_InvInfo.m_kplx == RETURN_INV)
+	else if(m_InvInfo.m_kplx == RETURN_INV ||  RET_MANUAL_INV== m_InvInfo.m_kplx)
 		tmpFplx = 1;
 	m_pXmlConstruct.AddNode(m_pXmlConstruct.m_parentElement[2], "kplx");
 	memset(Buf, 0, sizeof(Buf));

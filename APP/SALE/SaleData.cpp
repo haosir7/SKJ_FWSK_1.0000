@@ -584,7 +584,7 @@ UINT8 SaleData::Sale( CDept *deptInfo )
 			ret = SHORT_OF_INV; 
 		DBG_PRINT((" g_globalArg->m_curInvVol->m_remain = %u !", g_globalArg->m_curInvVol->m_remain));
 	}
-	if ((nInvCount>1)&&(m_singleInvInfo->m_kplx==RETURN_INV)) 
+	if ((nInvCount>1)&&(m_singleInvInfo->m_kplx==RETURN_INV || m_singleInvInfo->m_kplx==RET_MANUAL_INV)) 
 	{
 		nIfReturn = 1;
 		ret = RETURN_GOODS_EXCEED;

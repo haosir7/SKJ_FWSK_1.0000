@@ -50,7 +50,7 @@ UINT8 SALE_MakeInvHand(CInvHead *pInvHead,string &strErr)
 	INT32 ret=SUCCESS;
 	
 	DBG_PRINT(("pInvHead->m_kplx= %u",pInvHead->m_kplx));
-	if((pInvHead->m_kplx == NORMAL_INV)||(pInvHead->m_kplx ==RETURN_INV))
+	if((pInvHead->m_kplx == NORMAL_INV)||(pInvHead->m_kplx ==RETURN_INV) || (pInvHead->m_kplx ==RET_MANUAL_INV))
 	{	
 		ret= g_pAPIBase->MakeNormalInv_API(*g_YwXmlArg, pInvHead, strErr);
 	}

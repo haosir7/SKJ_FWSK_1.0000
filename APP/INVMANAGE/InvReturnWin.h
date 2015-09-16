@@ -46,6 +46,10 @@ public:
 	int m_iBtnW;								/**< 两列时，控件的宽度 */  
 	int m_iColW;								/**< 两列时，第二列的横坐标 */  
 
+	UINT8 m_ret;								/**< 返回值*/
+	string m_codeNo;							/**< 所退发票代码*/
+	UINT32 m_invNo;								/**< 所退发票号码*/
+
 	CInvHead *m_pRtInvHead;                       /**< 所退发票信息*/ 
 	CInvRetQueryWin *m_pQueryWin;				/**< 红票查询界面的指针*/
 private:
@@ -159,6 +163,23 @@ public:
 	@return  1: SUCCESS; 0: FAILURE
 	*/
 	UINT8 ReturnShow(CInvHead *pInvHead);
+	
+	/*!
+	@brief 发票退回时的非本机开票显示
+	@param[in] money    被退发票的合计金额
+	@param[in] goodsNum 被退发票的商品行总数
+	@return  1: SUCCESS; 0: FAILURE
+	*/
+	UINT8 ReturnOtherShow();
+
+	/*!
+	@brief 发票退回过程(退非本机发票)
+	@param[in] pSale   销售数据对象指针
+	@param[in] codeNo  所退发票代码
+	@param[in] invNo   所退发票号码
+	@return  1: SUCCESS; 0: FAILURE
+	*/
+	UINT8 InvReturnOtherProc(SaleData *pSale, string codeNo, UINT32 invNo);
 	
   
 };

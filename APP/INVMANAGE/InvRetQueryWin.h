@@ -46,6 +46,8 @@ public:
 	UINT32 m_invNo;								/**< 所退发票号码*/
     CInvHead m_InvHead;                      /**< 查询发票信息*/
 	
+	UINT8 m_checkResult;                        /**< 检查发票号的结果*/
+	
 private:
 
 	/*!

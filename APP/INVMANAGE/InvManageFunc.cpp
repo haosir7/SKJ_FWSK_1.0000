@@ -329,18 +329,19 @@ UINT8 INVM_InvRetProc(CInvHead *pInvHead)
 }
 
 //退非本机发票（退货）
-// UINT8 ReturnGoods(SaleData *pSale, string codeNo, UINT32 invNo)
-// {
-// 	DBG_ENTER("InvReturn");
-// 	DBG_ASSERT_EXIT((pSale != NULL), (" pSale == NULL!"));
-// 	
-// 	pSale->m_invtype = RET_MANUAL_INV;//RETURN_INV; 
-// 	pSale->m_oldInv = invNo;
-// 	pSale->m_oldCodeNo = codeNo;
-// 	pSale->m_returnOther = 1;
-// 	
-// 	DBG_RETURN(SUCCESS);
-//
+UINT8 ReturnGoods(SaleData *pSale, string codeNo, UINT32 invNo)
+{
+	DBG_ENTER("InvReturn");
+	DBG_ASSERT_EXIT((pSale != NULL), (" pSale == NULL!"));
+	
+	pSale->m_invtype = RET_MANUAL_INV;//RETURN_INV; 
+	pSale->m_oldInv = invNo;
+	pSale->m_oldCodeNo = codeNo;
+	pSale->m_returnOther = 1;
+	
+	DBG_RETURN(SUCCESS);
+}
+
 //-----------------------------------------------------------
 //特殊红票
 //-----------------------------------------------------------
